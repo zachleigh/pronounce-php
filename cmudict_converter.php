@@ -2,20 +2,15 @@
 
 use App\Ipa;
 use App\Spelling;
-use App\database\Database;
+use Database\MysqlDatabase as Database;
+use Database\Connection;
 
 $file = 'library/cmudict';
 
 $ipa = new Ipa();
 $spelling = new Spelling();
-$database = new Database();
-
-// Database settings
-$host = $database->host;
-$user = $database->user;
-$password = $database->password;
-$db = $database->database;
-$table = $database->table;
+$connection = new Connection();
+$database = new Database($connection);
 
 /* 
 * Set to true to fill mysql database, false to echo string for each line in $file
@@ -23,18 +18,11 @@ $table = $database->table;
 */
 $fill_database = false;
 
-//	Connect to database
 if ($fill_database)
 {
-    $mysqli = new mysqli($host, $user, $password, $db);
-
-    if ($mysqli->connect_error) 
-    {
-    	die('Failed to connect to database' . $mysqli->connect_error);
-    }
+    $db_connection = $database->makeConnection();
 }
 
-//	Open file
 $handle = fopen($file, 'r') or die('Failed to open dictionary file');
 
 if ($handle) 
@@ -62,18 +50,7 @@ if ($handle)
 
         if ($fill_database)
         {
-          $mysqli->set_charset("utf8");
-
-          $result = $mysqli->query("INSERT INTO $table (word, arpabet, ipa, spelling) VALUES (
-              '" . $mysqli->escape_string($word) . "',
-              '" . $mysqli->escape_string($arpabet_string) . "',
-              '" . $mysqli->escape_string($ipa_string) . "',
-              '" . $mysqli->escape_string($spelling_string) . "')"
-          );
-
-          if (!$result) {
-              echo 'Invalid query: ' . $mysqli->error . "\n" . "\n";
-          }
+          $result = $database->fillDatabase($db_connection, $word, $arpabet_string, $ipa_string, $spelling_string);
         }
         else
         {
@@ -91,5 +68,5 @@ fclose($handle);
 
 if ($fill_database)
 {
-    $mysqli->close();
+    $database->closeConnection($db_connection);
 }

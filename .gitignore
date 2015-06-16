@@ -1,2 +1,3 @@
-src/database/Database.php
+/database/Connection.php
+/vendor
 .directory
