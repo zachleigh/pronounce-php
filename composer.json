@@ -1,0 +1,15 @@
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "src"
+        }, 
+
+        "files": [
+            "library/lib.php",
+            "library/helpers.php"
+        ]
+    },
+    "require": {
+        
+    }
+}
