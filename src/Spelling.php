@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace PronouncePHP;
 
 class Spelling extends PhoneticCode
 {

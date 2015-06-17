@@ -1,7 +1,7 @@
 <?php 
 
-use App\Ipa;
-use App\Spelling;
+use PronouncePHP\Ipa;
+use PronouncePHP\Spelling;
 use Database\MysqlDatabase as Database;
 use Database\Connection;
 
