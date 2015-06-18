@@ -1,6 +1,6 @@
 <?php
 
-namespace PronouncePHP;
+namespace PronouncePHP\PhoneticCodes;
 
 class PhoneticCode
 {

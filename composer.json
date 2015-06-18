@@ -6,11 +6,11 @@
         }, 
 
         "files": [
-            "library/lib.php",
-            "library/helpers.php"
+            "src/Library/lib.php",
+            "src/Library/helpers.php"
         ]
     },
     "require": {
-        
+        "symfony/console": "~2.0"
     }
 }

@@ -1,7 +1,6 @@
 <?php 
 
-use PronouncePHP\Ipa;
-use PronouncePHP\Spelling;
+
 use Database\MysqlDatabase as Database;
 use Database\Connection;
 

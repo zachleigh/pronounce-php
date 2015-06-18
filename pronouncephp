@@ -1,0 +1,14 @@
+#! /usr/bin/env php
+
+<?php
+
+use Symfony\Component\Console\Application;
+use PronouncePHP\WordCommand;
+
+require 'vendor/autoload.php';
+
+$app = new Application('Pronounce-PHP', '0.1');
+
+$app->add(new WordCommand);
+
+$app->run();
