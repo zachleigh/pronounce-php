@@ -33,7 +33,7 @@ class PhoneticCode
     {
         $stress = '';
 
-        $is_vowel = preg_match('~[0-9]~', $character, $number);
+        $is_vowel = preg_match('/[0-9]/', $character, $number);
 
         if ($is_vowel === 1) 
         {

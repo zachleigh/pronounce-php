@@ -1,4 +1,8 @@
 {
+    "require": {
+        "symfony/console": "~2.0"
+    },
+
     "autoload": {
         "psr-4": {
             "PronouncePHP\\": "src",
@@ -6,11 +10,7 @@
         }, 
 
         "files": [
-            "src/Library/lib.php",
-            "src/Library/helpers.php"
+            "src/Library/conversions.php"
         ]
-    },
-    "require": {
-        "symfony/console": "~2.0"
     }
 }

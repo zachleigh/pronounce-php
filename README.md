@@ -1,19 +1,52 @@
 # Pronounce-PHP
+
 Converts words to pronunciation strings using the Carnegie Mellon University Pronouncing Dictionary (CMUdict) file.  Currently converts to the International Phonetic Alphabet (IPA) and to an easier to read spelling approximation.
 
 Currently, this program just outputs strings to the console with no syllable breaks. Syllables and database filling capabilities are coming soon.
 
-# Usage
-1. Download to computer and run 'composer install'.
+## Installation
 
-2. Run 'pronouncephp word word_to_look_up'
+Download and run 
+'''
+composer install
+'''
 
-Example:
+## Usage
+
+#### word command
+
+Look up a word and print the IPA and Spelling approximation pronunciation strings in the console. A comma seperated list of words may also be given. Note that words will be returned in alphabetical order.
+
+'''
+pronouncephp word word_to_look_up
+'''
+
+###### Examples:
 
 Input:
+'''
 ./pronouncephp word pronounce
+'''
 
 Output:
-
+'''
 Word: PRONOUNCE
 Arpabet: P R AH0 N AW1 N S IPA: prʌnaʊ'ns Spelling: pruhnou'ns
+'''
+
+Input:
+'''
+./pronouncephp word book,flavor,elephant,worm
+'''
+
+Output:
+'''
+Word: BOOK
+Arpabet: B UH1 K IPA: bʊ'k Spelling: buu'k
+Word: ELEPHANT
+Arpabet: EH1 L AH0 F AH0 N T IPA: ɛ'ɫʌfʌnt Spelling: e'luhfuhnt
+Word: FLAVOR
+Arpabet: F L EY1 V ER0 IPA: fɫeɪ'vɝ Spelling: fley'vur
+Word: WORM
+Arpabet: W ER1 M IPA: wɝ'm Spelling: wur'm
+'''
