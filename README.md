@@ -7,39 +7,41 @@ Currently, this program just outputs strings to the console with no syllable bre
 ## Installation
 
 Download and run 
-'''
+```
 composer install
-'''
+```
 
 ## Usage
 
-#### word command
+#### lookup
 
-Look up a word and print the IPA and Spelling approximation pronunciation strings in the console. A comma seperated list of words may also be given. Note that words will be returned in alphabetical order.
+Look up a word and print the IPA and Spelling approximation pronunciation strings in the console. 
 
-'''
-pronouncephp word word_to_look_up
-'''
+```
+pronouncephp lookup word
+```
+
+A comma seperated list of words may also be given. Note that words will be returned in alphabetical order.
+
+```
+pronouncephp word1,word2,word3
+```
 
 ###### Examples:
 
-Input:
-'''
+```
 ./pronouncephp word pronounce
-'''
-
-Output:
-'''
+```
+Will produce:
+```
 Word: PRONOUNCE
 Arpabet: P R AH0 N AW1 N S IPA: prʌnaʊ'ns Spelling: pruhnou'ns
-'''
+```
 
-Input:
 '''
 ./pronouncephp word book,flavor,elephant,worm
 '''
-
-Output:
+Will produce:
 '''
 Word: BOOK
 Arpabet: B UH1 K IPA: bʊ'k Spelling: buu'k
