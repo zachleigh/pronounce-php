@@ -38,11 +38,11 @@ Word: PRONOUNCE
 Arpabet: P R AH0 N AW1 N S IPA: prʌnaʊ'ns Spelling: pruhnou'ns
 ```
 
-'''
+```
 ./pronouncephp word book,flavor,elephant,worm
-'''
+```
 Will produce:
-'''
+```
 Word: BOOK
 Arpabet: B UH1 K IPA: bʊ'k Spelling: buu'k
 Word: ELEPHANT
@@ -51,4 +51,4 @@ Word: FLAVOR
 Arpabet: F L EY1 V ER0 IPA: fɫeɪ'vɝ Spelling: fley'vur
 Word: WORM
 Arpabet: W ER1 M IPA: wɝ'm Spelling: wur'm
-'''
+```
