@@ -13,13 +13,19 @@ composer install
 
 ## Usage
 
-#### word command
+#### lookup
 
-Look up a word and print the IPA and Spelling approximation pronunciation strings in the console. A comma seperated list of words may also be given. Note that words will be returned in alphabetical order.
+Look up a word and print the IPA and spelling approximation pronunciation strings in the console. 
 
 '''
-pronouncephp word word_to_look_up
+pronouncephp lookup word
 '''
+
+A comma seperated list of words may also be given. Note that words will be returned in alphabetical order.
+
+```
+pronouncephp lookup word1,word2,word3
+```
 
 ###### Examples:
 

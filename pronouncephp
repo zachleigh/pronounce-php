@@ -6,7 +6,7 @@ use Symfony\Component\Console\Application;
 use PronouncePHP\PhoneticCodes\Arpabet;
 use PronouncePHP\PhoneticCodes\Ipa;
 use PronouncePHP\PhoneticCodes\Spelling;
-use PronouncePHP\WordCommand;
+use PronouncePHP\LookupCommand;
 
 require 'vendor/autoload.php';
 
@@ -16,6 +16,6 @@ $arpabet = new Arpabet();
 $ipa = new Ipa();
 $spelling = new Spelling();
 
-$app->add(new WordCommand($arpabet, $ipa, $spelling));
+$app->add(new LookupCommand($arpabet, $ipa, $spelling));
 
 $app->run();

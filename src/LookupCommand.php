@@ -10,7 +10,7 @@ use PronouncePHP\PhoneticCodes\Arpabet;
 use PronouncePHP\PhoneticCodes\Ipa;
 use PronouncePHP\PhoneticCodes\Spelling;
 
-class WordCommand extends Command
+class LookupCommand extends Command
 {
     protected $arpabet;
 
@@ -35,7 +35,7 @@ class WordCommand extends Command
 
     public function configure()
     {
-        $this->setName('word')
+        $this->setName('lookup')
              ->setDescription('Convert a word or comma seperated list of words to different pronounciation strings')
              ->addArgument('string', InputArgument::REQUIRED, 'The word or words to convert');
              // ->addArgument('destination', InputArgument::REQUIRED, 'Desired output for word conversion (console, file or database)');
