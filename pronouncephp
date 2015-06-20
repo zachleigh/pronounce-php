@@ -3,19 +3,15 @@
 <?php
 
 use Symfony\Component\Console\Application;
-use PronouncePHP\PhoneticCodes\Arpabet;
-use PronouncePHP\PhoneticCodes\Ipa;
-use PronouncePHP\PhoneticCodes\Spelling;
+use PronouncePHP\Transcribe\Transcriber;
 use PronouncePHP\LookupCommand;
 
 require 'vendor/autoload.php';
 
 $app = new Application('Pronounce-PHP', '0.1');
 
-$arpabet = new Arpabet();
-$ipa = new Ipa();
-$spelling = new Spelling();
+$transcriber = new Transcriber();
 
-$app->add(new LookupCommand($arpabet, $ipa, $spelling));
+$app->add(new LookupCommand($transcriber));
 
 $app->run();

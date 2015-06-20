@@ -15,10 +15,21 @@ composer install
 
 #### lookup
 
-Look up a word and print the IPA and Spelling approximation pronunciation strings in the console. 
-
 ```
 pronouncephp lookup word
+```
+
+Look up a word and print the IPA and Spelling approximation pronunciation strings in the console. 
+
+###### Basic Example:
+
+```
+./pronouncephp word pronounce
+```
+Outputs:
+```
+Word: PRONOUNCE
+Arpabet: P R AH0 N AW1 N S IPA: prʌnaʊ'ns Spelling: pruhnou'ns
 ```
 
 A comma seperated list of words may also be given. Note that words will be returned in alphabetical order.
@@ -27,16 +38,7 @@ A comma seperated list of words may also be given. Note that words will be retur
 pronouncephp word1,word2,word3
 ```
 
-###### Examples:
-
-```
-./pronouncephp word pronounce
-```
-Will produce:
-```
-Word: PRONOUNCE
-Arpabet: P R AH0 N AW1 N S IPA: prʌnaʊ'ns Spelling: pruhnou'ns
-```
+###### Multiple Word Example:
 
 ```
 ./pronouncephp word book,flavor,elephant,worm

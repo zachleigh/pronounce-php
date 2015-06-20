@@ -6,17 +6,12 @@ use PronouncePHP\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use PronouncePHP\PhoneticCodes\Arpabet;
-use PronouncePHP\PhoneticCodes\Ipa;
-use PronouncePHP\PhoneticCodes\Spelling;
+use PronouncePHP\Transcribe\Transcriber;
+
 
 class LookupCommand extends Command
 {
-    protected $arpabet;
-
-    protected $ipa;
-
-    protected $spelling;
+    protected $transcriber;
 
     /**
      * Find comments in CMU file
@@ -24,11 +19,9 @@ class LookupCommand extends Command
      * @param string $line
      * @return bool
     */
-    public function __construct(Arpabet $arpabet, Ipa $ipa, Spelling $spelling)
+    public function __construct(Transcriber $transcriber)
     {
-        $this->arpabet = $arpabet;
-        $this->ipa = $ipa;
-        $this->spelling = $spelling;
+        $this->transcriber = $transcriber;
 
         parent::__construct();
     }
@@ -38,12 +31,11 @@ class LookupCommand extends Command
         $this->setName('lookup')
              ->setDescription('Convert a word or comma seperated list of words to different pronounciation strings')
              ->addArgument('string', InputArgument::REQUIRED, 'The word or words to convert');
-             // ->addArgument('destination', InputArgument::REQUIRED, 'Desired output for word conversion (console, file or database)');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $handle = $this->arpabet->loadCmuFile();
+        $handle = $this->transcriber->loadCmuFile();
 
         $strings = $this->inputToArray($input->getArgument('string'));
 
@@ -54,26 +46,23 @@ class LookupCommand extends Command
 
         while (($line = fgets($handle)) !== false) 
         {
-            foreach ($strings as $string) 
+            if ($this->isComment($line)) 
             {
-                if ($this->arpabet->isComment($line)) 
-                {
-                    continue;
-                }
-
-                $exploded_line = explode(' ', $line);
-
-                $word = trim($exploded_line[0]);
-
-                if ($word === $string)
-                {
-                    $output_string = $this->buildOutput($word, $exploded_line);
-
-                    $output->writeln($output_string);
-                }
+                continue;
             }
-        } 
 
+            $exploded_line = explode(' ', $line);
+
+            $word = trim($exploded_line[0]);
+
+            if (in_array($word, $strings))
+            {
+                $output_string = $this->buildOutput($word, $exploded_line);
+
+                $output->writeln($output_string);
+            }
+        }
+        
         fclose($handle);
     }
 }

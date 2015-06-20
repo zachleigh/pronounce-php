@@ -5,12 +5,11 @@
 
     "autoload": {
         "psr-4": {
-            "PronouncePHP\\": "src",
-            "Database\\": "database"
+            "PronouncePHP\\": "src"
         }, 
 
         "files": [
-            "src/Library/conversions.php"
+            "src/Transcribe/conversions.php"
         ]
     }
 }
