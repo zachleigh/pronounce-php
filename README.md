@@ -22,6 +22,7 @@ pronouncephp command argument [options]
 [help](https://github.com/zachleigh/pronounce-php#help)  
 [list](https://github.com/zachleigh/pronounce-php#list)  
 [lookup](https://github.com/zachleigh/pronounce-php#lookup)
+#
 #### lookup
 
 Look up a word and print the Arpabet, IPA and Spelling approximation pronunciation strings in the console.
