@@ -4,6 +4,7 @@
 
 use Symfony\Component\Console\Application;
 use PronouncePHP\Transcribe\Transcriber;
+use PronouncePHP\Build\Builder;
 use PronouncePHP\LookupCommand;
 
 require 'vendor/autoload.php';
@@ -11,7 +12,8 @@ require 'vendor/autoload.php';
 $app = new Application('Pronounce-PHP', '0.1');
 
 $transcriber = new Transcriber();
+$builder = new Builder();
 
-$app->add(new LookupCommand($transcriber));
+$app->add(new LookupCommand($transcriber, $builder));
 
 $app->run();

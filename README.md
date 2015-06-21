@@ -2,7 +2,7 @@
 
 Converts words to pronunciation strings using the Carnegie Mellon University Pronouncing Dictionary (CMUdict) file.  Currently converts to the International Phonetic Alphabet (IPA) and to an easier to read spelling approximation.
 
-Currently, this program just outputs strings to the console with no syllable breaks. Syllables and database filling capabilities are coming soon.
+At the moment, this program simply outputs tables to the console with no syllable breaks. Syllables and database filling capabilities are coming soon.
 
 ## Installation
 
@@ -13,44 +13,58 @@ composer install
 
 ## Usage
 
+Organized by commands
+
 #### lookup
 
+Syntax overview
 ```
-pronouncephp lookup word
+pronouncephp lookup words_to_lookup [options]
 ```
 
-Look up a word and print the IPA and Spelling approximation pronunciation strings in the console. 
+##### Options
+*--fields [-f] : Set the fields to be displayed in the table.  All fields are enabled by default. Choices: word, arpabet, ipa, spelling
 
-###### Basic Example:
+Look up a word and print the Arpabet, IPA and Spelling approximation pronunciation strings in the console.
 
 ```
-./pronouncephp word pronounce
-```
-Outputs:
-```
-Word: PRONOUNCE
-Arpabet: P R AH0 N AW1 N S IPA: prʌnaʊ'ns Spelling: pruhnou'ns
+./pronouncephp lookup hello
+
+// Output:
+// +-------+--------------+--------+----------+
+// | word  | arpabet      | ipa    | spelling |
+// +-------+--------------+--------+----------+
+// | hello | HH AH0 L OW1 | hʌɫoʊ' | huhloh'  |
+// +-------+--------------+--------+----------+
+
 ```
 
 A comma seperated list of words may also be given. Note that words will be returned in alphabetical order.
 
 ```
-pronouncephp word1,word2,word3
+/.pronouncephp lookup elephant,zebra,giraffe
+
+Output
++----------+---------------------+----------+------------+
+| word     | arpabet             | ipa      | spelling   |
++----------+---------------------+----------+------------+
+| elephant | EH1 L AH0 F AH0 N T | ɛ'ɫʌfʌnt | e'luhfuhnt |
+| giraffe  | JH ER0 AE1 F        | dʒɝæ'f   | jura'f     |
+| zebra    | Z IY1 B R AH0       | zi'brʌ   | zee'bruh   |
++----------+---------------------+----------+------------+
 ```
 
-###### Multiple Word Example:
+Set desired table fields with the --fields option
 
 ```
-./pronouncephp word book,flavor,elephant,worm
-```
-Will produce:
-```
-Word: BOOK
-Arpabet: B UH1 K IPA: bʊ'k Spelling: buu'k
-Word: ELEPHANT
-Arpabet: EH1 L AH0 F AH0 N T IPA: ɛ'ɫʌfʌnt Spelling: e'luhfuhnt
-Word: FLAVOR
-Arpabet: F L EY1 V ER0 IPA: fɫeɪ'vɝ Spelling: fley'vur
-Word: WORM
-Arpabet: W ER1 M IPA: wɝ'm Spelling: wur'm
+./pronouncephp lookup blue,red,green --fields=word,ipa
+
+Output
++-------+-------+
+| word  | ipa   |
++-------+-------+
+| blue  | bɫu'  |
+| green | gri'n |
+| red   | rɛ'd  |
++-------+-------+
 ```

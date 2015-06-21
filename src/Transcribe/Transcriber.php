@@ -7,13 +7,13 @@ class Transcriber
     /**
      * Load CMU file
      *
-     * @return handle
+     * @return file handle
     */
     public function loadCmuFile()
     {
         $file = 'src/Transcribe/cmudict';
 
-        $handle = fopen($file, 'r') or die('Failed to open dictionary file');
+        $handle = fopen($file, 'r') or die('<error>Failed to open dictionary file</error>');
 
         return $handle;
     }
