@@ -13,7 +13,13 @@ composer install
 
 ## Usage
 
-Organized by commands
+General syntax overview
+```
+pronouncephp command argument [options]
+```
+
+### Commands
+-[lookup](https://github.com/zachleigh/pronounce-php#lookup)
 
 #### lookup
 
@@ -23,19 +29,20 @@ pronouncephp lookup words_to_lookup [options]
 ```
 
 ##### Options
-*--fields [-f] : Set the fields to be displayed in the table.  All fields are enabled by default. Choices: word, arpabet, ipa, spelling
+######--fields [-f]
+    Set the fields to be displayed in the table.  All fields are enabled by default. Choices: word, arpabet, ipa, spelling
 
 Look up a word and print the Arpabet, IPA and Spelling approximation pronunciation strings in the console.
 
 ```
 ./pronouncephp lookup hello
 
-// Output:
-// +-------+--------------+--------+----------+
-// | word  | arpabet      | ipa    | spelling |
-// +-------+--------------+--------+----------+
-// | hello | HH AH0 L OW1 | hʌɫoʊ' | huhloh'  |
-// +-------+--------------+--------+----------+
+
++-------+--------------+--------+----------+
+| word  | arpabet      | ipa    | spelling |
++-------+--------------+--------+----------+
+| hello | HH AH0 L OW1 | hʌɫoʊ' | huhloh'  |
++-------+--------------+--------+----------+
 
 ```
 
@@ -44,7 +51,7 @@ A comma seperated list of words may also be given. Note that words will be retur
 ```
 /.pronouncephp lookup elephant,zebra,giraffe
 
-Output
+
 +----------+---------------------+----------+------------+
 | word     | arpabet             | ipa      | spelling   |
 +----------+---------------------+----------+------------+
@@ -59,7 +66,7 @@ Set desired table fields with the --fields option
 ```
 ./pronouncephp lookup blue,red,green --fields=word,ipa
 
-Output
+
 +-------+-------+
 | word  | ipa   |
 +-------+-------+
