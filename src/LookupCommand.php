@@ -7,8 +7,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Console\Helper\Table;
 use PronouncePHP\Transcribe\Transcriber;
 use PronouncePHP\Build\Builder;
 
@@ -43,7 +41,9 @@ class LookupCommand extends Command
         $this->setName('lookup')
              ->setDescription('Convert a word or comma seperated list of words to different pronounciation strings')
              ->addArgument('word', InputArgument::REQUIRED, 'The word or words to convert')
-             ->addOption('fields', 'f', InputOption::VALUE_REQUIRED, 'Select the output fields you wish to display', 'word,arpabet,ipa,spelling');
+             ->addOption('fields', 'f', InputOption::VALUE_REQUIRED, 'Select the output fields you wish to display', 'word,arpabet,ipa,spelling')
+             ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'Select the destination for output', 'table')
+             ->addOption('file', null, InputOption::VALUE_REQUIRED, 'Set file path for output', 'output.txt');
     }
 
     /**
@@ -62,7 +62,11 @@ class LookupCommand extends Command
 
         $fields = $this->explodeByComma($input->getOption('fields'));
 
-        $method_names = $this->makeMethodNames($fields);
+        $destination = $input->getOption('destination');
+
+        $file_name = $input->getOption('file');
+
+        $method_names = $this->makeStringMethodNames($fields);
 
         if (!$handle) 
         {
@@ -92,13 +96,19 @@ class LookupCommand extends Command
             }
         }
 
-        $table = new Table($output);
-
-        $this->builder->buildTable($table, $answers);
-
-        $table->render();
-
         $unanswered = array_diff($strings, $answered);
+
+        $destination_method = $this->makeDestinationMethodName($destination);
+
+        if (!method_exists($this, $destination_method))
+        {
+            $output->writeln("<error>Incorret destination input</error>");
+            $output->writeln("<info>Destination options: </info><comment>table,string,file,database</comment>");
+
+            exit();
+        }
+
+        $this->$destination_method($output, $answers, $file_name);
 
         $this->displayErrorForUnanswered($output, $unanswered);
 

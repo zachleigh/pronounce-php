@@ -9,7 +9,7 @@ use PronouncePHP\LookupCommand;
 
 require 'vendor/autoload.php';
 
-$app = new Application('Pronounce-PHP', '0.3');
+$app = new Application('Pronounce-PHP', '0.4');
 
 $transcriber = new Transcriber();
 $builder = new Builder();

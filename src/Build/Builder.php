@@ -7,7 +7,7 @@ class Builder
     /**
      * Build display table
      *
-     * @param Table $table, array $answer
+     * @param Table $table, array $answers
      * @return Table
     */
     public function buildTable($table, array $answers)
@@ -37,5 +37,46 @@ class Builder
               ->setRows($rows);
         
         return $table;
+    }
+
+    /**
+     * Build display string
+     *
+     * @param array $answers
+     * @return string
+    */
+    public function buildString(array $answers)
+    {
+        $string = '';
+
+        foreach ($answers as $answer)
+        {
+            foreach ($answer as $key => $value) 
+            {                
+                $string .= '<info>' . $key . ': </info>' . $value . ' ';
+            }
+
+            $string .= "\n";
+        }
+
+        return $string;
+    }
+
+    /**
+     * Build file ouput line
+     *
+     * @param array $answer
+     * @return string
+    */
+    public function buildFileOutput(array $answer)
+    {
+        $string = '';
+
+        foreach ($answer as $key => $value) 
+        {                
+            $string .= $value . ' / ';
+        }
+
+        return $string;
     }
 }

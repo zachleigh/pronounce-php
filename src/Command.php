@@ -3,6 +3,9 @@
 namespace PronouncePHP;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Console\Output\StreamOutput;
 
 class Command extends SymfonyCommand
 {
@@ -41,7 +44,7 @@ class Command extends SymfonyCommand
      * @param array $strings
      * @return array
     */
-    protected function makeMethodNames(array $strings)
+    protected function makeStringMethodNames(array $strings)
     {
         $names = [];
 
@@ -144,5 +147,92 @@ class Command extends SymfonyCommand
             
             $output->writeln("<error>Word $word could not be found</error>");
         }
+    }
+
+    /**
+     * Make method name for destination
+     *
+     * @param string $destination
+     * @return string
+    */
+    protected function makeDestinationMethodName($destination)
+    {
+        $destination = strtolower($destination);
+
+        return 'outputTo' . ucfirst($destination);
+    }
+
+    /**
+     * Output data to table
+     *
+     * @param OutputInterface $output, array $answers
+     * @return void
+    */
+    protected function outputToTable($output, array $answers)
+    {
+        $table = new Table($output);
+
+        $this->builder->buildTable($table, $answers);
+
+        $table->render();
+    }
+
+    /**
+     * Output data to string
+     *
+     * @param OutputInterface $output, array $answers
+     * @return void
+    */
+    protected function outputToString($output, array $answers)
+    {
+        $string = $this->builder->buildString($answers);
+
+        $output->writeln($string);
+    }
+
+    /**
+     * Output data to file
+     *
+     * @param OutputInterface $output, array $answers, string $file_name
+     * @return void
+    */
+    protected function outputToFile($output, array $answers, $file_name)
+    {
+        $filesystem = new Filesystem();
+
+        $stream = $file_name;
+
+        $count = '';
+
+        while ($filesystem->exists($stream))
+        {
+            $count += 1;
+
+            $stream = 'output' . $count . '.txt';
+        }
+
+        $filesystem->touch($stream);
+
+        $handle = fopen($stream, 'w');
+
+        $file = new StreamOutput($handle);
+
+        if (!$file)
+        {
+            $output->writeln('<error>Could not create destination file</error>');
+
+            exit();
+        }
+
+        foreach ($answers as $answer)
+        {
+            $line = $this->builder->buildFileOutput($answer);
+
+            $file->writeln($line);
+        }
+
+        $output->writeln("<info>Successfully wrote to $stream</info>");
+
+        fclose($handle);
     }
 }
