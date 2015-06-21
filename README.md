@@ -19,6 +19,7 @@ pronouncephp command argument [options]
 ```
 
 ### Commands
+[help](https://github.com/zachleigh/pronounce-php#help)
 [lookup](https://github.com/zachleigh/pronounce-php#lookup)
 #### lookup
 
@@ -31,16 +32,13 @@ pronouncephp lookup words_to_lookup [options]
 ```
 
 ##### Options
-######--fields [-f]
-[word, arpabet, ipa, spelling]  
-Set the fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default. 
+######--fields [-f]             Available fields: [word, arpabet, ipa, spelling]  
+Set the output fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default. 
 
-######--destination [-d]
-[table, string, file]  
+######--destination [-d]        Available desitinations: [table, string, file]  
 Set the output destination. Default is to output a table to the console.
 
 ######--file
-[file_name]  
 If 'file' is selected for output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
 
 ##### Examples
