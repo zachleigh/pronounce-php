@@ -33,14 +33,17 @@ pronouncephp lookup words_to_lookup [options]
 ##### Options
 ######--fields [-f]
 [word, arpabet, ipa, spelling]
+
 Set the fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default. 
 
 ######--destination [-d]
 [table, string, file]
+
 Set the output destination. Default is to output a table to the console.
 
 ######--file
 [file_name]
+
 If 'file' is selected for output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
 
 ##### Examples
@@ -94,6 +97,7 @@ Setting the destination to 'string' produces a string instead of a table.
 ```
 ./pronouncephp lookup desk,chair,pencil --destination=string
 
+
 word: chair arpabet: CH EH1 R ipa: tʃɛ'r spelling: che'r 
 word: desk arpabet: D EH1 S K ipa: dɛ'sk spelling: de'sk 
 word: pencil arpabet: P EH1 N S AH0 L ipa: pɛ'nsʌɫ spelling: pe'nsuhl 
@@ -104,6 +108,7 @@ Setting destination to 'file' writes the output to a file.  The default file is 
 ```
 ./pronouncephp lookup guitar --destination=file
 
+
 Successfully wrote to output.txt
 ```
 
@@ -111,6 +116,7 @@ If the destination is set to 'file', use the 'file' option to specify a file to 
 
 ```
 ./pronouncephp lookup night,day,noon --destination=file --file=words.txt
+
 
 Successfully wrote to words.txt
 ```
