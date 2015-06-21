@@ -32,11 +32,13 @@ pronouncephp lookup words_to_lookup [options]
 ```
 
 ##### Options
-######--fields [-f]             Available fields: [word, arpabet, ipa, spelling]  
-Set the output fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default. 
+######--fields [-f]  
+Set the output fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default.
+Available fields: [word, arpabet, ipa, spelling]
 
-######--destination [-d]        Available desitinations: [table, string, file]  
+######--destination [-d]  
 Set the output destination. Default is to output a table to the console.
+Available desitinations: [table, string, file]
 
 ######--file
 If 'file' is selected for output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
