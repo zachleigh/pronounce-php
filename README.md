@@ -33,11 +33,14 @@ pronouncephp lookup words_to_lookup [options]
 
 ##### Options
 ######--fields [-f]  
-Set the output fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default.
+Set the output fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default.  
 Available fields: [word, arpabet, ipa, spelling]
+```
+pronouncephp lookup words_to_lookup --fields=word,ipa
+```
 
 ######--destination [-d]  
-Set the output destination. Default is to output a table to the console.
+Set the output destination. Default is to output a table to the console.  
 Available desitinations: [table, string, file]
 
 ######--file
