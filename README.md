@@ -23,6 +23,7 @@ pronouncephp command argument [options]
 #### lookup
 
 Look up a word and print the Arpabet, IPA and Spelling approximation pronunciation strings in the console.
+The lookup command takes one argument: the word or words to be looked up.
 
 #####Syntax overview
 ```
@@ -31,7 +32,7 @@ pronouncephp lookup words_to_lookup [options]
 
 ##### Options
 ######--fields [-f]
-Set the fields to be displayed in the table.  All fields are enabled by default. Choices: word, arpabet, ipa, spelling.
+Set the fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default. Choices: word, arpabet, ipa, spelling.
 
 ##### Examples
 
@@ -63,7 +64,7 @@ A comma seperated list of words may also be given. Note that words will be retur
 +----------+---------------------+----------+------------+
 ```
 
-Set desired table fields with the --fields option.  Fields will be displayed in the order given.
+Set desired output fields with the --fields option.  Fields will be displayed in the order given.
 
 ```
 ./pronouncephp lookup blue,red,green --fields=word,ipa
