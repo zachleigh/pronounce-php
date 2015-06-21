@@ -19,18 +19,17 @@ pronouncephp command argument [options]
 ```
 
 ### Commands
--[lookup](https://github.com/zachleigh/pronounce-php#lookup)
-
+[lookup](https://github.com/zachleigh/pronounce-php#lookup)
 #### lookup
 
-Syntax overview
+#####Syntax overview
 ```
 pronouncephp lookup words_to_lookup [options]
 ```
 
 ##### Options
 ######--fields [-f]
-    Set the fields to be displayed in the table.  All fields are enabled by default. Choices: word, arpabet, ipa, spelling
+Set the fields to be displayed in the table.  All fields are enabled by default. Choices: word, arpabet, ipa, spelling
 
 Look up a word and print the Arpabet, IPA and Spelling approximation pronunciation strings in the console.
 
