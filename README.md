@@ -13,7 +13,7 @@ composer install
 
 ## Usage
 
-General syntax overview
+#####General syntax overview
 ```
 pronouncephp command argument [options]
 ```
@@ -22,6 +22,8 @@ pronouncephp command argument [options]
 [lookup](https://github.com/zachleigh/pronounce-php#lookup)
 #### lookup
 
+Look up a word and print the Arpabet, IPA and Spelling approximation pronunciation strings in the console.
+
 #####Syntax overview
 ```
 pronouncephp lookup words_to_lookup [options]
@@ -29,10 +31,11 @@ pronouncephp lookup words_to_lookup [options]
 
 ##### Options
 ######--fields [-f]
-Set the fields to be displayed in the table.  All fields are enabled by default. Choices: word, arpabet, ipa, spelling
+Set the fields to be displayed in the table.  All fields are enabled by default. Choices: word, arpabet, ipa, spelling.
 
-Look up a word and print the Arpabet, IPA and Spelling approximation pronunciation strings in the console.
+##### Examples
 
+Basic usage
 ```
 ./pronouncephp lookup hello
 
@@ -60,7 +63,7 @@ A comma seperated list of words may also be given. Note that words will be retur
 +----------+---------------------+----------+------------+
 ```
 
-Set desired table fields with the --fields option
+Set desired table fields with the --fields option.  Fields will be displayed in the order given.
 
 ```
 ./pronouncephp lookup blue,red,green --fields=word,ipa
