@@ -1,6 +1,7 @@
 {
     "require": {
         "symfony/console": "~2.0",
+        "symfony/filesystem": "~2.0",
         "phpunit/phpunit": "~4.0"
     },
 
