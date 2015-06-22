@@ -42,7 +42,7 @@ pronouncephp list
 
 #### lookup
 
-Look up a word and print the Arpabet, IPA and Spelling approximation pronunciation strings in the console.
+Look up a word and output the Arpabet, IPA and Spelling approximation pronunciation strings.
 The lookup command takes one argument: the word or words to be looked up.
 
 ##### Syntax overview
@@ -59,7 +59,7 @@ pronouncephp lookup words_to_lookup --fields=word,arpabet,ipa,spelling
 ```
 
 ###### --destination [-d]  
-Set the output destination. Default is to output a table to the console.  
+Set the output destination. Default is to output a table to the console.  If file is selected, fields will be seperated by a forward slash (/) surrounded by spaces.  
 Available desitinations: [table, string, file]
 ```
 pronouncephp lookup words_to_lookup --destination=string
@@ -136,6 +136,10 @@ Setting destination to 'file' writes the output to a file.  The default file is 
 
 Successfully wrote to output.txt
 ```
+ouput.txt
+```
+guitar / G IH0 T AA1 R / gɪtɑ'r / gito'r /
+```
 
 If the destination is set to 'file', use the 'file' option to specify a file to write to.
 
@@ -144,4 +148,10 @@ If the destination is set to 'file', use the 'file' option to specify a file to 
 
 
 Successfully wrote to words.txt
+```
+words.txt
+```
+day / D EY1 / deɪ' / dey' / 
+night / N AY1 T / naɪ't / nahy't / 
+noon / N UW1 N / nu'n / noo'n /
 ```
