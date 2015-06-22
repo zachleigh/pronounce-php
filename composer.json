@@ -1,4 +1,18 @@
 {
+    "name": "zachleigh/pronounce-php",
+    "type": "project",
+    "description": "Create English pronunciation strings for over 130,000 words",
+    "keywords": ["cmudict","pronounce","pronunciation","arpabet","ipa","spelling"],
+    "homepage": "https://github.com/zachleigh/pronounce-php",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Zach Leigh",
+            "email": "zachleigh@fastmail.jp",
+            "role": "Developer"
+        }
+    ],
+    
     "require": {
         "symfony/console": "~2.0",
         "symfony/filesystem": "~2.0",

@@ -19,9 +19,9 @@ pronouncephp command argument [options]
 ```
 
 ### Commands
-[help](https://github.com/zachleigh/pronounce-php#help)  
-[list](https://github.com/zachleigh/pronounce-php#list)  
-[lookup](https://github.com/zachleigh/pronounce-php#lookup)
+[help](#help)  
+[list](#list)  
+[lookup](#lookup)
 #### help
 
 Display the help message.

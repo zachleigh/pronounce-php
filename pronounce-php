@@ -11,7 +11,7 @@ require 'vendor/autoload.php';
 
 $GLOBALS['status'] = 0;
 
-$app = new Application('Pronounce-PHP', '0.4');
+$app = new Application('Pronounce-PHP', '0.5');
 
 $transcriber = new Transcriber();
 $builder = new Builder();
