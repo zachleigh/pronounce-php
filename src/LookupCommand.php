@@ -70,6 +70,8 @@ class LookupCommand extends Command
 
         if (!$handle) 
         {
+            $GLOBALS['status'] = 1;
+            
             die('<error>File did not open properly</error>');
         }
 
@@ -96,6 +98,10 @@ class LookupCommand extends Command
             }
         }
 
+        if ($GLOBALS['status'] !== 0) {
+            return null;
+        }
+
         $unanswered = array_diff($strings, $answered);
 
         $destination_method = $this->makeDestinationMethodName($destination);
@@ -105,7 +111,9 @@ class LookupCommand extends Command
             $output->writeln("<error>Incorret destination input</error>");
             $output->writeln("<info>Destination options: </info><comment>table,string,file,database</comment>");
 
-            exit();
+            $GLOBALS['status'] = 1;
+
+            return null;
         }
 
         $this->$destination_method($output, $answers, $file_name);

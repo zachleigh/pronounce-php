@@ -80,7 +80,9 @@ class Command extends SymfonyCommand
                 $output->writeln("<error>Incorret field input</error>");
                 $output->writeln("<info>Field options: </info><comment>word,arpabet,ipa,spelling</comment>");
 
-                exit();
+                $GLOBALS['status'] = 1;
+
+                break;
             }
 
             $answer[$field] = $this->$method($word, $exploded_line, $arpabet_array);
@@ -213,15 +215,19 @@ class Command extends SymfonyCommand
 
         $filesystem->touch($stream);
 
-        $handle = fopen($stream, 'w');
+        $handle = fopen($stream, 'w') or die('<error>Failed to open destination file</error>');
 
         $file = new StreamOutput($handle);
 
         if (!$file)
         {
-            $output->writeln('<error>Could not create destination file</error>');
+            $output->writeln('<error>Error with destination file</error>');
 
-            exit();
+            $GLOBALS['status'] = 1;
+
+            fclose($handle);
+
+            return null;
         }
 
         foreach ($answers as $answer)

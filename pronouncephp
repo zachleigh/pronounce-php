@@ -9,6 +9,8 @@ use PronouncePHP\LookupCommand;
 
 require 'vendor/autoload.php';
 
+$GLOBALS['status'] = 0;
+
 $app = new Application('Pronounce-PHP', '0.4');
 
 $transcriber = new Transcriber();
