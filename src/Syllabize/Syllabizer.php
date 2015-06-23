@@ -2,8 +2,6 @@
 
 namespace PronouncePHP\Syllabize;
 
-use Symfony\Component\Console\Output\StreamOutput;
-
 class Syllabizer
 {
     private $patterns;
@@ -43,9 +41,7 @@ class Syllabizer
 
         $kuiken_patterns = getKuikenPatterns();
 
-        $patterns = array_merge($liang_patterns, $kuiken_patterns);
-
-        return $patterns;
+        return array_merge($liang_patterns, $kuiken_patterns);
     }
 
     /**
@@ -156,13 +152,114 @@ class Syllabizer
     }
 
     /**
-     * Insert pattern into tree
+     * Break words into pieces, broken at hyphenation points
      *
      * @param string $word
      * @return void
     */
-    private function hyphenateWord($word)
+    public function hyphenateWord($word)
     {
+        if (strlen($word) <= 4)
+        {
+            return strtolower($word);
+        }
 
+        if (array_key_exists(strtolower($word), $this->exceptions))
+        {
+            $points = $this->exceptions[strtolower($word)];
+        }
+        else
+        {
+            $string = '.' . strtolower($word) . '.';
+
+            $points = $this->getPoints($string);
+
+            for ($word_index = 0; $word_index < strlen($string); $word_index++)
+            {
+                $tree = $this->tree;
+
+                $substring = substr($string, $word_index);
+
+                for ($substring_index = 0; $substring_index < strlen($substring); $substring_index++)
+                {
+                    $character = $substring[$substring_index];
+
+                    if (array_key_exists($character, $tree))
+                    {
+                        $tree = $tree[$character];
+
+                        if (array_key_exists(0, $tree))
+                        {
+                            $point_array = $tree[0];
+
+                            for ($point_index = 0; $point_index < count($point_array); $point_index++)
+                            {
+                                $points[$word_index + $point_index] = max($points[$word_index + $point_index], $point_array[$point_index]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            end($points);
+            $last = key($points);
+
+            prev($points);
+            $second_last = key($points);
+
+            reset($points);
+
+            $points[1] = $points[2] = $points[$last] = $points[$second_last] = 0;
+        }
+
+        $pieces = '';
+
+        $zipped = $this->zip(strtolower($word), array_slice($points, 2));
+
+        foreach ($zipped as $tuple)
+        {
+            $letter = $tuple[0];
+            $points = $tuple[1];
+
+            $pieces .= $letter;
+
+            if ($points % 2)
+            {
+                $pieces .= '-';
+            }
+        }
+
+        return $pieces;
+    }
+
+    /**
+     * Replication of python zip function
+     *
+     * @param string/array $one, array $two
+     * @return array
+    */
+    private function zip($one, array $two)
+    {
+        if (!is_array($one))
+        {
+            $one = str_split($one);
+        }
+
+        $index = count($one);
+
+        $zipped = [];
+
+        for ($i = 0; $i < $index; $i++)
+        {
+            $tuple = [$one[$i], $two[$i]];
+
+            array_push($zipped, $tuple);
+        }
+
+        return $zipped;
     }
 }

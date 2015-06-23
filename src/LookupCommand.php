@@ -23,7 +23,7 @@ class LookupCommand extends Command
     /**
      * Construct
      *
-     * @param Transcriber $transcribe
+     * @param Transcriber $transcribe, Syllabizer $syllabizer, Builder $builder
      * @return void
     */
     public function __construct(Transcriber $transcriber, Syllabizer $syllabizer, Builder $builder)
