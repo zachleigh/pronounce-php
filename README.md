@@ -20,6 +20,7 @@ pronouncephp command argument [options]
 
 ### Commands
 [help](#help)  
+[hyphenate](#hyphenate)  
 [list](#list)  
 [lookup](#lookup)
 #### help
@@ -30,6 +31,33 @@ Display the help message.
 ```
 pronouncephp help
 ```
+
+#### hyphenate
+
+Hyphenate a word or words.  Note that this function is mostly accurate, but there may be some errors.  If you find an error, please report it so I can add the word to the exception list.
+
+##### Syntax overview
+```
+pronouncephp hyphenate words_to_hyphenate
+```
+##### Examples
+
+Basic usage
+```
+./pronouncephp hyphenate hello
+
+
+hel-lo
+```
+A comma seperated list of words may also be given.
+```
+./pronounce-php hyphenate basket,curtain,hyphenate
+
+
+bas-ket
+cur-tain
+hy-phen-ate
+``` 
 
 #### list  
 
