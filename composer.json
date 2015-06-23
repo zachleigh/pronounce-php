@@ -2,7 +2,7 @@
     "name": "zachleigh/pronounce-php",
     "type": "project",
     "description": "Create English pronunciation strings for over 130,000 words",
-    "keywords": ["cmudict","pronounce","pronunciation","arpabet","ipa","spelling"],
+    "keywords": ["cmudict","pronounce","pronunciation",",hyphenate","hyphenation","arpabet","ipa","spelling"],
     "homepage": "https://github.com/zachleigh/pronounce-php",
     "license": "GPL-2.0",
     "authors": [
@@ -26,7 +26,7 @@
 
         "files": [
             "src/Transcribe/conversions.php",
-            "src/Syllabize/patterns.php"
+            "src/Hyphenate/patterns.php"
         ]
     },
 

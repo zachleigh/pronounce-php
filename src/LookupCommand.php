@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use PronouncePHP\Transcribe\Transcriber;
-use PronouncePHP\Syllabize\Syllabizer;
+use PronouncePHP\Hyphenate\Hyphenator;
 use PronouncePHP\Build\Builder;
 
 
@@ -16,20 +16,20 @@ class LookupCommand extends Command
 {
     protected $transcriber;
 
-    protected $syllabizer;
+    protected $hyphenator;
 
     protected $builder;
 
     /**
      * Construct
      *
-     * @param Transcriber $transcribe, Syllabizer $syllabizer, Builder $builder
+     * @param Transcriber $transcribe, Hyphenator $hyphenator, Builder $builder
      * @return void
     */
-    public function __construct(Transcriber $transcriber, Syllabizer $syllabizer, Builder $builder)
+    public function __construct(Transcriber $transcriber, Hyphenator $hyphenator, Builder $builder)
     {
         $this->transcriber = $transcriber;
-        $this->syllabizer = $syllabizer;
+        $this->hyphenator = $hyphenator;
         $this->builder = $builder;
 
         parent::__construct();
@@ -96,7 +96,7 @@ class LookupCommand extends Command
 
             if (in_array($word, $strings))
             {
-                $answers[$word] = $this->makeOutputArray($output, $word, $exploded_line, $method_names);
+                $answers[$word] = $this->makeLookupOutputArray($output, $word, $exploded_line, $method_names);
 
                 array_push($answered, $word);
             }
@@ -125,5 +125,37 @@ class LookupCommand extends Command
         $this->displayErrorForUnanswered($output, $unanswered);
 
         fclose($handle);
+    }
+
+    /**
+     * Make lookup output array for given fields
+     *
+     * @param OutputInterface $output, string $word, array $exploded_line, array $method_names
+     * @return array
+    */
+    protected function makeLookupOutputArray($output, $word, $exploded_line, array $method_names)
+    {
+        $answer = [];
+
+        array_shift($exploded_line);
+
+        $arpabet_array = array_filter($exploded_line);
+
+        foreach ($method_names as $field => $method)
+        {
+            if (!method_exists($this, $method))
+            {
+                $output->writeln("<error>Incorret field input</error>");
+                $output->writeln("<info>Field options: </info><comment>word,arpabet,ipa,spelling</comment>");
+
+                $GLOBALS['status'] = 1;
+
+                break;
+            }
+
+            $answer[$field] = $this->$method($word, $exploded_line, $arpabet_array);
+        }
+
+        return $answer;
     }
 }

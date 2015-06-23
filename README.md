@@ -15,57 +15,100 @@ composer install
 
 #####General syntax overview
 ```
-pronouncephp command argument [options]
+pronounce-php command argument [options]
 ```
 
 ## Commands
-[help](#help)  
-[hyphenate](#hyphenate)  
-[list](#list)  
+[hyphenate](#hyphenate)   
 [lookup](#lookup)
-### help
-
-Display the help message.
-
-##### Syntax overview
-```
-pronouncephp help
-```
-
 ### hyphenate
 
 Hyphenate a word or words.  Note that this function is mostly accurate, but there may be some errors.  If you find an error, please report it so I can add the word to the exception list.
 
 ##### Syntax overview
 ```
-pronouncephp hyphenate words_to_hyphenate
+pronounce-php hyphenate words_to_hyphenate
 ```
+
+##### Options
+###### --destination [-d]  
+Set the output destination. Default is to output a table to the console.  If file is selected, fields will be seperated by a forward slash (/) surrounded by spaces.  
+Available desitinations: [table, string, file]
+```
+pronounce-php hyphenate words_to_hyphenate --destination=file
+```
+
+###### --file
+If 'file' is selected for output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
+```
+pronounce-php hyphenate words_to_hyphenate --destination=file --file=my_file.txt
+```
+
 ##### Examples
 
 Basic usage
 ```
-./pronouncephp hyphenate hello
+./pronounce-php hyphenate hello
 
 
-hel-lo
++-------+-----------------+
+| word  | hyphenated word |
++-------+-----------------+
+| hello | hel-lo          |
++-------+-----------------+
 ```
+
 A comma seperated list of words may also be given.
 ```
 ./pronounce-php hyphenate basket,curtain,hyphenate
 
 
-bas-ket
-cur-tain
-hy-phen-ate
++-----------+-----------------+
+| word      | hyphenated word |
++-----------+-----------------+
+| basket    | bas-ket         |
+| curtain   | cur-tain        |
+| hyphenate | hy-phen-ate     |
++-----------+-----------------+
 ``` 
 
-### list  
-
-List all available commands.  
-
-##### Syntax overview
+Set the ouput destination with the --destination option. Only one destination may be choosen.
+Setting the destination to 'string' produces a string instead of a table.
 ```
-pronouncephp list
+./pronounce-php hyphenate flower,mountain --destination=string
+
+
+word: flower hyphenated word: flower 
+word: mountain hyphenated word: moun-tain 
+```
+
+Setting destination to 'file' writes the output to a file.  The default file is 'output.txt'.
+
+```
+./pronounce-php hyphenate cupcakes,headphones --destination=file
+
+
+Successfully wrote to output.txt
+```
+ouput.txt
+```
+cupcakes / cup-cakes / 
+headphones / head-phones / 
+```
+
+If the destination is set to 'file', use the 'file' option to specify a file to write to.
+
+```
+./pronounce-php hyphenate reading,eating,shopping --destination=file --file=hyphen.txt
+
+
+Successfully wrote to hyphen.txt
+```
+hyphen.txt
+```
+reading / read-ing / 
+eating / eat-ing / 
+shopping / shop-ping / 
 ```
 
 ### lookup
@@ -75,7 +118,7 @@ The lookup command takes one argument: the word or words to be looked up.
 
 ##### Syntax overview
 ```
-pronouncephp lookup words_to_lookup [options]
+pronounce-php lookup words_to_lookup [options]
 ```
 
 ##### Options
@@ -83,27 +126,27 @@ pronouncephp lookup words_to_lookup [options]
 Set the output fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default.  
 Available fields: [word, arpabet, ipa, spelling]
 ```
-pronouncephp lookup words_to_lookup --fields=word,arpabet,ipa,spelling
+pronounce-php lookup words_to_lookup --fields=word,arpabet,ipa,spelling
 ```
 
 ###### --destination [-d]  
 Set the output destination. Default is to output a table to the console.  If file is selected, fields will be seperated by a forward slash (/) surrounded by spaces.  
 Available desitinations: [table, string, file]
 ```
-pronouncephp lookup words_to_lookup --destination=string
+pronounce-php lookup words_to_lookup --destination=string
 ```
 
 ###### --file
 If 'file' is selected for output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
 ```
-pronouncephp lookup words_to_lookup --destination=file --file=my_file.txt
+pronounce-php lookup words_to_lookup --destination=file --file=my_file.txt
 ```
 
 ##### Examples
 
 Basic usage
 ```
-./pronouncephp lookup hello
+./pronounce-php lookup hello
 
 
 +-------+--------------+--------+----------+
@@ -117,7 +160,7 @@ Basic usage
 A comma seperated list of words may also be given. Note that words will be returned in alphabetical order.
 
 ```
-/.pronouncephp lookup elephant,zebra,giraffe
+/.pronounce-php lookup elephant,zebra,giraffe
 
 
 +----------+---------------------+----------+------------+
@@ -132,7 +175,7 @@ A comma seperated list of words may also be given. Note that words will be retur
 Set desired output fields with the --fields option.  Fields will be displayed in the order given.
 
 ```
-./pronouncephp lookup blue,red,green --fields=word,ipa
+./pronounce-php lookup blue,red,green --fields=word,ipa
 
 
 +-------+-------+
@@ -144,11 +187,11 @@ Set desired output fields with the --fields option.  Fields will be displayed in
 +-------+-------+
 ```
 
-Set the ouput destination with the --destination option. Only one destination may be choosen.
+Set the ouput destination with the --destination option. Only one destination may be choosen.   
 Setting the destination to 'string' produces a string instead of a table.
 
 ```
-./pronouncephp lookup desk,chair,pencil --destination=string
+./pronounce-php lookup desk,chair,pencil --destination=string
 
 
 word: chair arpabet: CH EH1 R ipa: tʃɛ'r spelling: che'r 
@@ -159,7 +202,7 @@ word: pencil arpabet: P EH1 N S AH0 L ipa: pɛ'nsʌɫ spelling: pe'nsuhl
 Setting destination to 'file' writes the output to a file.  The default file is 'output.txt'.
 
 ```
-./pronouncephp lookup guitar --destination=file
+./pronounce-php lookup guitar --destination=file
 
 
 Successfully wrote to output.txt
@@ -172,7 +215,7 @@ guitar / G IH0 T AA1 R / gɪtɑ'r / gito'r /
 If the destination is set to 'file', use the 'file' option to specify a file to write to.
 
 ```
-./pronouncephp lookup night,day,noon --destination=file --file=words.txt
+./pronounce-php lookup night,day,noon --destination=file --file=words.txt
 
 
 Successfully wrote to words.txt

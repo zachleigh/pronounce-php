@@ -60,38 +60,6 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * make output array for given fields
-     *
-     * @param OutputInterface $output, string $word, array $exploded_line, array $method_names
-     * @return array
-    */
-    protected function makeOutputArray($output, $word, $exploded_line, array $method_names)
-    {
-        $answer = [];
-
-        array_shift($exploded_line);
-
-        $arpabet_array = array_filter($exploded_line);
-
-        foreach ($method_names as $field => $method)
-        {
-            if (!method_exists($this, $method))
-            {
-                $output->writeln("<error>Incorret field input</error>");
-                $output->writeln("<info>Field options: </info><comment>word,arpabet,ipa,spelling</comment>");
-
-                $GLOBALS['status'] = 1;
-
-                break;
-            }
-
-            $answer[$field] = $this->$method($word, $exploded_line, $arpabet_array);
-        }
-
-        return $answer;
-    }
-
-    /**
      * Build word string
      *
      * @param string $word, array $exploded_line, array $arpabet_array

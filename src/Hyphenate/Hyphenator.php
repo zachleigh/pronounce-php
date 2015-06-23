@@ -1,8 +1,8 @@
 <?php
 
-namespace PronouncePHP\Syllabize;
+namespace PronouncePHP\Hyphenate;
 
-class Syllabizer
+class Hyphenator
 {
     private $patterns;
 
@@ -13,7 +13,7 @@ class Syllabizer
     /**
      * Construct
      *
-     * This class is an adaptation of Ned Batchelder's adaptation of Frank Liang's hyphenation algorithm
+     * This class is an adaptation of Ned Batchelder's python interpretation of Frank Liang's hyphenation algorithm
      * http://nedbatchelder.com/code/modules/hyphenate.py
      *
      * @param array $patterns, array $patterns
@@ -155,7 +155,7 @@ class Syllabizer
      * Break words into pieces, broken at hyphenation points
      *
      * @param string $word
-     * @return void
+     * @return string
     */
     public function hyphenateWord($word)
     {
@@ -237,7 +237,7 @@ class Syllabizer
     }
 
     /**
-     * Replication of python zip function
+     * Approximation of python zip function
      *
      * @param string/array $one, array $two
      * @return array

@@ -3,6 +3,7 @@
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use PronouncePHP\Transcribe\Transcriber;
+use PronouncePHP\Hyphenate\Hyphenator;
 use PronouncePHP\Build\Builder;
 use PronouncePHP\LookupCommand;
 
@@ -11,12 +12,13 @@ class LookupCommandTest extends TestCase
     public function test_single_word_lookup_returns_table() 
     {
         $transcriber = new Transcriber();
+        $hyphenator = new Hyphenator();
         $builder = new Builder();
         $expected = new ExpectedResults();
         $app = new Application();
         $GLOBALS['status'] = 0;
 
-        $app->add(new LookupCommand($transcriber, $builder));
+        $app->add(new LookupCommand($transcriber, $hyphenator, $builder));
 
         $command = $app->find('lookup');
 
@@ -35,12 +37,13 @@ class LookupCommandTest extends TestCase
     public function test_double_word_lookup_returns_table() 
     {
         $transcriber = new Transcriber();
+        $hyphenator = new Hyphenator();
         $builder = new Builder();
         $expected = new ExpectedResults();
         $app = new Application();
         $GLOBALS['status'] = 0;
 
-        $app->add(new LookupCommand($transcriber, $builder));
+        $app->add(new LookupCommand($transcriber, $hyphenator, $builder));
 
         $command = $app->find('lookup');
 
@@ -59,12 +62,13 @@ class LookupCommandTest extends TestCase
     public function test_multiple_word_lookup_returns_table() 
     {
         $transcriber = new Transcriber();
+        $hyphenator = new Hyphenator();
         $builder = new Builder();
         $expected = new ExpectedResults();
         $app = new Application();
         $GLOBALS['status'] = 0;
 
-        $app->add(new LookupCommand($transcriber, $builder));
+        $app->add(new LookupCommand($transcriber, $hyphenator, $builder));
 
         $command = $app->find('lookup');
 
@@ -83,12 +87,13 @@ class LookupCommandTest extends TestCase
     public function test_misspelled_word_lookup_returns_error() 
     {
         $transcriber = new Transcriber();
+        $hyphenator = new Hyphenator();
         $builder = new Builder();
         $expected = new ExpectedResults();
         $app = new Application();
         $GLOBALS['status'] = 0;
 
-        $app->add(new LookupCommand($transcriber, $builder));
+        $app->add(new LookupCommand($transcriber, $hyphenator, $builder));
 
         $command = $app->find('lookup');
 
@@ -107,12 +112,13 @@ class LookupCommandTest extends TestCase
     public function test_single_word_lookup_with_fields_option_returns_table() 
     {
         $transcriber = new Transcriber();
+        $hyphenator = new Hyphenator();
         $builder = new Builder();
         $expected = new ExpectedResults();
         $app = new Application();
         $GLOBALS['status'] = 0;
 
-        $app->add(new LookupCommand($transcriber, $builder));
+        $app->add(new LookupCommand($transcriber, $hyphenator, $builder));
 
         $command = $app->find('lookup');
 
@@ -132,12 +138,13 @@ class LookupCommandTest extends TestCase
     public function test_multiple_word_lookup_with_fields_option_returns_table() 
     {
         $transcriber = new Transcriber();
+        $hyphenator = new Hyphenator();
         $builder = new Builder();
         $expected = new ExpectedResults();
         $app = new Application();
         $GLOBALS['status'] = 0;
 
-        $app->add(new LookupCommand($transcriber, $builder));
+        $app->add(new LookupCommand($transcriber, $hyphenator, $builder));
 
         $command = $app->find('lookup');
 
@@ -157,12 +164,13 @@ class LookupCommandTest extends TestCase
     public function test_single_word_lookup_with_destination_string_returns_string() 
     {
         $transcriber = new Transcriber();
+        $hyphenator = new Hyphenator();
         $builder = new Builder();
         $expected = new ExpectedResults();
         $app = new Application();
         $GLOBALS['status'] = 0;
 
-        $app->add(new LookupCommand($transcriber, $builder));
+        $app->add(new LookupCommand($transcriber, $hyphenator, $builder));
 
         $command = $app->find('lookup');
 
@@ -182,12 +190,13 @@ class LookupCommandTest extends TestCase
     public function test_incorrect_fields_option_returns_error() 
     {
         $transcriber = new Transcriber();
+        $hyphenator = new Hyphenator();
         $builder = new Builder();
         $expected = new ExpectedResults();
         $app = new Application();
         $GLOBALS['status'] = 0;
 
-        $app->add(new LookupCommand($transcriber, $builder));
+        $app->add(new LookupCommand($transcriber, $hyphenator, $builder));
 
         $command = $app->find('lookup');
 
@@ -207,12 +216,13 @@ class LookupCommandTest extends TestCase
     public function test_incorrect_destination_option_returns_error() 
     {
         $transcriber = new Transcriber();
+        $hyphenator = new Hyphenator();
         $builder = new Builder();
         $expected = new ExpectedResults();
         $app = new Application();
         $GLOBALS['status'] = 0;
 
-        $app->add(new LookupCommand($transcriber, $builder));
+        $app->add(new LookupCommand($transcriber, $hyphenator, $builder));
 
         $command = $app->find('lookup');
 
