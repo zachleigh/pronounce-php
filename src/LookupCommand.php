@@ -8,12 +8,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use PronouncePHP\Transcribe\Transcriber;
+use PronouncePHP\Syllabize\Syllabizer;
 use PronouncePHP\Build\Builder;
 
 
 class LookupCommand extends Command
 {
     protected $transcriber;
+
+    protected $syllabizer;
 
     protected $builder;
 
@@ -23,9 +26,10 @@ class LookupCommand extends Command
      * @param Transcriber $transcribe
      * @return void
     */
-    public function __construct(Transcriber $transcriber, Builder $builder)
+    public function __construct(Transcriber $transcriber, Syllabizer $syllabizer, Builder $builder)
     {
         $this->transcriber = $transcriber;
+        $this->syllabizer = $syllabizer;
         $this->builder = $builder;
 
         parent::__construct();

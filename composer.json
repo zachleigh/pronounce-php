@@ -25,7 +25,8 @@
         }, 
 
         "files": [
-            "src/Transcribe/conversions.php"
+            "src/Transcribe/conversions.php",
+            "src/Syllabize/patterns.php"
         ]
     },
 

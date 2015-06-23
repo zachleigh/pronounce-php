@@ -1,0 +1,168 @@
+<?php
+
+namespace PronouncePHP\Syllabize;
+
+use Symfony\Component\Console\Output\StreamOutput;
+
+class Syllabizer
+{
+    private $patterns;
+
+    private $exceptions;
+
+    private $tree;
+
+    /**
+     * Construct
+     *
+     * This class is an adaptation of Ned Batchelder's adaptation of Frank Liang's hyphenation algorithm
+     * http://nedbatchelder.com/code/modules/hyphenate.py
+     *
+     * @param array $patterns, array $patterns
+     * @return void
+    */
+    public function __construct()
+    {
+        $this->patterns = $this->loadPatterns();
+
+        $this->exceptions = [];
+
+        $this->loadExceptions();
+
+        $this->tree = $this->buildTree();
+    }
+
+    /**
+     * Load patterns from patterns.php
+     *
+     * @return void
+    */
+    private function loadPatterns()
+    {
+        $liang_patterns = getLiangPatterns();
+
+        $kuiken_patterns = getKuikenPatterns();
+
+        $patterns = array_merge($liang_patterns, $kuiken_patterns);
+
+        return $patterns;
+    }
+
+    /**
+     * Load exceptions from patterns.php
+     *
+     * @return void
+    */
+    private function loadExceptions()
+    {
+        $exceptions = getExceptions();
+
+        foreach ($exceptions as $exception)
+        {
+            $points = $this->getExceptionPoints($exception);
+
+            $exception = str_replace('-', '', $exception);
+
+            $this->exceptions[$exception] = $points;
+
+        }
+    }
+
+    /**
+     * Build tree of patterns
+     *
+     * @return void
+    */
+    private function buildTree()
+    {
+        $tree = array();
+
+        foreach($this->patterns as $pattern) 
+        {
+            $characters = preg_replace('/[0-9]+/', '', $pattern);
+
+            $characters = array_reverse(str_split($characters));
+
+            $points = $this->getPoints($pattern);
+
+            $temp = array();
+
+            foreach($characters as $index => $character) 
+            {
+                if($index == 0) 
+                {
+                    $temp[] = $points;
+                }
+
+                $temp = array(
+                    $character => $temp
+                );
+            }
+
+            $tree = array_merge_recursive($tree, $temp);
+        }
+
+        return $tree;
+    }
+
+    /**
+     * Get points array for string
+     *
+     * @param string $pattern
+     * @return array
+    */
+    private function getPoints($pattern)
+    {
+        $points = [];
+
+        foreach (preg_split("/[.a-z]/", $pattern) as $i)
+        {
+            if (empty($i))
+            {
+                array_push($points, 0);
+
+                continue;
+            }
+
+            array_push($points, $i);
+        }
+
+        return $points;
+    }
+
+    /**
+     * Get points array for exceptions
+     *
+     * @param string $pattern
+     * @return array
+    */
+    private function getExceptionPoints($exception)
+    {
+        $points = [0];
+
+        foreach (preg_split("/[.a-z]/", $exception) as $i)
+        {
+            if (empty($i))
+            {
+                array_push($points, 0);
+
+                continue;
+            }
+
+            array_push($points, 1);
+        }
+
+        return $points;
+    }
+
+    /**
+     * Insert pattern into tree
+     *
+     * @param string $word
+     * @return void
+    */
+    private function hyphenateWord($word)
+    {
+
+    }
+}

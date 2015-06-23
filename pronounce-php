@@ -4,6 +4,7 @@
 
 use Symfony\Component\Console\Application;
 use PronouncePHP\Transcribe\Transcriber;
+use PronouncePHP\Syllabize\Syllabizer;
 use PronouncePHP\Build\Builder;
 use PronouncePHP\LookupCommand;
 
@@ -14,8 +15,9 @@ $GLOBALS['status'] = 0;
 $app = new Application('Pronounce-PHP', '0.5');
 
 $transcriber = new Transcriber();
+$syllabizer = new Syllabizer();
 $builder = new Builder();
 
-$app->add(new LookupCommand($transcriber, $builder));
+$app->add(new LookupCommand($transcriber, $syllabizer, $builder));
 
 $app->run();
