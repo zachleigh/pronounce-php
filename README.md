@@ -18,12 +18,12 @@ composer install
 pronouncephp command argument [options]
 ```
 
-### Commands
+## Commands
 [help](#help)  
 [hyphenate](#hyphenate)  
 [list](#list)  
 [lookup](#lookup)
-#### help
+### help
 
 Display the help message.
 
@@ -32,7 +32,7 @@ Display the help message.
 pronouncephp help
 ```
 
-#### hyphenate
+### hyphenate
 
 Hyphenate a word or words.  Note that this function is mostly accurate, but there may be some errors.  If you find an error, please report it so I can add the word to the exception list.
 
@@ -59,7 +59,7 @@ cur-tain
 hy-phen-ate
 ``` 
 
-#### list  
+### list  
 
 List all available commands.  
 
@@ -68,7 +68,7 @@ List all available commands.
 pronouncephp list
 ```
 
-#### lookup
+### lookup
 
 Look up a word and output the Arpabet, IPA and Spelling approximation pronunciation strings.
 The lookup command takes one argument: the word or words to be looked up.
