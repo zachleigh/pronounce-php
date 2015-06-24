@@ -41,7 +41,8 @@ class HyphenateCommand extends Command
              ->setDescription('Convert a word or comma seperated list of words to hypheanted strings')
              ->addArgument('word', InputArgument::REQUIRED, 'The word or words to hyphenate')
              ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'Select the destination for output', 'table')
-             ->addOption('file', null, InputOption::VALUE_REQUIRED, 'Set file path for output', 'output.txt');
+             ->addOption('file', 'o', InputOption::VALUE_REQUIRED, 'Set file path for output', 'output.txt')
+             ->addOption('symbol', 's', InputOption::VALUE_REQUIRED, 'Set the symbol used to divide words', '-');
     }
 
     /**
@@ -58,11 +59,15 @@ class HyphenateCommand extends Command
 
         $file_name = $input->getOption('file');
 
+        $symbol = $input->getOption('symbol');
+
         $answers = [];
 
         foreach ($words as $word)
         {
             $hyphenated_word = $this->hyphenator->hyphenateWord($word);
+
+            $hyphenated_word = $this->setHyphenationSymbol($hyphenated_word, $symbol);
 
             $answers[$word] = $this->makeHyphenateOutputArray($word, $hyphenated_word);
         }

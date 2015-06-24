@@ -1,8 +1,8 @@
 # Pronounce-PHP
 
-Converts words to pronunciation strings using the Carnegie Mellon University Pronouncing Dictionary (CMUdict) file.  Currently converts to the International Phonetic Alphabet (IPA) and to an easier to read spelling approximation.
+Converts words to pronunciation strings using the Carnegie Mellon University Pronouncing Dictionary (CMUdict) file.  Currently converts to the International Phonetic Alphabet (IPA) and to an easier to read spelling approximation.  It also hyphenates word.  Hyphenation for IPA and spelling approximation hopefully coming soon.
 
-At the moment, this program simply outputs tables to the console with no syllable breaks. Syllables and database filling capabilities are coming soon.
+Database filling capabilities are coming soon.
 
 ## Installation
 
@@ -38,10 +38,16 @@ Available desitinations: [table, string, file]
 pronounce-php hyphenate words_to_hyphenate --destination=file
 ```
 
-###### --file
+###### --file [-o]   
 If 'file' is selected for output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
 ```
 pronounce-php hyphenate words_to_hyphenate --destination=file --file=my_file.txt
+```
+
+###### --symbol [-s]   
+Set the character to be used for hyphenation.  The default value is a hyphen (-).
+```
+pronounce-php hyphenate words_to_hyphenate --symbol=/
 ```
 
 ##### Examples
@@ -72,8 +78,20 @@ A comma seperated list of words may also be given.
 +-----------+-----------------+
 ``` 
 
-Set the ouput destination with the --destination option. Only one destination may be choosen.
-Setting the destination to 'string' produces a string instead of a table.
+Change the symbol used to divide word with the 'symbol' option.
+```
+./pronounce-php hyphenate machine --symbol=.
+
+
++---------+-----------------+
+| word    | hyphenated word |
++---------+-----------------+
+| machine | ma.chine        |
++---------+-----------------+
+```
+
+Set the ouput destination with the 'destination' option. Only one destination may be choosen.
+Setting 'destination' to 'string' produces a string instead of a table.
 ```
 ./pronounce-php hyphenate flower,mountain --destination=string
 
@@ -82,7 +100,7 @@ word: flower hyphenated word: flower
 word: mountain hyphenated word: moun-tain 
 ```
 
-Setting destination to 'file' writes the output to a file.  The default file is 'output.txt'.
+Setting 'destination' to 'file' writes the output to a file.  The default file is 'output.txt'.
 
 ```
 ./pronounce-php hyphenate cupcakes,headphones --destination=file
@@ -96,7 +114,7 @@ cupcakes / cup-cakes /
 headphones / head-phones / 
 ```
 
-If the destination is set to 'file', use the 'file' option to specify a file to write to.
+If 'destination' is set to 'file', use the 'file' option to specify a file to write to.
 
 ```
 ./pronounce-php hyphenate reading,eating,shopping --destination=file --file=hyphen.txt
@@ -122,6 +140,13 @@ pronounce-php lookup words_to_lookup [options]
 ```
 
 ##### Options
+###### --destination [-d]  
+Set the output destination. Default is to output a table to the console.  If 'file' is selected, fields will be seperated by a forward slash (/) surrounded by spaces.  
+Available desitinations: [table, string, file]
+```
+pronounce-php lookup words_to_lookup --destination=string
+```
+
 ###### --fields [-f]  
 Set the output fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default.  
 Available fields: [word, arpabet, ipa, spelling]
@@ -129,17 +154,22 @@ Available fields: [word, arpabet, ipa, spelling]
 pronounce-php lookup words_to_lookup --fields=word,arpabet,ipa,spelling
 ```
 
-###### --destination [-d]  
-Set the output destination. Default is to output a table to the console.  If file is selected, fields will be seperated by a forward slash (/) surrounded by spaces.  
-Available desitinations: [table, string, file]
-```
-pronounce-php lookup words_to_lookup --destination=string
-```
-
-###### --file
-If 'file' is selected for output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
+###### --file [-o]
+If 'file' is selected for the output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
 ```
 pronounce-php lookup words_to_lookup --destination=file --file=my_file.txt
+```
+
+###### --hyphenate [-y]  
+If the 'hyphenate' flag is given, applicable fields will be hyphenated.  Currently, only the 'word' field may be hyphenated.
+```
+pronounce-php lookup words_to_lookup --hyphenate
+```
+
+###### --symbol [-s]   
+Set the character to be used for hyphenation.  The default value is a hyphen (-).
+```
+pronounce-php lookup words_to_lookup --symbol=_
 ```
 
 ##### Examples
@@ -158,9 +188,8 @@ Basic usage
 ```
 
 A comma seperated list of words may also be given. Note that words will be returned in alphabetical order.
-
 ```
-/.pronounce-php lookup elephant,zebra,giraffe
+./pronounce-php lookup elephant,zebra,giraffe
 
 
 +----------+---------------------+----------+------------+
@@ -172,8 +201,34 @@ A comma seperated list of words may also be given. Note that words will be retur
 +----------+---------------------+----------+------------+
 ```
 
-Set desired output fields with the --fields option.  Fields will be displayed in the order given.
+Using the 'hyphenate' flag hyphenates the 'word' field.
+```
+./pronounce-php lookup money,coffee,schedule --hyphenate
 
+
++-----------+------------------+----------+----------+
+| word      | arpabet          | ipa      | spelling |
++-----------+------------------+----------+----------+
+| cof-fee   | K AA1 F IY0      | kɑ'fi    | ko'fee   |
+| mon-ey    | M AH1 N IY0      | mʌ'ni    | muh'nee  |
+| sched-ule | S K EH1 JH UH0 L | skɛ'dʒʊɫ | ske'juul |
++-----------+------------------+----------+----------+
+```
+
+Use the 'symbol' option to set the character used for hyphenation.
+```
+./pronounce-php lookup monkey,furry --hyphenate --symbol=~
+
+
++---------+----------------+--------+-----------+
+| word    | arpabet        | ipa    | spelling  |
++---------+----------------+--------+-----------+
+| fur~ry  | F ER1 IY0      | fɝ'i   | fur'ee    |
+| mon~key | M AH1 NG K IY0 | mʌ'ŋki | muh'ngkee |
++---------+----------------+--------+-----------+
+```
+
+Set desired output fields with the 'fields' option.  Fields will be displayed in the order given.
 ```
 ./pronounce-php lookup blue,red,green --fields=word,ipa
 
@@ -187,9 +242,8 @@ Set desired output fields with the --fields option.  Fields will be displayed in
 +-------+-------+
 ```
 
-Set the ouput destination with the --destination option. Only one destination may be choosen.   
-Setting the destination to 'string' produces a string instead of a table.
-
+Set the ouput destination with the 'destination' option. Only one destination may be choosen.   
+Setting 'destination' to 'string' produces a string instead of a table.
 ```
 ./pronounce-php lookup desk,chair,pencil --destination=string
 
@@ -199,8 +253,7 @@ word: desk arpabet: D EH1 S K ipa: dɛ'sk spelling: de'sk
 word: pencil arpabet: P EH1 N S AH0 L ipa: pɛ'nsʌɫ spelling: pe'nsuhl 
 ```
 
-Setting destination to 'file' writes the output to a file.  The default file is 'output.txt'.
-
+Setting 'destination' to 'file' writes the output to a file.  The default file is 'output.txt'.
 ```
 ./pronounce-php lookup guitar --destination=file
 
@@ -212,8 +265,7 @@ ouput.txt
 guitar / G IH0 T AA1 R / gɪtɑ'r / gito'r /
 ```
 
-If the destination is set to 'file', use the 'file' option to specify a file to write to.
-
+If 'destination' is set to 'file', use the 'file' option to specify a file to write to.
 ```
 ./pronounce-php lookup night,day,noon --destination=file --file=words.txt
 

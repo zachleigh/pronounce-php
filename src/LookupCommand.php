@@ -47,7 +47,9 @@ class LookupCommand extends Command
              ->addArgument('word', InputArgument::REQUIRED, 'The word or words to convert')
              ->addOption('fields', 'f', InputOption::VALUE_REQUIRED, 'Select the output fields you wish to display', 'word,arpabet,ipa,spelling')
              ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'Select the destination for output', 'table')
-             ->addOption('file', null, InputOption::VALUE_REQUIRED, 'Set file path for output', 'output.txt');
+             ->addOption('file', 'o', InputOption::VALUE_REQUIRED, 'Set file path for output', 'output.txt')
+             ->addOption('hyphenate', 'y', InputOption::VALUE_NONE, 'Hyphenate word in output')
+             ->addOption('symbol', 's', InputOption::VALUE_REQUIRED, 'Set the symbol used to divide words', '-');
     }
 
     /**
@@ -69,6 +71,10 @@ class LookupCommand extends Command
         $destination = $input->getOption('destination');
 
         $file_name = $input->getOption('file');
+
+        $hyphenation = $input->getOption('hyphenate');
+
+        $symbol = $input->getOption('symbol');
 
         $method_names = $this->makeStringMethodNames($fields);
 
@@ -96,7 +102,11 @@ class LookupCommand extends Command
 
             if (in_array($word, $strings))
             {
-                $answers[$word] = $this->makeLookupOutputArray($output, $word, $exploded_line, $method_names);
+                $output_word = $this->hyphenateOutputWord($this->hyphenator, $word, $hyphenation);
+
+                $output_word = $this->setHyphenationSymbol($output_word, $symbol);
+
+                $answers[$word] = $this->makeLookupOutputArray($output, $output_word, $exploded_line, $method_names);
 
                 array_push($answered, $word);
             }

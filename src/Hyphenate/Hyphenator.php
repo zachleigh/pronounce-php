@@ -229,7 +229,7 @@ class Hyphenator
 
             if ($points % 2)
             {
-                $pieces .= '-';
+                $pieces .= ' ';
             }
         }
 

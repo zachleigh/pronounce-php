@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Output\StreamOutput;
+use PronouncePHP\Hyphenate\Hyphenator;
 
 class Command extends SymfonyCommand
 {
@@ -208,5 +209,32 @@ class Command extends SymfonyCommand
         $output->writeln("<info>Successfully wrote to $stream</info>");
 
         fclose($handle);
+    }
+
+    /**
+     * Hyphenate word for output
+     *
+     * @param Hyphenator $hyphenator, string $word, bool $hyphenation
+     * @return string
+    */
+    protected function hyphenateOutputWord(Hyphenator $hyphenator, $word, $hyphenation)
+    {
+        if ($hyphenation === false)
+        {
+            return $word;
+        }
+
+        return $hyphenator->hyphenateWord($word);
+    }
+
+    /**
+     * Set hyphenation symbol
+     *
+     * @param string $word, string $symbol
+     * @return string
+    */
+    protected function setHyphenationSymbol($word, $symbol)
+    {
+        return str_replace(' ', $symbol, $word);
     }
 }
