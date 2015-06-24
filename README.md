@@ -14,6 +14,7 @@ For other operating systems, please visit the [php installation guide](http://ph
 ###### composer
 Check the [composer documentation](https://getcomposer.org/doc/00-intro.md) for installation instructions.
 
+##### Install
 If requirements are met, [download](https://github.com/zachleigh/pronounce-php/releases) and run 
 ```
 composer install
