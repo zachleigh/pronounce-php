@@ -13,6 +13,12 @@ return [
     */
     'connections' => [
         "mysql" => [
+            'item' => 'hi',
+            'something' => 'stuff'
+        ],
+
+        "mysqlite" => [
+
 
         ]
     ],

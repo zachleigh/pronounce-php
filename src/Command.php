@@ -7,6 +7,8 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Output\StreamOutput;
 use PronouncePHP\Hyphenate\Hyphenator;
+use PronouncePHP\Build\Builder;
+use PronouncePHP\Database\Connect;
 
 class Command extends SymfonyCommand
 {
@@ -209,6 +211,23 @@ class Command extends SymfonyCommand
         $output->writeln("<info>Successfully wrote to $stream</info>");
 
         fclose($handle);
+    }
+
+    /**
+     * Output data to database
+     *
+     * @param OutputInterface $output, array $answers
+     * @return void
+    */
+    protected function outputToDatabase($output, array $answers)
+    {
+        $database_class = $this->builder->buildDatabaseClass($output);
+
+        $connect = new Connect($database_class, $output);
+
+        echo 7;
+
+        exit();
     }
 
     /**

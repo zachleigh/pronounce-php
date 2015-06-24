@@ -2,6 +2,9 @@
 
 namespace PronouncePHP\Build;
 
+use Symfony\Component\Console\Output\OutputInterface;
+use PronouncePHP\Config\Config;
+
 class Builder
 {
     /**
@@ -78,5 +81,40 @@ class Builder
         }
 
         return $string;
+    }
+
+    /**
+     * Get database connection
+     *
+     * @param OutputInterface $output
+     * @return Connection
+    */
+    public function buildDatabaseClass(OutputInterface $output)
+    {
+        $database_type = Config::get('database');
+
+        $database_class = $this->makeConnectionClass($database_type);
+
+        if (!class_exists($database_class))
+        {
+            $output->writeln("<error>Database type not found!</error>");
+            $output->writeln("<comment>Please ensure that the database type is specified and that it is supported</comment>");
+
+            $GLOBALS['status'] = 1;
+
+            exit();
+        }
+        
+        return new $database_class();
+    }
+
+    /**
+     * Make class name for connection
+     *
+     * @return string $database_type
+    */
+    private function makeConnectionClass($database_type)
+    {
+        return 'PronouncePHP\Database\Databases\\' . ucfirst($database_type) . 'Database';
     }
 }

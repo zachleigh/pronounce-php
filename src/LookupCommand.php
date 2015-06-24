@@ -10,7 +10,6 @@ use Symfony\Component\Console\Input\InputOption;
 use PronouncePHP\Transcribe\Transcriber;
 use PronouncePHP\Hyphenate\Hyphenator;
 use PronouncePHP\Build\Builder;
-use PronouncePHP\Database\Connect;
 
 class LookupCommand extends Command
 {
