@@ -39,7 +39,7 @@ pronounce-php hyphenate words_to_hyphenate --destination=file
 ```
 
 ###### --file [-o]   
-If 'file' is selected for output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
+If 'file' is selected for the output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
 ```
 pronounce-php hyphenate words_to_hyphenate --destination=file --file=my_file.txt
 ```
