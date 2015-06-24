@@ -27,7 +27,7 @@ composer install
 ```
 composer require zachleigh/pronounce-php
 ```
-Once everything is installed, the program will in vendor/zachleigh/pronounce-php
+Once everything is installed, the program will be in vendor/zachleigh/pronounce-php
 
 ## Usage
 
