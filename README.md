@@ -15,10 +15,19 @@ For other operating systems, please visit the [php installation guide](http://ph
 Check the [composer documentation](https://getcomposer.org/doc/00-intro.md) for installation instructions.
 
 ##### Install
-If requirements are met, [download](https://github.com/zachleigh/pronounce-php/releases) and run 
+If requirements are met, you can install the package in two ways.
+
+###### Download
+Download [here](https://github.com/zachleigh/pronounce-php/releases) and run 
 ```
 composer install
 ```
+
+###### Through composer
+```
+composer require zachleigh/pronounce-php
+```
+Once everything is installed, the program will in vendor/zachleigh/pronounce-php
 
 ## Usage
 
