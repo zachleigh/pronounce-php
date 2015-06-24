@@ -28,7 +28,7 @@ class LookupCommandTest extends TestCase
         $this->transcriber = new Transcriber();
         $this->hyphenator = new Hyphenator();
         $this->builder = new Builder();
-        $this->expected = new ExpectedResults();
+        $this->expected = new LookupExpectedResults();
         $this->app = new Application();
         $this->app->add(new LookupCommand($this->transcriber, $this->hyphenator, $this->builder));
         $this->command = $this->app->find('lookup');
@@ -162,6 +162,21 @@ class LookupCommandTest extends TestCase
         ));
 
         $result = $this->expected->results_incorrect_destination_option_returns_error();
+
+        $this->assertEquals($result, $this->command_tester->getDisplay());
+    }
+
+    public function test_word_hyphenation_returns_table()
+    {
+        $GLOBALS['status'] = 0;
+
+        $this->command_tester->execute(array(
+            'command' => $this->command->getName(),
+            'word' => 'money',
+            '--hyphenate' => null
+        ));
+
+        $result = $this->expected->results_word_hyphenation_returns_table();
 
         $this->assertEquals($result, $this->command_tester->getDisplay());
     }

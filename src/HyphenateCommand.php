@@ -53,6 +53,8 @@ class HyphenateCommand extends Command
     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('<info>Hyphenating...</info>');
+
         $words = $this->explodeByComma($input->getArgument('word'));
 
         $destination = $input->getOption('destination');

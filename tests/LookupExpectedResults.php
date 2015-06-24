@@ -1,6 +1,6 @@
 <?php
 
-class ExpectedResults
+class LookupExpectedResults
 {
     public function results_single_word_lookup_returns_table()
     {
@@ -75,10 +75,9 @@ class ExpectedResults
 
     public function results_incorrect_fields_option_returns_error()
     {
-        return "Searching...
-Incorret field input
-Field options: word,arpabet,ipa,spelling
-";
+        return "Searching..." . "\n" .
+               "Incorret field input" . "\n" .
+               "Field options: word,arpabet,ipa,spelling" . "\n";
     }
 
     public function results_incorrect_destination_option_returns_error()
@@ -87,5 +86,15 @@ Field options: word,arpabet,ipa,spelling
                "Incorret destination input" . "\n" .
                "Destination options: table,string,file,database" . "\n" .
                "";
+    }
+
+    public function results_word_hyphenation_returns_table()
+    {
+      return "Searching..." . "\n" .
+             "+--------+-------------+-------+----------+" . "\n" .
+             "| word   | arpabet     | ipa   | spelling |" . "\n" .
+             "+--------+-------------+-------+----------+" . "\n" .
+             "| mon-ey | M AH1 N IY0 | mʌ'ni | muh'nee  |" . "\n" .
+             "+--------+-------------+-------+----------+" . "\n";
     }
 }
