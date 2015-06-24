@@ -6,7 +6,15 @@
 
 ## Installation
 
-Download and run 
+##### Requirements 
+###### PHP 5.3.9 or higher
+Linux users can find PHP releases in their distribution repositories.
+For other operating systems, please visit the [php installation guide](http://php.net/manual/en/install.php) for instructions.
+
+###### composer
+Check the [composer documentation](https://getcomposer.org/doc/00-intro.md) for installation instructions.
+
+If requirements are met, [download](https://github.com/zachleigh/pronounce-php/releases) and run 
 ```
 composer install
 ```
