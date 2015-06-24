@@ -1,8 +1,8 @@
 # Pronounce-PHP
 
-Converts words to pronunciation strings using the Carnegie Mellon University Pronouncing Dictionary (CMUdict) file.  Currently converts to the International Phonetic Alphabet (IPA) and to an easier to read spelling approximation.  It also hyphenates word.  Hyphenation for IPA and spelling approximation hopefully coming soon.
-
-Database filling capabilities are coming soon.
+-Converts words to pronunciation strings using the Carnegie Mellon University Pronouncing Dictionary (CMUdict) file.  Currently converts to the International Phonetic Alphabet (IPA) and to an easier to read spelling approximation.  
+-Hyphenates English words.  Hyphenation for IPA and spelling approximation hopefully coming soon.
+-Outputs either to the console or to a file. Database integration coming in next release.
 
 ## Installation
 
