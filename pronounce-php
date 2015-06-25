@@ -15,6 +15,9 @@ $GLOBALS['status'] = 0;
 
 $app = new Application('Pronounce-PHP', '0.6');
 
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+
 $transcriber = new Transcriber();
 $hyphenator = new Hyphenator();
 $builder = new Builder();

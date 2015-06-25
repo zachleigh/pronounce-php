@@ -8,6 +8,27 @@ use PronouncePHP\Config\Config;
 class Builder
 {
     /**
+     * String method name factory
+     *
+     * @param array $strings
+     * @return array
+    */
+    public function buildStringMethod(array $strings)
+    {
+        $names = [];
+
+        foreach ($strings as $string) {
+            $string = strtolower($string);
+
+            $name = 'make' . ucfirst($string) . 'String';
+
+            $names[$string] = $name;
+        }
+
+        return $names;
+    }
+
+    /**
      * Build display table
      *
      * @param Table $table, array $answers
@@ -66,7 +87,7 @@ class Builder
     }
 
     /**
-     * Build file ouput line
+     * Build file output line
      *
      * @param array $answer
      * @return string
@@ -84,7 +105,7 @@ class Builder
     }
 
     /**
-     * Get database connection
+     * Database class name factory
      *
      * @param OutputInterface $output
      * @return Connection
@@ -93,7 +114,7 @@ class Builder
     {
         $database_type = Config::get('database');
 
-        $database_class = $this->makeConnectionClass($database_type);
+        $database_class = 'PronouncePHP\Database\Databases\\' . ucfirst($database_type) . 'Database';
 
         if (!class_exists($database_class))
         {
@@ -106,15 +127,5 @@ class Builder
         }
         
         return new $database_class();
-    }
-
-    /**
-     * Make class name for connection
-     *
-     * @return string $database_type
-    */
-    private function makeConnectionClass($database_type)
-    {
-        return 'PronouncePHP\Database\Databases\\' . ucfirst($database_type) . 'Database';
     }
 }

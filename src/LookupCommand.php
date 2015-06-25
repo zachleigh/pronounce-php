@@ -75,7 +75,7 @@ class LookupCommand extends Command
 
         $symbol = $input->getOption('symbol');
 
-        $method_names = $this->makeStringMethodNames($fields);
+        $method_names = $this->builder->buildStringMethod($fields);
 
         if (!$handle) 
         {

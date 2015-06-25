@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\StreamOutput;
 use PronouncePHP\Hyphenate\Hyphenator;
 use PronouncePHP\Build\Builder;
 use PronouncePHP\Database\Connect;
+use PronouncePHP\Config\Config;
 
 class Command extends SymfonyCommand
 {
@@ -39,27 +40,6 @@ class Command extends SymfonyCommand
         }
 
         return false;
-    }
-
-    /**
-     * Make method names from array of strings
-     *
-     * @param array $strings
-     * @return array
-    */
-    protected function makeStringMethodNames(array $strings)
-    {
-        $names = [];
-
-        foreach ($strings as $string) {
-            $string = strtolower($string);
-
-            $name = 'make' . ucfirst($string) . 'String';
-
-            $names[$string] = $name;
-        }
-
-        return $names;
     }
 
     /**
@@ -225,9 +205,13 @@ class Command extends SymfonyCommand
 
         $connect = new Connect($database_class, $output);
 
-        echo 7;
+        $handle = $connect->database->getHandle($output);
 
-        exit();
+        $connect->database->insertData($handle, $answers, $output);
+
+        $output->writeln("<info>Successfully wrote to database</info>");
+
+        $handle = null;
     }
 
     /**
