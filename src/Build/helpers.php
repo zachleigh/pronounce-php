@@ -46,3 +46,24 @@ function spacesToUnderscores($strings)
 
     return $array;
 }
+
+/**
+ * Make an underscored word camel-case
+ *
+ * @param string $string
+ * @return string
+*/
+function underscoreToCamelCase($string)
+{
+    $string = strtolower($string);
+
+    $index = strpos($string, '_');
+
+    $letter = strtoupper($string[$index + 1]);
+
+    $string[$index + 1] = $letter;
+
+    $string = str_replace('_', '', $string);
+
+    return $string;
+}

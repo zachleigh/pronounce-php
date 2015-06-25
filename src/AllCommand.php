@@ -11,7 +11,7 @@ use PronouncePHP\Transcribe\Transcriber;
 use PronouncePHP\Hyphenate\Hyphenator;
 use PronouncePHP\Build\Builder;
 
-class LookupCommand extends Command
+class AllCommand extends Command
 {
     protected $transcriber;
 
@@ -41,13 +41,11 @@ class LookupCommand extends Command
     */
     public function configure()
     {
-        $this->setName('lookup')
-             ->setDescription('Convert a word or comma seperated list of words to different pronounciation strings')
-             ->addArgument('word', InputArgument::REQUIRED, 'The word or words to convert')
-             ->addOption('fields', 'f', InputOption::VALUE_REQUIRED, 'Select the output fields you wish to display', 'word,arpabet,ipa,spelling')
-             ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'Select the destination for output', 'table')
+        $this->setName('all')
+             ->setDescription('Output pronunciation and hyphenation for all words in CMUdict')
+             ->addOption('fields', 'f', InputOption::VALUE_REQUIRED, 'Select the output fields you wish to display', 'word,hyphenated_word,arpabet,ipa,spelling')
+             ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'Select the destination for output', 'file')
              ->addOption('file', 'o', InputOption::VALUE_REQUIRED, 'Set file path for output', 'output.txt')
-             ->addOption('hyphenate', 'y', InputOption::VALUE_NONE, 'Hyphenate word in output')
              ->addOption('symbol', 's', InputOption::VALUE_REQUIRED, 'Set the symbol used to divide words', '-');
     }
 
@@ -59,19 +57,16 @@ class LookupCommand extends Command
     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Searching...</info>');
+        $output->writeln('<info>Working...</info>');
+        $output->writeln('<info>This may take up to a few minutes</info>');
 
         $handle = $this->transcriber->loadCmuFile();
-
-        $strings = explodeByComma($input->getArgument('word'));
 
         $fields = explodeByComma($input->getOption('fields'));
 
         $destination = $input->getOption('destination');
 
         $file_name = $input->getOption('file');
-
-        $hyphenation = $input->getOption('hyphenate');
 
         $symbol = $input->getOption('symbol');
 
@@ -84,9 +79,34 @@ class LookupCommand extends Command
             die('<error>File did not open properly</error>');
         }
 
-        $answers = [];
+        $destination_method = $this->builder->buildAllDestinationMethod($destination);
 
-        $answered = [];
+        if (!method_exists($this, $destination_method))
+        {
+            $output->writeln("<error>Incorret destination input</error>");
+            $output->writeln("<info>Destination options: </info><comment>table,string,file,database</comment>");
+
+            $GLOBALS['status'] = 1;
+
+            return null;
+        }
+
+        $this->$destination_method($output, $handle, $method_names, $file_name, $symbol);
+    }
+
+    /**
+     * Write all to file
+     *
+     * @param OutputInterface $output, array $answers, string $file_name
+     * @return 
+    */
+    protected function writeToFile(OutputInterface $output, $handle, $method_names, $file_name, $symbol)
+    {
+        $file_name = $this->makeFileName($file_name);
+
+        $output_handle = $this->getFileHandle($output, $file_name);
+
+        $file = $this->openFile($output, $output_handle);
 
         while (($line = fgets($handle)) !== false) 
         {
@@ -99,52 +119,27 @@ class LookupCommand extends Command
 
             $word = trim($exploded_line[0]);
 
-            if (in_array($word, $strings))
-            {
-                $output_word = $this->hyphenateOutputWord($this->hyphenator, $word, $hyphenation);
+            $answer = $this->makeAllOutputArray($output, $word, $exploded_line, $method_names, $symbol);
 
-                $output_word = $this->setHyphenationSymbol($output_word, $symbol);
-
-                $answers[$word] = $this->makeLookupOutputArray($output, $output_word, $exploded_line, $method_names);
-
-                array_push($answered, $word);
-            }
+            $this->writeFileLine($file, $answer);
         }
 
-        if ($GLOBALS['status'] !== 0) {
-            return null;
-        }
+        $output->writeln("<info>Successfully wrote to $file_name</info>");
 
-        $unanswered = array_diff($strings, $answered);
-
-        $destination_method = $this->builder->buildDestinationMethod($destination);
-
-        if (!method_exists($this, $destination_method))
-        {
-            $output->writeln("<error>Incorret destination input</error>");
-            $output->writeln("<info>Destination options: </info><comment>table,string,file,database</comment>");
-
-            $GLOBALS['status'] = 1;
-
-            return null;
-        }
-
-        $this->$destination_method($output, $answers, $file_name);
-
-        $this->displayErrorForUnanswered($output, $unanswered);
-
-        fclose($handle);
+        $this->closeFile($handle);
     }
 
     /**
-     * Make lookup output array for given fields
+     * Make all command output array for given fields
      *
      * @param OutputInterface $output, string $word, array $exploded_line, array $method_names
      * @return array
     */
-    protected function makeLookupOutputArray(OutputInterface $output, $word, $exploded_line, array $method_names)
+    protected function makeAllOutputArray(OutputInterface $output, $word, $exploded_line, array $method_names, $symbol)
     {
         $answer = [];
+
+        $answer['word'] = strtolower($word);
 
         array_shift($exploded_line);
 
@@ -159,10 +154,10 @@ class LookupCommand extends Command
 
                 $GLOBALS['status'] = 1;
 
-                break;
+                exit();
             }
 
-            $answer[$field] = $this->$method($word, $exploded_line, $arpabet_array);
+            $answer[$field] = $this->$method($word, $exploded_line, $arpabet_array, $symbol);
         }
 
         return $answer;

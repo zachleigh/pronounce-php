@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use PronouncePHP\Hyphenate\Hyphenator;
 use PronouncePHP\Build\Builder;
 use PronouncePHP\Database\Connect;
@@ -55,6 +56,26 @@ class Command extends SymfonyCommand
     protected function makeSpellingString($word, array $exploded_line, array $arpabet_array)
     {
         return $this->transcriber->buildSpellingString($arpabet_array);
+    }
+
+    /**
+     * Build hyphenated word string
+     *
+     * @param string $word, array $exploded_line, array $arpabet_array
+     * @return string
+    */
+    protected function makeHyphenatedWordString($word, array $exploded_line, array $arpabet_array, $symbol)
+    {
+        if (ctype_alpha($word))
+        {
+            $hyphenated_word = $this->hyphenateOutputWord($this->hyphenator, $word, true);
+
+            $hyphenated_word = $this->setHyphenationSymbol($hyphenated_word, $symbol);
+
+            return $hyphenated_word;
+        }
+
+        return strtolower($word);
     }
 
     /**
@@ -109,23 +130,69 @@ class Command extends SymfonyCommand
     */
     protected function outputToFile($output, array $answers, $file_name)
     {
-        $filesystem = new Filesystem();
+        $file_name = $this->makeFileName($file_name);
 
-        $stream = $file_name;
+        $handle = $this->getFileHandle($output, $file_name);
+
+        $file = $this->openFile($output, $handle);
+
+        foreach ($answers as $answer)
+        {
+            $this->writeFileLine($file, $answer);
+        }
+
+        $output->writeln("<info>Successfully wrote to $file_name</info>");
+
+        $this->closeFile($handle);
+    }
+
+    /**
+     * Make unique filename
+     *
+     * @param string $file_name
+     * @return string
+    */
+    protected function makeFileName($file_name)
+    {
+        $filesystem = new Filesystem();
 
         $count = '';
 
-        while ($filesystem->exists($stream))
+        while ($filesystem->exists($file_name))
         {
             $count += 1;
 
-            $stream = 'output' . $count . '.txt';
+            $file_name = 'output' . $count . '.txt';
         }
 
-        $filesystem->touch($stream);
+        return $file_name;
+    }
 
-        $handle = fopen($stream, 'w') or die('<error>Failed to open destination file</error>');
+    /**
+     * Get file handle
+     *
+     * @param OutputInterface $output, Filesystem $filesystem, string $file_name
+     * @return file handle
+    */
+    protected function getFileHandle(OutputInterface $output, $file_name)
+    {
+        $filesystem = new Filesystem();
 
+        $filesystem->touch($file_name);
+
+        $handle = fopen($file_name, 'w') or die('<error>Failed to open destination file</error>');
+
+        return $handle;
+    }
+
+    /**
+     * Open file for output
+     *
+     * @param OutputInterface $output, string $word, array $exploded_line, array $method_names
+     * @return array
+    */
+    protected function openFile(OutputInterface $output, $handle)
+    {
         $file = new StreamOutput($handle);
 
         if (!$file)
@@ -139,15 +206,30 @@ class Command extends SymfonyCommand
             return null;
         }
 
-        foreach ($answers as $answer)
-        {
-            $line = $this->builder->buildFileOutput($answer);
+        return $file;
+    }
 
-            $file->writeln($line);
-        }
+    /**
+     * Write line to file
+     *
+     * @param output stream $file, array $answer
+     * @return void
+    */
+    protected function writeFileLine($file, $answer)
+    {
+        $line = $this->builder->buildFileLine($answer);
 
-        $output->writeln("<info>Successfully wrote to $stream</info>");
+        $file->writeln($line);
+    }
 
+    /**
+     * Close file for output
+     *
+     * @param file handle $handle
+     * @return null
+    */
+    protected function closeFile($handle)
+    {
         fclose($handle);
     }
 

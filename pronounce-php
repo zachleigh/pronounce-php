@@ -6,14 +6,16 @@ use Symfony\Component\Console\Application;
 use PronouncePHP\Transcribe\Transcriber;
 use PronouncePHP\Hyphenate\Hyphenator;
 use PronouncePHP\Build\Builder;
-use PronouncePHP\LookupCommand;
+use PronouncePHP\AllCommand;
 use PronouncePHP\HyphenateCommand;
+use PronouncePHP\LookupCommand;
+
 
 require 'vendor/autoload.php';
 
 $GLOBALS['status'] = 0;
 
-$app = new Application('Pronounce-PHP', '0.6');
+$app = new Application('Pronounce-PHP', '0.7');
 
 $dotenv = new Dotenv\Dotenv(__DIR__);
 $dotenv->load();
@@ -22,7 +24,8 @@ $transcriber = new Transcriber();
 $hyphenator = new Hyphenator();
 $builder = new Builder();
 
-$app->add(new LookupCommand($transcriber, $hyphenator, $builder));
+$app->add(new AllCommand($transcriber, $hyphenator, $builder));
 $app->add(new HyphenateCommand($hyphenator, $builder));
+$app->add(new LookupCommand($transcriber, $hyphenator, $builder));
 
 $app->run();

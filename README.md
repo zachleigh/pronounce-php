@@ -8,6 +8,7 @@
 ###### [Installation](#installation)   
 ###### [Usage](#usage)   
 * [Commands](#commands)   
+  * [all](#all)   
   * [hyphenate](#hyphenate)   
   * [lookup](#lookup)   
 * [Database Usage](#database-usage)   
@@ -45,21 +46,51 @@ pronounce-php command argument [options]
 ```
 
 ## Commands
+[all](#all)
 [hyphenate](#hyphenate)   
 [lookup](#lookup)
+### all
+
+Output the entire CMUdict file with arpabet, hyphenation, IPA, and spelling approximation strings to either a file or a database.   
+
+##### Syntax overview
+```
+pronounce-php all [options]
+```
+
+##### Options 
+###### --destination [-d]
+Set the output destination. Default is to output a table to the console.  If file is selected, fields will be seperated by a forward slash (/) surrounded by spaces.  
+Available desitinations: [table, database]
+```
+pronounce-php all --destination=file
+```
+
+###### --file [-o]
+If 'file' is selected for the output destination, the 'file' option can be used to set a file name to write to.  The default file name is 'output.txt' and is written to the pronounce-php directory.
+```
+pronounce-php all --destination=file --file=my_file.txt
+```
+
+###### --symbol [-s]   
+Set the character to be used for hyphenation.  The default value is a hyphen (-).
+```
+pronounce-php all --symbol=/
+```
+
 ### hyphenate
 
 Hyphenate a word or words.  Note that this function is mostly accurate, but there may be some errors.  If you find an error, please report it so I can add the word to the exception list.
 
 ##### Syntax overview
 ```
-pronounce-php hyphenate words_to_hyphenate
+pronounce-php hyphenate words_to_hyphenate [options]
 ```
 
 ##### Options
 ###### --destination [-d]  
 Set the output destination. Default is to output a table to the console.  If file is selected, fields will be seperated by a forward slash (/) surrounded by spaces.  
-Available desitinations: [table, string, file]
+Available desitinations: [table, string, file, database]
 ```
 pronounce-php hyphenate words_to_hyphenate --destination=file
 ```
@@ -176,7 +207,7 @@ pronounce-php lookup words_to_lookup [options]
 ##### Options
 ###### --destination [-d]  
 Set the output destination. Default is to output a table to the console.  If 'file' is selected, fields will be seperated by a forward slash (/) surrounded by spaces.  
-Available desitinations: [table, string, file]
+Available desitinations: [table, string, file, database]
 ```
 pronounce-php lookup words_to_lookup --destination=string
 ```

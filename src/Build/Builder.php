@@ -13,12 +13,18 @@ class Builder
      * @param array $strings
      * @return array
     */
-    public function buildStringMethod(array $strings)
+    public function buildFieldMethods(array $strings)
     {
         $names = [];
 
-        foreach ($strings as $string) {
+        foreach ($strings as $string) 
+        {
             $string = strtolower($string);
+
+            if (strpos($string, '_'))
+            {
+                $string = underscoreToCamelCase($string);
+            }
 
             $name = 'make' . ucfirst($string) . 'String';
 
@@ -39,6 +45,45 @@ class Builder
         $destination = strtolower($destination);
 
         return 'outputTo' . ucfirst($destination);
+    }
+
+    /**
+     * Open output handle method factory
+     *
+     * @param string $destination
+     * @return string
+    */
+    public function buildOpenHandleMethod($destination)
+    {
+        $destination = strtolower($destination);
+
+        return 'open' . ucfirst($destination);
+    }
+
+    /**
+     * Close output handle method factory
+     *
+     * @param string $destination
+     * @return string
+    */
+    public function buildCloseHandleMethod($destination)
+    {
+        $destination = strtolower($destination);
+
+        return 'close' . ucfirst($destination);
+    }
+
+    /**
+     * Destination method name factory for All command
+     *
+     * @param string $destination
+     * @return string
+    */
+    public function buildAllDestinationMethod($destination)
+    {
+        $destination = strtolower($destination);
+
+        return 'writeTo' . ucfirst($destination);
     }
 
     /**
@@ -105,7 +150,7 @@ class Builder
      * @param array $answer
      * @return string
     */
-    public function buildFileOutput(array $answer)
+    public function buildFileLine(array $answer)
     {
         $string = '';
 
