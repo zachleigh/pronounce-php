@@ -5,8 +5,8 @@
 -Outputs either to the console or to a file. Database integration coming in next release.
 
 #### Contents
-###### [Installation](installation)   
-###### [Usage](usage)   
+###### [Installation](#installation)   
+###### [Usage](#usage)   
 * [Commands](#commands)   
   * [hyphenate](#hyphenate)   
   * [lookup](#lookup)   
@@ -29,7 +29,7 @@ If requirements are met, you can install the package in two ways.
 Download [here](https://github.com/zachleigh/pronounce-php/releases) and run 
 ```
 composer install
-```
+```   
 
 ###### Through composer
 ```
@@ -326,8 +326,8 @@ Successfully wrote to database
 ##### Requirements
 
 If you wish to fill a database with the information gained from using this program, you must be sure that your database meets the following requirements:
-1. Must have an auto-incrementing 'id' column
-2. Column names must exactly match the expected field names.
+* Must have an auto-incrementing 'id' column
+* Column names must exactly match the expected field names.
 
 Hyphenate field names: 'word', 'hyphenated_word'
 Lookup field names: 'word', 'arpabet', 'ipa', 'spelling'
