@@ -2,7 +2,7 @@
 
 -Converts words to pronunciation strings using the Carnegie Mellon University Pronouncing Dictionary (CMUdict) file.  Currently converts to the International Phonetic Alphabet (IPA) and to an easier to read spelling approximation.  
 -Hyphenates English words.  Hyphenation for IPA and spelling approximation hopefully coming soon.
--Outputs either to the console or to a file. Database integration coming in next release.
+-Outputs to the console, to a file, or to a database
 
 #### Contents
 ###### [Installation](#installation)   
@@ -328,9 +328,8 @@ Successfully wrote to database
 If you wish to fill a database with the information gained from using this program, you must be sure that your database meets the following requirements:
 * Must have an auto-incrementing 'id' column
 * Column names must exactly match the expected field names.
-
-Hyphenate field names: 'word', 'hyphenated_word'
-Lookup field names: 'word', 'arpabet', 'ipa', 'spelling'
+  * Hyphenate field names: 'word', 'hyphenated_word'   
+  * Lookup field names: 'word', 'arpabet', 'ipa', 'spelling'   
 
 Use the 'field' option to set which fields you wish to insert into your database.
 
