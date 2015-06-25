@@ -4,6 +4,14 @@
 -Hyphenates English words.  Hyphenation for IPA and spelling approximation hopefully coming soon.
 -Outputs either to the console or to a file. Database integration coming in next release.
 
+#### Contents
+###### [Installation](installation)   
+###### [Usage](usage)   
+* [Commands](#commands)   
+  * [hyphenate](#hyphenate)   
+  * [lookup](#lookup)   
+* [Database Usage](#database-usage)   
+
 ## Installation
 
 ##### Requirements 
@@ -30,8 +38,6 @@ composer require zachleigh/pronounce-php
 Once everything is installed, the program will be in vendor/zachleigh/pronounce-php
 
 ## Usage
-[Commands](#commands)
-[Database Usage](#database usage)
 
 #####General syntax overview
 ```
