@@ -63,9 +63,9 @@ class LookupCommand extends Command
 
         $handle = $this->transcriber->loadCmuFile();
 
-        $strings = $this->explodeByComma($input->getArgument('word'));
+        $strings = explodeByComma($input->getArgument('word'));
 
-        $fields = $this->explodeByComma($input->getOption('fields'));
+        $fields = explodeByComma($input->getOption('fields'));
 
         $destination = $input->getOption('destination');
 
@@ -90,7 +90,7 @@ class LookupCommand extends Command
 
         while (($line = fgets($handle)) !== false) 
         {
-            if ($this->isComment($line)) 
+            if (isComment($line)) 
             {
                 continue;
             }
@@ -117,7 +117,7 @@ class LookupCommand extends Command
 
         $unanswered = array_diff($strings, $answered);
 
-        $destination_method = $this->makeDestinationMethodName($destination);
+        $destination_method = $this->builder->buildDestinationMethod($destination);
 
         if (!method_exists($this, $destination_method))
         {

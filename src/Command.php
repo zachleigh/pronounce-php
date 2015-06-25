@@ -14,35 +14,6 @@ use PronouncePHP\Config\Config;
 class Command extends SymfonyCommand
 {
     /**
-     * Explode by comma
-     *
-     * @param string $string
-     * @return array
-    */
-    protected function explodeByComma($string)
-    {
-        $string = strtoupper($string);
-
-        return explode(',', $string);
-    }
-
-    /**
-     * Find comments in CMU file
-     *
-     * @param string $line
-     * @return bool
-    */
-    protected function isComment($line)
-    {
-        if (substr($line, 0, 3) === ';;;')
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Build word string
      *
      * @param string $word, array $exploded_line, array $arpabet_array
@@ -100,19 +71,6 @@ class Command extends SymfonyCommand
             
             $output->writeln("<error>Word $word could not be found</error>");
         }
-    }
-
-    /**
-     * Make method name for destination
-     *
-     * @param string $destination
-     * @return string
-    */
-    protected function makeDestinationMethodName($destination)
-    {
-        $destination = strtolower($destination);
-
-        return 'outputTo' . ucfirst($destination);
     }
 
     /**

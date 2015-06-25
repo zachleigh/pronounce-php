@@ -27,7 +27,8 @@
 
         "files": [
             "src/Transcribe/conversions.php",
-            "src/Hyphenate/patterns.php"
+            "src/Hyphenate/patterns.php",
+            "src/Build/helpers.php"
         ]
     },
 

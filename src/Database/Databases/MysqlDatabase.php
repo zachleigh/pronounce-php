@@ -62,7 +62,7 @@ class MysqlDatabase implements DatabaseInterface
     /**
      * Insert data into mysql database
      *
-     * @param database handle $handle, array $answers
+     * @param database handle $handle, array $answers, OutputInterface $output
      * @return null
     */
     public function insertData($handle, $answers, OutputInterface $output)
@@ -78,7 +78,7 @@ class MysqlDatabase implements DatabaseInterface
         $placeholders = ':' . implode(', :', $keys);
 
         $mysql = "INSERT INTO $table " . "(" . $names . ") value (" . $placeholders . ")";
-        
+
         try
         {
             $statement = $handle->prepare($mysql);

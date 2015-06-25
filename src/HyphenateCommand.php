@@ -55,7 +55,7 @@ class HyphenateCommand extends Command
     {
         $output->writeln('<info>Hyphenating...</info>');
 
-        $words = $this->explodeByComma($input->getArgument('word'));
+        $words = explodeByComma($input->getArgument('word'));
 
         $destination = $input->getOption('destination');
 
@@ -74,7 +74,7 @@ class HyphenateCommand extends Command
             $answers[$word] = $this->makeHyphenateOutputArray($word, $hyphenated_word);
         }
 
-        $destination_method = $this->makeDestinationMethodName($destination);
+        $destination_method = $this->builder->buildDestinationMethod($destination);
 
         if (!method_exists($this, $destination_method))
         {
@@ -101,7 +101,7 @@ class HyphenateCommand extends Command
 
         $answer['word'] = strtolower($word);
 
-        $answer['hyphenated word'] = $hyphenated_word;
+        $answer['hyphenated_word'] = $hyphenated_word;
 
         return $answer;
     }

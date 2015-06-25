@@ -29,6 +29,19 @@ class Builder
     }
 
     /**
+     * Destination method name factory
+     *
+     * @param string $destination
+     * @return string
+    */
+    public function buildDestinationMethod($destination)
+    {
+        $destination = strtolower($destination);
+
+        return 'outputTo' . ucfirst($destination);
+    }
+
+    /**
      * Build display table
      *
      * @param Table $table, array $answers
@@ -113,6 +126,11 @@ class Builder
     public function buildDatabaseClass(OutputInterface $output)
     {
         $database_type = Config::get('database');
+
+        if ($database_type === '4D')
+        {
+            $database_type = 'FourD';
+        }
 
         $database_class = 'PronouncePHP\Database\Databases\\' . ucfirst($database_type) . 'Database';
 

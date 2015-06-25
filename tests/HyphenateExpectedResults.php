@@ -6,7 +6,7 @@ class HyphenateExpectedResults
     {
         return "Hyphenating..." . "\n" .
                "+-------+-----------------+" . "\n" .
-               "| word  | hyphenated word |" . "\n" .
+               "| word  | hyphenated_word |" . "\n" .
                "+-------+-----------------+" . "\n" .
                "| hotel | ho-tel          |" . "\n" .
                "+-------+-----------------+" . "\n";
@@ -16,7 +16,7 @@ class HyphenateExpectedResults
     {
         return "Hyphenating..." . "\n" .
                "+-----------+-----------------+" . "\n" .
-               "| word      | hyphenated word |" . "\n" .
+               "| word      | hyphenated_word |" . "\n" .
                "+-----------+-----------------+" . "\n" .
                "| monkey    | mon-key         |" . "\n" .
                "| serious   | se-ri-ous       |" . "\n" .
@@ -27,9 +27,9 @@ class HyphenateExpectedResults
     public function results_word_hyphenate_with_destination_string_returns_string()
     {
         return "Hyphenating..." . "\n" .
-               "word: monkey hyphenated word: mon-key " . "\n" .
-               "word: serious hyphenated word: se-ri-ous " . "\n" .
-               "word: bookshelf hyphenated word: book-shelf " . "\n" .
+               "word: monkey hyphenated_word: mon-key " . "\n" .
+               "word: serious hyphenated_word: se-ri-ous " . "\n" .
+               "word: bookshelf hyphenated_word: book-shelf " . "\n" .
                "" . "\n" .
                "";
     }

@@ -30,6 +30,8 @@ composer require zachleigh/pronounce-php
 Once everything is installed, the program will be in vendor/zachleigh/pronounce-php
 
 ## Usage
+[Commands](#commands)
+[Database Usage](#database usage)
 
 #####General syntax overview
 ```
@@ -76,7 +78,7 @@ Basic usage
 
 
 +-------+-----------------+
-| word  | hyphenated word |
+| word  | hyphenated_word |
 +-------+-----------------+
 | hello | hel-lo          |
 +-------+-----------------+
@@ -88,7 +90,7 @@ A comma seperated list of words may also be given.
 
 
 +-----------+-----------------+
-| word      | hyphenated word |
+| word      | hyphenated_word |
 +-----------+-----------------+
 | basket    | bas-ket         |
 | curtain   | cur-tain        |
@@ -102,7 +104,7 @@ Change the symbol used to divide word with the 'symbol' option.
 
 
 +---------+-----------------+
-| word    | hyphenated word |
+| word    | hyphenated_word |
 +---------+-----------------+
 | machine | ma.chine        |
 +---------+-----------------+
@@ -115,7 +117,7 @@ Setting 'destination' to 'string' produces a string instead of a table.
 
 
 word: flower hyphenated word: flower 
-word: mountain hyphenated word: moun-tain 
+word: mountain hyphenated_word: moun-tain 
 ```
 
 Setting 'destination' to 'file' writes the output to a file.  The default file is 'output.txt'.
@@ -145,6 +147,14 @@ hyphen.txt
 reading / read-ing / 
 eating / eat-ing / 
 shopping / shop-ping / 
+```
+
+If 'destination' is set to 'database', database credentials will be read from .env and configuration will be read from config.php. 
+```
+./pronouncephp hyphenate goodbye --destination=database
+
+
+Successfully wrote to database
 ```
 
 ### lookup
@@ -296,3 +306,48 @@ day / D EY1 / deɪ' / dey' /
 night / N AY1 T / naɪ't / nahy't / 
 noon / N UW1 N / nu'n / noo'n /
 ```
+
+If 'destination' is set to 'database', database credentials will be read from .env and configuration will be read from config.php. 
+```
+./pronouncephp lookup goodbye --destination=database
+
+
+Successfully wrote to database
+```
+
+## Database Usage
+
+##### Requirements
+
+If you wish to fill a database with the information gained from using this program, you must be sure that your database meets the following requirements:
+1. Must have an auto-incrementing 'id' column
+2. Column names must exactly match the expected field names.
+
+Hyphenate field names: 'word', 'hyphenated_word'
+Lookup field names: 'word', 'arpabet', 'ipa', 'spelling'
+
+Use the 'field' option to set which fields you wish to insert into your database.
+
+##### Setup
+
+First, copy the .env.example file (found in the pronounce-php root folder) to a new file called .env.  Open the .env file in a text editor and enter applicable database information.
+
+Next, open config.php in a text-editor.  In the 'database' field, enter in the database type you are using. Currently, only Mysql is supported (see below for information about other database types).  If you wish, you can change the change the charset in the 'connections' field, but the default 'utf8' should satisfy most people. That should be all you have to do.  The other information in the file is pulled in from the .env file you setup in the previous step.
+
+##### Other database types
+
+The database connection uses php PDO drivers that can be changed out fairly easily.  Currently, PDO supports 12 database types.  Check the [driver list](http://php.net/manual/en/pdo.drivers.php) for more information.  If you wish to make an adapter for one of these database types, adapter name rules must be followed.
+* Cuprid: **CupridDatabase**
+* FreeTDS / Microsoft SQL Server / Sybase: **DblibDatabase**
+* Firebird: **FirebirdDatabase**
+* IBM DB2: **IbmDatabase**
+* IBM Informix Dynamic Server: **InformixDatabase**
+* MySQL: **MysqlDatabase**
+* Oracle Call Interface: **OciDatabase**
+* ODBC v3 (IBM DB2, unixODBC and win32 ODBC): **OdbcDatabase**
+* PostgreSQL: **PgsqlDatabase**
+* SQLite 3 and SQLite 2: SqliteDatabase**
+* Microsoft SQL Server / SQL Azure: **SqlsrvDatabase**
+* 4d: **FourD** (A class naming rule exception exists for this, but it is untested)
+
+The adapter class should be in its own file in src/Database/Databases and must implement DatabaseInterface. If you make a new adapter, please let me know so I can include it in the main program.
