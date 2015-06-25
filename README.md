@@ -337,7 +337,7 @@ Use the 'field' option to set which fields you wish to insert into your database
 
 First, copy the .env.example file (found in the pronounce-php root folder) to a new file called .env.  Open the .env file in a text editor and enter applicable database information.
 
-Next, open config.php in a text-editor.  In the 'database' field, enter in the database type you are using. Currently, only Mysql is supported (see below for information about other database types).  If you wish, you can change the change the charset in the 'connections' field, but the default 'utf8' should satisfy most people. That should be all you have to do.  The other information in the file is pulled in from the .env file you setup in the previous step.
+Next, open config.php in a text-editor.  In the 'database' field, enter in the database type you are using. Currently, only Mysql is supported (see below for information about other database types).  If you wish, you can change the charset in the 'connections' field, but the default 'utf8' should satisfy most people. That should be all you have to do.  The other information in the file is pulled in from the .env file you setup in the previous step.
 
 ##### Other database types
 
@@ -351,8 +351,10 @@ The database connection uses php PDO drivers that can be changed out fairly easi
 * Oracle Call Interface: **OciDatabase**
 * ODBC v3 (IBM DB2, unixODBC and win32 ODBC): **OdbcDatabase**
 * PostgreSQL: **PgsqlDatabase**
-* SQLite 3 and SQLite 2: SqliteDatabase**
+* SQLite 3 and SQLite 2: **SqliteDatabase**
 * Microsoft SQL Server / SQL Azure: **SqlsrvDatabase**
 * 4d: **FourD** (A class naming rule exception exists for this, but it is untested)
 
-The adapter class should be in its own file in src/Database/Databases and must implement DatabaseInterface. If you make a new adapter, please let me know so I can include it in the main program.
+The adapter class should be in its own file in src/Database/Databases/ and must implement DatabaseInterface. If you make a new adapter, please let me know so I can include it in the main program.
+
+Besides making an adapter, you will also have to make a new array for the database in 'connections' in config.php.

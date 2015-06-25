@@ -8,7 +8,7 @@ return [
     'database' => 'mysql',
 
     /*
-    | Enter connection detains for defined database type
+    | Enter connection details for defined database type
     | 
     */
     'connections' => [
@@ -20,11 +20,6 @@ return [
             'table' => getenv('DE_TABLE'),
             'username' => getenv('DB_USERNAME'),
             'password' => getenv('DB_PASSWORD')
-        ],
-
-        "mysqlite" => [
-
-
         ]
-    ],
+    ]
 ];
