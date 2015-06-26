@@ -38,9 +38,6 @@ composer require zachleigh/pronounce-php
 ```
 If you install through composer, the program will be in vendor/zachleigh/pronounce-php
 
-**Important!!** Once the program is installed, you must copy the .env.example file to a file called .env and place it in the pronounce-php folder.
-Failure to do this will result in a crash. (Next version will hopefully fix this.)
-
 ## Usage
 
 #####General syntax overview
