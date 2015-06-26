@@ -46,9 +46,9 @@ pronounce-php command argument [options]
 ```
 
 ## Commands
-[all](#all)
-[hyphenate](#hyphenate)   
-[lookup](#lookup)
+* [all](#all)    
+* [hyphenate](#hyphenate)   
+* [lookup](#lookup)
 ### all
 
 Output the entire CMUdict file with arpabet, hyphenation, IPA, and spelling approximation strings to either a file or a database.   
@@ -357,7 +357,7 @@ Successfully wrote to database
 ##### Requirements
 
 If you wish to fill a database with the information gained from using this program, you must be sure that your database meets the following requirements:
-* Must have an auto-incrementing 'id' column
+* Tables must have an auto-incrementing 'id' column
 * Column names must exactly match the expected field names.
   * Hyphenate field names: 'word', 'hyphenated_word'   
   * Lookup field names: 'word', 'arpabet', 'ipa', 'spelling'   

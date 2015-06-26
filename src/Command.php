@@ -241,17 +241,30 @@ class Command extends SymfonyCommand
     */
     protected function outputToDatabase($output, array $answers)
     {
-        $database_class = $this->builder->buildDatabaseClass($output);
-
-        $connect = new Connect($database_class, $output);
+        $connect = $this->getDatabaseConnection($output);
 
         $handle = $connect->database->getHandle($output);
 
-        $connect->database->insertData($handle, $answers, $output);
+        $connect->database->insertDataArray($handle, $answers, $output);
 
         $output->writeln("<info>Successfully wrote to database</info>");
 
         $handle = null;
+    }
+
+    /**
+     * Get database connection
+     *
+     * @param OutputInterface $output
+     * @return PronouncePHP\Database\Connect $connect
+    */
+    protected function getDatabaseConnection(OutputInterface $output)
+    {
+        $database_class = $this->builder->buildDatabaseClass($output);
+
+        $connect = new Connect($database_class, $output);
+
+        return $connect;
     }
 
     /**

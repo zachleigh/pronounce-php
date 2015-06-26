@@ -65,28 +65,59 @@ class MysqlDatabase implements DatabaseInterface
      * @param database handle $handle, array $answers, OutputInterface $output
      * @return null
     */
-    public function insertData($handle, $answers, OutputInterface $output)
+    public function insertDataArray($handle, $answers, OutputInterface $output)
     {
-        $first_item_key = array_keys($answers)[0];
+        $fields = getKeys($answers);
 
-        $keys = array_keys($answers[$first_item_key]);
+        $statement = $this->getStatement($handle, $fields, $output);
 
+        foreach ($answers as $answer)
+        {
+            $this->executeStatement($statement, $answer, $output);
+        }
+    }
+
+    /**
+     * Get mysql prepared statement
+     *
+     * @param database handle $handle, array $answers, OutputInterface $output
+     * @return PDOStatement
+    */
+    public function getStatement($handle, $fields, OutputInterface $output)
+    {
         $table = getenv('DB_TABLE');
 
-        $names = implode(', ', $keys);
+        $names = implode(', ', $fields);
 
-        $placeholders = ':' . implode(', :', $keys);
+        $placeholders = ':' . implode(', :', $fields);
 
         $mysql = "INSERT INTO $table " . "(" . $names . ") value (" . $placeholders . ")";
 
         try
         {
             $statement = $handle->prepare($mysql);
+        }
+        catch(\PDOException $error)
+        {
+            $output->writeln("<error>Problem preparing mysql statement</error>");
 
-            foreach ($answers as $answer)
-            {
-                $statement->execute($answer);
-            }
+            exit();
+        }
+
+        return $statement;
+    }
+
+    /**
+     * Execute mysql statement
+     *
+     * @param array $answer, OutputInterface $output
+     * @return null
+    */
+    public function executeStatement($statement, $answer, OutputInterface $output)
+    {
+        try
+        {
+            $statement->execute($answer);
         }
         catch(\PDOException $e)
         {

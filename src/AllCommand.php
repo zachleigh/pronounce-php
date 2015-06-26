@@ -58,7 +58,7 @@ class AllCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Working...</info>');
-        $output->writeln('<info>This may take up to a few minutes</info>');
+        $output->writeln('<info>This may take a few minutes</info>');
 
         $handle = $this->transcriber->loadCmuFile();
 
@@ -129,6 +129,54 @@ class AllCommand extends Command
         $this->closeFile($handle);
     }
 
+
+    /**
+     * Write all to database
+     *
+     * @param OutputInterface $output, array $answers, string $file_name
+     * @return 
+    */
+    protected function writeToDatabase(OutputInterface $output, $handle, $method_names, $file_name, $symbol)
+    {
+        $connect = $this->getDatabaseConnection($output);
+
+        $output_handle = $connect->database->getHandle($output);
+
+        $statement = null;
+
+        while (($line = fgets($handle)) !== false) 
+        {
+            if (isComment($line)) 
+            {
+                continue;
+            }
+
+            $exploded_line = explode(' ', $line);
+
+            $word = trim($exploded_line[0]);
+
+            $answer = $this->makeAllOutputArray($output, $word, $exploded_line, $method_names, $symbol);
+
+            if (is_null($statement))
+            {
+                $fields = [];
+
+                foreach (array_keys($answer) as $field)
+                {
+                    array_push($fields, $field);
+                }
+
+                $statement = $connect->database->getStatement($output_handle, $fields, $output);
+            }
+
+            $connect->database->executeStatement($statement, $answer, $output);
+        }
+
+        $output->writeln("<info>Successfully wrote to database</info>");
+
+        $handle = null;
+    }
+
     /**
      * Make all command output array for given fields
      *
@@ -156,6 +204,7 @@ class AllCommand extends Command
 
                 exit();
             }
+            $field = camelCaseToUnderscore($field);
 
             $answer[$field] = $this->$method($word, $exploded_line, $arpabet_array, $symbol);
         }

@@ -67,3 +67,46 @@ function underscoreToCamelCase($string)
 
     return $string;
 }
+
+/**
+ * Make a camel-cased word underscored
+ *
+ * @param string $string
+ * @return string
+*/
+function camelCaseToUnderscore($string)
+{
+    preg_match_all('/[A-Z]/', $string, $matches, PREG_OFFSET_CAPTURE);
+
+    if (empty($matches[0]))
+    {
+        return $string;
+    }
+
+    foreach ($matches[0] as $match) 
+    {
+        $letter = $match[0];
+        $index = $match[1];
+
+        $string[$index] = strtolower($letter);
+
+        $string = substr($string, 0, $index) . '_' . substr($string, $index);
+    }
+
+    return $string;
+}
+
+/**
+ * Get array keys and turn them into array of vaules
+ *
+ * @param array $array
+ * @return string
+*/
+function getKeys($array)
+{
+    $first_item_key = array_keys($array)[0];
+
+    $keys = array_keys($array[$first_item_key]);
+
+    return $keys;
+}
