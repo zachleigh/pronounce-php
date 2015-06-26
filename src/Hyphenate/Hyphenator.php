@@ -16,7 +16,6 @@ class Hyphenator
      * This class is an adaptation of Ned Batchelder's python interpretation of Frank Liang's hyphenation algorithm
      * http://nedbatchelder.com/code/modules/hyphenate.py
      *
-     * @param array $patterns, array $patterns
      * @return void
     */
     public function __construct()
@@ -33,7 +32,7 @@ class Hyphenator
     /**
      * Load patterns from patterns.php
      *
-     * @return void
+     * @return array
     */
     private function loadPatterns()
     {
@@ -65,9 +64,9 @@ class Hyphenator
     }
 
     /**
-     * Build tree of patterns
+     * Build tree from patterns
      *
-     * @return void
+     * @return array
     */
     private function buildTree()
     {
@@ -129,7 +128,7 @@ class Hyphenator
     /**
      * Get points array for exceptions
      *
-     * @param string $pattern
+     * @param string $exception
      * @return array
     */
     private function getExceptionPoints($exception)

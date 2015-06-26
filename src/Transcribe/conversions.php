@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Get arpabet to spelling conversion array
+ *
+ * @return array
+*/
 function getArpabetToSpelling() 
 {
     return [
@@ -45,6 +50,11 @@ function getArpabetToSpelling()
     ];
 }
 
+/**
+ * Get arpabet to IPA conversion array
+ *
+ * @return array
+*/
 function getArpabetToIpa() 
 {
     return [

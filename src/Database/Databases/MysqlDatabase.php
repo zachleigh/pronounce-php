@@ -23,8 +23,8 @@ class MysqlDatabase implements DatabaseInterface
     /**
      * Get mysql database handle
      *
-     * @param OutputInterface $output
-     * @return handle
+     * @param Symfony\Component\Console\Output\OutputInterface $output
+     * @return PDO handle
     */
     public function getHandle(OutputInterface $output)
     {
@@ -55,14 +55,14 @@ class MysqlDatabase implements DatabaseInterface
             
             exit();
         }
-        
+
         return $handle;
     }
 
     /**
      * Insert data into mysql database
      *
-     * @param database handle $handle, array $answers, OutputInterface $output
+     * @param PDO handle $handle, array $answers, Symfony\Component\Console\Output\OutputInterface $output
      * @return null
     */
     public function insertDataArray($handle, $answers, OutputInterface $output)
@@ -80,7 +80,7 @@ class MysqlDatabase implements DatabaseInterface
     /**
      * Get mysql prepared statement
      *
-     * @param database handle $handle, array $answers, OutputInterface $output
+     * @param PDO handle $handle, array $answers, Symfony\Component\Console\Output\OutputInterface $output
      * @return PDOStatement
     */
     public function getStatement($handle, $fields, OutputInterface $output)
@@ -110,7 +110,7 @@ class MysqlDatabase implements DatabaseInterface
     /**
      * Execute mysql statement
      *
-     * @param array $answer, OutputInterface $output
+     * @param PDOStatement $statement, array $answer, Symfony\Component\Console\Output\OutputInterface $output
      * @return null
     */
     public function executeStatement($statement, $answer, OutputInterface $output)

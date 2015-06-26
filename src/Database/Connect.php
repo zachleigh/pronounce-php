@@ -14,6 +14,7 @@ class Connect
     /**
      * Construct
      *
+     * @param PronouncePHP\Database\Databases\DatabaseInterface $database, Symfony\Component\Console\Output\OutputInterface $output
      * @return void
     */
     public function __construct(DatabaseInterface $database, OutputInterface $output)
@@ -22,5 +23,4 @@ class Connect
 
         $this->output = $output;
     }
-
 }

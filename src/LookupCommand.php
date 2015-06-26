@@ -22,7 +22,7 @@ class LookupCommand extends Command
     /**
      * Construct
      *
-     * @param Transcriber $transcribe, Hyphenator $hyphenator, Builder $builder
+     * @param PronouncePHP\Transcribe\Transcriber $transcribe, PronouncePHP\Hyphenate\Hyphenator $hyphenator, PronouncePHP\Build\Builder $builder
      * @return void
     */
     public function __construct(Transcriber $transcriber, Hyphenator $hyphenator, Builder $builder)
@@ -54,7 +54,7 @@ class LookupCommand extends Command
     /**
      * Execute the command
      *
-     * @param InputInterface $input, OutputInterface $output
+     * @param Symfony\Component\Console\Input\InputInterface $input, Symfony\Component\Console\Output\OutputInterface $output
      * @return void
     */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -139,10 +139,10 @@ class LookupCommand extends Command
     /**
      * Make lookup output array for given fields
      *
-     * @param OutputInterface $output, string $word, array $exploded_line, array $method_names
+     * @param Symfony\Component\Console\Output\OutputInterface $output, string $word, array $exploded_line, array $method_names
      * @return array
     */
-    protected function makeLookupOutputArray(OutputInterface $output, $word, $exploded_line, array $method_names)
+    protected function makeLookupOutputArray(OutputInterface $output, $word, array $exploded_line, array $method_names)
     {
         $answer = [];
 

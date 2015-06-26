@@ -8,7 +8,7 @@ use PronouncePHP\Config\Config;
 class Builder
 {
     /**
-     * String method name factory
+     * Field method name factory
      *
      * @param array $strings
      * @return array
@@ -48,32 +48,6 @@ class Builder
     }
 
     /**
-     * Open output handle method factory
-     *
-     * @param string $destination
-     * @return string
-    */
-    public function buildOpenHandleMethod($destination)
-    {
-        $destination = strtolower($destination);
-
-        return 'open' . ucfirst($destination);
-    }
-
-    /**
-     * Close output handle method factory
-     *
-     * @param string $destination
-     * @return string
-    */
-    public function buildCloseHandleMethod($destination)
-    {
-        $destination = strtolower($destination);
-
-        return 'close' . ucfirst($destination);
-    }
-
-    /**
      * Destination method name factory for All command
      *
      * @param string $destination
@@ -89,8 +63,8 @@ class Builder
     /**
      * Build display table
      *
-     * @param Table $table, array $answers
-     * @return Table
+     * @param Symfony\Component\Console\Helper\Table $table, array $answers
+     * @return Symfony\Component\Console\Helper\Table
     */
     public function buildTable($table, array $answers)
     {
@@ -163,10 +137,10 @@ class Builder
     }
 
     /**
-     * Database class name factory
+     * Database class factory
      *
-     * @param OutputInterface $output
-     * @return Connection
+     * @param Symfony\Component\Console\Output\OutputInterface $output
+     * @return PronouncePHP\Database\Databases\(DatabaseClass)
     */
     public function buildDatabaseClass(OutputInterface $output)
     {

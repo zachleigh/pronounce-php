@@ -46,12 +46,12 @@ pronounce-php command argument [options]
 ```
 
 ## Commands
-* [all](#all)    
-* [hyphenate](#hyphenate)   
-* [lookup](#lookup)
+* [all](#all)      
+* [hyphenate](#hyphenate)      
+* [lookup](#lookup)    
 ### all
 
-Output the entire CMUdict file with arpabet, hyphenation, IPA, and spelling approximation strings to either a file or a database.   
+Output the entire CMUdict file with arpabet, hyphenation, IPA, and spelling approximation strings to either a file or a database.  Default is to write to a file called 'output.txt'.
 
 ##### Syntax overview
 ```
@@ -61,9 +61,9 @@ pronounce-php all [options]
 ##### Options 
 ###### --destination [-d]
 Set the output destination. Default is to output a table to the console.  If file is selected, fields will be seperated by a forward slash (/) surrounded by spaces.  
-Available desitinations: [table, database]
+Available desitinations: [file, database]
 ```
-pronounce-php all --destination=file
+pronounce-php all --destination=database
 ```
 
 ###### --file [-o]
@@ -73,9 +73,47 @@ pronounce-php all --destination=file --file=my_file.txt
 ```
 
 ###### --symbol [-s]   
-Set the character to be used for hyphenation.  The default value is a hyphen (-).
+Set the character to be used for hyphenation.  The default value is a hyphen (-).  Note: if writing to a file, keep in mind that items in the file will be divided by forward slashes(/) so setting the hyphenation symbol to forward slash will complicate reading of the file.
 ```
-pronounce-php all --symbol=/
+pronounce-php all --symbol=.
+```
+
+##### Examples
+
+Basic usage
+```
+./pronounce-php all
+
+
+Lines in file will look like this:
+accepting / ac-cept-ing / AE0 K S EH1 P T IH0 NG / æksɛ'ptɪŋ / akse'pting /
+```
+
+Change the symbol used to divide word with the 'symbol' option.
+```
+./pronounce-php all --symbol=.
+
+
+Lines in file will look like this:
+accepting / ac.cept.ing / AE0 K S EH1 P T IH0 NG / æksɛ'ptɪŋ / akse'pting /
+```
+
+Set the ouput destination with the 'destination' option. Only one destination may be choosen.
+If 'destination' is set to 'file' (the default value), use the 'file' option to specify a file to write to.
+
+```
+./pronounce-php all --file=all.txt
+
+
+Successfully wrote to all.txt
+```
+
+If 'destination' is set to 'database', database credentials will be read from .env and configuration will be read from config.php. 
+```
+./pronouncephp all --destination=database
+
+
+Successfully wrote to database
 ```
 
 ### hyphenate
@@ -102,7 +140,7 @@ pronounce-php hyphenate words_to_hyphenate --destination=file --file=my_file.txt
 ```
 
 ###### --symbol [-s]   
-Set the character to be used for hyphenation.  The default value is a hyphen (-).
+Set the character to be used for hyphenation.  The default value is a hyphen (-). Note: if writing to a file, keep in mind that items in the file will be divided by forward slashes(/) so setting the hyphenation symbol to forward slash will complicate reading of the file.
 ```
 pronounce-php hyphenate words_to_hyphenate --symbol=/
 ```
@@ -232,7 +270,7 @@ pronounce-php lookup words_to_lookup --hyphenate
 ```
 
 ###### --symbol [-s]   
-Set the character to be used for hyphenation.  The default value is a hyphen (-).
+Set the character to be used for hyphenation.  The default value is a hyphen (-). Note: if writing to a file, keep in mind that items in the file will be divided by forward slashes(/) so setting the hyphenation symbol to forward slash will complicate reading of the file.
 ```
 pronounce-php lookup words_to_lookup --symbol=_
 ```

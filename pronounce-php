@@ -10,7 +10,6 @@ use PronouncePHP\AllCommand;
 use PronouncePHP\HyphenateCommand;
 use PronouncePHP\LookupCommand;
 
-
 require 'vendor/autoload.php';
 
 $GLOBALS['status'] = 0;

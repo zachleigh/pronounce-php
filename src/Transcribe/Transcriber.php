@@ -7,7 +7,7 @@ class Transcriber
     /**
      * Load CMU file
      *
-     * @return file handle
+     * @return resource
     */
     public function loadCmuFile()
     {
@@ -24,7 +24,7 @@ class Transcriber
      * @param array $arpabet_array
      * @return string
      */
-    public function buildIpaString($arpabet_array) 
+    public function buildIpaString(array $arpabet_array) 
     {
         $library = getArpabetToIpa();
 
@@ -37,7 +37,7 @@ class Transcriber
      * @param array $arpabet_array
      * @return string
      */
-    public function buildSpellingString($arpabet_array) 
+    public function buildSpellingString(array $arpabet_array) 
     {
         $library = getArpabetToSpelling();
 
@@ -50,7 +50,7 @@ class Transcriber
      * @param array $arpabet_array, array $library
      * @return string
      */
-    public function buildPronunciationString($arpabet_array, $library)
+    public function buildPronunciationString(array $arpabet_array, array $library)
     {
         $string = '';
 
@@ -68,9 +68,9 @@ class Transcriber
      * Get character from given library
      *
      * @param string $arpabet_character, array $library
-     * @return string $new_character
+     * @return string
      */
-    protected function getCharacter($arpabet_character, $library)
+    protected function getCharacter($arpabet_character, array $library)
     {
         $stress = $this->getStress($arpabet_character);
 
@@ -87,7 +87,7 @@ class Transcriber
      * Check for and get stress on the character
      *
      * @param string $character
-     * @return string $stress
+     * @return string
      */
     protected function getStress($character)
     {

@@ -37,6 +37,11 @@ function getKuikenPatterns()
     ];
 }
 
+/**
+ * Hyphenation exceptions
+ *
+ * @return array
+*/
 function getExceptions()
 {
     return 

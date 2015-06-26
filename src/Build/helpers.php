@@ -30,10 +30,10 @@ function isComment($line)
 }
 
 /**
- * Replace spaces with underscores
+ * Replace spaces in array strings with underscores
  *
  * @param array $strings
- * @return string
+ * @return array
 */
 function spacesToUnderscores($strings)
 {
@@ -100,7 +100,7 @@ function camelCaseToUnderscore($string)
  * Get array keys and turn them into array of vaules
  *
  * @param array $array
- * @return string
+ * @return array
 */
 function getKeys($array)
 {

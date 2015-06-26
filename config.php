@@ -9,7 +9,7 @@ return [
 
     /*
     | Enter connection details for defined database type
-    | 
+    | Sensitive data is pulled from .env
     */
     'connections' => [
         "mysql" => [

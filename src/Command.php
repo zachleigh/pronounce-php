@@ -61,7 +61,7 @@ class Command extends SymfonyCommand
     /**
      * Build hyphenated word string
      *
-     * @param string $word, array $exploded_line, array $arpabet_array
+     * @param string $word, array $exploded_line, array $arpabet_array, string $symbol
      * @return string
     */
     protected function makeHyphenatedWordString($word, array $exploded_line, array $arpabet_array, $symbol)
@@ -81,7 +81,7 @@ class Command extends SymfonyCommand
     /**
      * Display error message for unanswered words
      *
-     * @param OutputInterface $output, array $unanswered
+     * @param Symfony\Component\Console\Output\OutputInterface $output, array $unanswered
      * @return void
     */
     protected function displayErrorForUnanswered($output, array $unanswered)
@@ -97,7 +97,7 @@ class Command extends SymfonyCommand
     /**
      * Output data to table
      *
-     * @param OutputInterface $output, array $answers
+     * @param Symfony\Component\Console\Output\OutputInterface $output, array $answers
      * @return void
     */
     protected function outputToTable($output, array $answers)
@@ -112,7 +112,7 @@ class Command extends SymfonyCommand
     /**
      * Output data to string
      *
-     * @param OutputInterface $output, array $answers
+     * @param Symfony\Component\Console\Output\OutputInterface $output, array $answers
      * @return void
     */
     protected function outputToString($output, array $answers)
@@ -125,7 +125,7 @@ class Command extends SymfonyCommand
     /**
      * Output data to file
      *
-     * @param OutputInterface $output, array $answers, string $file_name
+     * @param Symfony\Component\Console\Output\OutputInterface $output, array $answers, string $file_name
      * @return void
     */
     protected function outputToFile($output, array $answers, $file_name)
@@ -171,8 +171,8 @@ class Command extends SymfonyCommand
     /**
      * Get file handle
      *
-     * @param OutputInterface $output, Filesystem $filesystem, string $file_name
-     * @return file handle
+     * @param Symfony\Component\Console\Output\OutputInterface $output, Symfony\Component\Filesystem\Filesystem $filesystem, string $file_name
+     * @return resource
     */
     protected function getFileHandle(OutputInterface $output, $file_name)
     {
@@ -188,8 +188,8 @@ class Command extends SymfonyCommand
     /**
      * Open file for output
      *
-     * @param OutputInterface $output, string $word, array $exploded_line, array $method_names
-     * @return array
+     * @param Symfony\Component\Console\Output\OutputInterface $output, resource $handle
+     * @return ymfony\Component\Console\Output\StreamOutput
     */
     protected function openFile(OutputInterface $output, $handle)
     {
@@ -212,10 +212,10 @@ class Command extends SymfonyCommand
     /**
      * Write line to file
      *
-     * @param output stream $file, array $answer
+     * @param ymfony\Component\Console\Output\StreamOutput $file, array $answer
      * @return void
     */
-    protected function writeFileLine($file, $answer)
+    protected function writeFileLine($file, array $answer)
     {
         $line = $this->builder->buildFileLine($answer);
 
@@ -225,8 +225,8 @@ class Command extends SymfonyCommand
     /**
      * Close file for output
      *
-     * @param file handle $handle
-     * @return null
+     * @param resource $handle
+     * @return void
     */
     protected function closeFile($handle)
     {
@@ -236,7 +236,7 @@ class Command extends SymfonyCommand
     /**
      * Output data to database
      *
-     * @param OutputInterface $output, array $answers
+     * @param Symfony\Component\Console\Output\OutputInterface $output, array $answers
      * @return void
     */
     protected function outputToDatabase($output, array $answers)
@@ -255,7 +255,7 @@ class Command extends SymfonyCommand
     /**
      * Get database connection
      *
-     * @param OutputInterface $output
+     * @param Symfony\Component\Console\Output\OutputInterface $output
      * @return PronouncePHP\Database\Connect $connect
     */
     protected function getDatabaseConnection(OutputInterface $output)
@@ -270,7 +270,7 @@ class Command extends SymfonyCommand
     /**
      * Hyphenate word for output
      *
-     * @param Hyphenator $hyphenator, string $word, bool $hyphenation
+     * @param PronouncePHP\Hyphenate\Hyphenator $hyphenator, string $word, bool $hyphenation
      * @return string
     */
     protected function hyphenateOutputWord(Hyphenator $hyphenator, $word, $hyphenation)

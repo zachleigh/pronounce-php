@@ -19,7 +19,7 @@ class HyphenateCommand extends Command
     /**
      * Construct
      *
-     * @param Hyphenator $hyphenator, Builder $builder
+     * @param PronouncePHP\Hyphenate\Hyphenator $hyphenator, PronouncePHP\Build\Builder $builder
      * @return void
     */
     public function __construct(Hyphenator $hyphenator, Builder $builder)
@@ -48,7 +48,7 @@ class HyphenateCommand extends Command
     /**
      * Execute the command
      *
-     * @param InputInterface $input, OutputInterface $output
+     * @param Symfony\Component\Console\Input\InputInterface $input, Symfony\Component\Console\Output\OutputInterface $output
      * @return void
     */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -92,7 +92,7 @@ class HyphenateCommand extends Command
     /**
      * Make hyphenate output array for given fields
      *
-     * @param OutputInterface $output, string $word, array $exploded_line, array $method_names
+     * @param Symfony\Component\Console\Output\OutputInterface $output, string $word, string $hyphenated_word
      * @return array
     */
     protected function makeHyphenateOutputArray($word, $hyphenated_word)
@@ -105,5 +105,4 @@ class HyphenateCommand extends Command
 
         return $answer;
     }
-
 }

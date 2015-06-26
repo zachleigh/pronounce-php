@@ -22,7 +22,7 @@ class AllCommand extends Command
     /**
      * Construct
      *
-     * @param Transcriber $transcribe, Hyphenator $hyphenator, Builder $builder
+     * @param PronouncePHP\Transcribe\Transcriber $transcribe, PronouncePHP\Hyphenate\Hyphenator $hyphenator, PronouncePHP\Build\Builder $builder
      * @return void
     */
     public function __construct(Transcriber $transcriber, Hyphenator $hyphenator, Builder $builder)
@@ -52,7 +52,7 @@ class AllCommand extends Command
     /**
      * Execute the command
      *
-     * @param InputInterface $input, OutputInterface $output
+     * @param Symfony\Component\Console\Input\InputInterface $input, Symfony\Component\Console\Output\OutputInterface $output
      * @return void
     */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -97,10 +97,10 @@ class AllCommand extends Command
     /**
      * Write all to file
      *
-     * @param OutputInterface $output, array $answers, string $file_name
-     * @return 
+     * @param Symfony\Component\Console\Output\OutputInterface $output, resource $handle, array $method_names string $file_name, string $symbol
+     * @return void
     */
-    protected function writeToFile(OutputInterface $output, $handle, $method_names, $file_name, $symbol)
+    protected function writeToFile(OutputInterface $output, $handle, array $method_names, $file_name, $symbol)
     {
         $file_name = $this->makeFileName($file_name);
 
@@ -133,10 +133,10 @@ class AllCommand extends Command
     /**
      * Write all to database
      *
-     * @param OutputInterface $output, array $answers, string $file_name
-     * @return 
+     * @param Symfony\Component\Console\Output\OutputInterface $output, resource $handle, array $method_names, string $file_name, string $symbol
+     * @return void
     */
-    protected function writeToDatabase(OutputInterface $output, $handle, $method_names, $file_name, $symbol)
+    protected function writeToDatabase(OutputInterface $output, $handle, array $method_names, $file_name, $symbol)
     {
         $connect = $this->getDatabaseConnection($output);
 
@@ -180,10 +180,10 @@ class AllCommand extends Command
     /**
      * Make all command output array for given fields
      *
-     * @param OutputInterface $output, string $word, array $exploded_line, array $method_names
+     * @param Symfony\Component\Console\Output\OutputInterface $output, string $word, array $exploded_line, array $method_names, string $symbol
      * @return array
     */
-    protected function makeAllOutputArray(OutputInterface $output, $word, $exploded_line, array $method_names, $symbol)
+    protected function makeAllOutputArray(OutputInterface $output, $word, array $exploded_line, array $method_names, $symbol)
     {
         $answer = [];
 
