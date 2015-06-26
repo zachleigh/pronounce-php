@@ -27,7 +27,7 @@ Check the [composer documentation](https://getcomposer.org/doc/00-intro.md) for 
 If requirements are met, you can install the package in two ways.
 
 ###### Download
-Download [here](https://github.com/zachleigh/pronounce-php/releases) and run 
+Recommended. Download [here](https://github.com/zachleigh/pronounce-php/releases) and run 
 ```
 composer install
 ```   
@@ -36,19 +36,20 @@ composer install
 ```
 composer require zachleigh/pronounce-php
 ```
-Once everything is installed, the program will be in vendor/zachleigh/pronounce-php
+If you install through composer, the program will be in vendor/zachleigh/pronounce-php
 
 ## Usage
 
 #####General syntax overview
 ```
-pronounce-php command argument [options]
+pronounce-php command [argument]  [options]
 ```
 
 ## Commands
 * [all](#all)      
 * [hyphenate](#hyphenate)      
 * [lookup](#lookup)    
+
 ### all
 
 Output the entire CMUdict file with arpabet, hyphenation, IPA, and spelling approximation strings to either a file or a database.  Default is to write to a file called 'output.txt'.
@@ -60,10 +61,17 @@ pronounce-php all [options]
 
 ##### Options 
 ###### --destination [-d]
-Set the output destination. Default is to output a table to the console.  If file is selected, fields will be seperated by a forward slash (/) surrounded by spaces.  
+Set the output destination. Default is to output to a file called 'output.txt'.  If file is selected (default), fields will be seperated by a forward slash (/) surrounded by spaces.  
 Available desitinations: [file, database]
 ```
 pronounce-php all --destination=database
+```
+
+###### --fields [-f]  
+Set the output fields to be displayed.  Fields must be in a comma seperated list.  All fields are enabled by default.  
+Available fields: [word, hyphenated_word, arpabet, ipa, spelling]
+```
+pronounce-php all --fields=word,arpabet,ipa
 ```
 
 ###### --file [-o]
@@ -89,7 +97,16 @@ Lines in file will look like this:
 accepting / ac-cept-ing / AE0 K S EH1 P T IH0 NG / æksɛ'ptɪŋ / akse'pting /
 ```
 
-Change the symbol used to divide word with the 'symbol' option.
+Set desired output fields with the 'fields' option.
+```
+./pronounce-php all --fields=word,ipa,spelling
+
+
+Lines in file will look like this:
+accepting / æksɛ'ptɪŋ / akse'pting /
+```
+
+Change the symbol used to divide the hyphenated word with the 'symbol' option.
 ```
 ./pronounce-php all --symbol=.
 

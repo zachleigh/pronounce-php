@@ -84,7 +84,7 @@ class AllCommand extends Command
         if (!method_exists($this, $destination_method))
         {
             $output->writeln("<error>Incorret destination input</error>");
-            $output->writeln("<info>Destination options: </info><comment>table,string,file,database</comment>");
+            $output->writeln("<info>Destination options: </info><comment>file,database</comment>");
 
             $GLOBALS['status'] = 1;
 
