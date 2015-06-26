@@ -414,8 +414,9 @@ Successfully wrote to database
 If you wish to fill a database with the information gained from using this program, you must be sure that your database meets the following requirements:
 * Tables must have an auto-incrementing 'id' column
 * Column names must exactly match the expected field names.
-  * Hyphenate field names: 'word', 'hyphenated_word'   
-  * Lookup field names: 'word', 'arpabet', 'ipa', 'spelling'   
+  * All command field names: 'word', 'hyphenated_word', 'arpabet', 'ipa', 'spelling'
+  * Hyphenate command field names: 'word', 'hyphenated_word'   
+  * Lookup command field names: 'word', 'arpabet', 'ipa', 'spelling'   
 
 Use the 'field' option to set which fields you wish to insert into your database.
 
@@ -441,6 +442,6 @@ The database connection uses php PDO drivers that can be changed out fairly easi
 * Microsoft SQL Server / SQL Azure: **SqlsrvDatabase**
 * 4d: **FourD** (A class naming rule exception exists for this, but it is untested)
 
-The adapter class should be in its own file in src/Database/Databases/ and must implement DatabaseInterface. If you make a new adapter, please let me know so I can include it in the main program.
+The adapter class should be in its own file in src/Database/Databases/ and must implement DatabaseInterface. If you make a new adapter, please let me know so I can include it in the main program.  If you dont know how to write a new adapter, let me know and Ill do it if time permits.
 
 Besides making an adapter, you will also have to make a new array for the database in 'connections' in config.php.
