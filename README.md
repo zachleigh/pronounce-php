@@ -1,4 +1,8 @@
 # Pronounce-PHP
+[![Build Status](https://travis-ci.org/zachleigh/pronounce-php.svg)](https://travis-ci.org/zachleigh/pronounce-php)
+[![Latest Stable Version](https://poser.pugx.org/zachleigh/pronounce-php/version.svg)](//packagist.org/packages/zachleigh/pronounce-php)
+[![Latest Unstable Version](https://poser.pugx.org/zachleigh/pronounce-php/v/unstable.svg)](//packagist.org/packages/zachleigh/pronounce-php) 
+[![License](https://poser.pugx.org/zachleigh/pronounce-php/license.svg)](//packagist.org/packages/zachleigh/pronounce-php)
 
 -Converts words to pronunciation strings using the Carnegie Mellon University Pronouncing Dictionary (CMUdict) file.  Currently converts to the International Phonetic Alphabet (IPA) and to an easier to read spelling approximation.  
 -Hyphenates English words.  Hyphenation for IPA and spelling approximation hopefully coming soon.
