@@ -16,6 +16,8 @@ class HyphenateCommand extends Command
 
     protected $builder;
 
+    protected $options;
+
     /**
      * Construct
      *
@@ -57,11 +59,13 @@ class HyphenateCommand extends Command
 
         $words = explodeByComma($input->getArgument('word'));
 
-        $destination = $input->getOption('destination');
+        $this->makeOptions();
 
-        $file_name = $input->getOption('file');
+        $this->setOptionsField('destination', $input->getOption('destination'));
 
-        $symbol = $input->getOption('symbol');
+        $this->setOptionsField('file_name', $input->getOption('file'));
+
+        $this->setOptionsField('symbol', $input->getOption('symbol'));
 
         $answers = [];
 
@@ -69,12 +73,12 @@ class HyphenateCommand extends Command
         {
             $hyphenated_word = $this->hyphenator->hyphenateWord($word);
 
-            $hyphenated_word = $this->setHyphenationSymbol($hyphenated_word, $symbol);
+            $hyphenated_word = $this->setHyphenationSymbol($hyphenated_word);
 
             $answers[$word] = $this->makeHyphenateOutputArray($word, $hyphenated_word);
         }
 
-        $destination_method = $this->builder->buildDestinationMethod($destination);
+        $destination_method = $this->builder->buildDestinationMethod($this->options['destination']);
 
         if (!method_exists($this, $destination_method))
         {
@@ -86,7 +90,7 @@ class HyphenateCommand extends Command
             return null;
         }
 
-        $this->$destination_method($output, $answers, $file_name);
+        $this->$destination_method($output, $answers);
     }
 
     /**

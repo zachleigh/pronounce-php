@@ -19,6 +19,8 @@ class AllCommand extends Command
 
     protected $builder;
 
+    protected $options;
+
     /**
      * Construct
      *
@@ -43,9 +45,10 @@ class AllCommand extends Command
     {
         $this->setName('all')
              ->setDescription('Output pronunciation and hyphenation for all words in CMUdict')
-             ->addOption('fields', 'f', InputOption::VALUE_REQUIRED, 'Select the output fields you wish to display', 'word,hyphenated_word,arpabet,ipa,spelling')
              ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'Select the destination for output', 'file')
+             ->addOption('fields', 'f', InputOption::VALUE_REQUIRED, 'Select the output fields you wish to display', 'word,hyphenated_word,arpabet,ipa,spelling')
              ->addOption('file', 'o', InputOption::VALUE_REQUIRED, 'Set file path for output', 'output.txt')
+             ->addOption('multiple', 'm', InputOption::VALUE_REQUIRED, 'Set behavior for duplicate entries in CMUdict file', 'none')
              ->addOption('symbol', 's', InputOption::VALUE_REQUIRED, 'Set the symbol used to divide words', '-');
     }
 
@@ -62,15 +65,19 @@ class AllCommand extends Command
 
         $handle = $this->transcriber->loadCmuFile();
 
-        $fields = explodeByComma($input->getOption('fields'));
+        $this->makeOptions();
 
-        $destination = $input->getOption('destination');
+        $this->setOptionsField('destination', $input->getOption('destination'));
 
-        $file_name = $input->getOption('file');
+        $this->setOptionsField('fields', explodeByComma($input->getOption('fields')));
 
-        $symbol = $input->getOption('symbol');
+        $this->setOptionsField('file_name', $input->getOption('file'));
 
-        $method_names = $this->builder->buildFieldMethods($fields);
+        $this->setOptionsField('multiple', $input->getOption('multiple'));
+
+        $this->setOptionsField('symbol', $input->getOption('symbol'));
+
+        $this->setOptionsField('method_names', $this->builder->buildFieldMethods($this->options['fields']));
 
         if (!$handle) 
         {
@@ -79,7 +86,7 @@ class AllCommand extends Command
             die('<error>File did not open properly</error>');
         }
 
-        $destination_method = $this->builder->buildAllDestinationMethod($destination);
+        $destination_method = $this->builder->buildAllDestinationMethod($this->options['destination']);
 
         if (!method_exists($this, $destination_method))
         {
@@ -91,20 +98,20 @@ class AllCommand extends Command
             return null;
         }
 
-        $this->$destination_method($output, $handle, $method_names, $file_name, $symbol);
+        $this->$destination_method($output, $handle);
     }
 
     /**
      * Write all to file
      *
-     * @param Symfony\Component\Console\Output\OutputInterface $output, resource $handle, array $method_names string $file_name, string $symbol
+     * @param Symfony\Component\Console\Output\OutputInterface $output, resource $handle
      * @return void
     */
-    protected function writeToFile(OutputInterface $output, $handle, array $method_names, $file_name, $symbol)
+    protected function writeToFile(OutputInterface $output, $handle)
     {
-        $file_name = $this->makeFileName($file_name);
+        $this->setOptionsField('file_name', $this->makeFileName($this->options['file_name']));
 
-        $output_handle = $this->getFileHandle($output, $file_name);
+        $output_handle = $this->getFileHandle($output, $this->options['file_name']);
 
         $file = $this->openFile($output, $output_handle);
 
@@ -119,7 +126,9 @@ class AllCommand extends Command
 
             $word = trim($exploded_line[0]);
 
-            $answer = $this->makeAllOutputArray($output, $word, $exploded_line, $method_names, $symbol);
+            $word = $this->parseDuplicateEntries($word, $this->options['multiple']);
+
+            $answer = $this->makeAllOutputArray($output, $word, $exploded_line);
 
             $this->writeFileLine($file, $answer);
         }
@@ -133,10 +142,10 @@ class AllCommand extends Command
     /**
      * Write all to database
      *
-     * @param Symfony\Component\Console\Output\OutputInterface $output, resource $handle, array $method_names, string $file_name, string $symbol
+     * @param Symfony\Component\Console\Output\OutputInterface $output, resource $handle
      * @return void
     */
-    protected function writeToDatabase(OutputInterface $output, $handle, array $method_names, $file_name, $symbol)
+    protected function writeToDatabase(OutputInterface $output, $handle)
     {
         $connect = $this->getDatabaseConnection($output);
 
@@ -155,18 +164,20 @@ class AllCommand extends Command
 
             $word = trim($exploded_line[0]);
 
-            $answer = $this->makeAllOutputArray($output, $word, $exploded_line, $method_names, $symbol);
+            $word = $this->parseDuplicateEntries($word);
+
+            $answer = $this->makeAllOutputArray($output, $word, $exploded_line);
 
             if (is_null($statement))
             {
-                $fields = [];
+                $statement_fields = [];
 
-                foreach (array_keys($answer) as $field)
+                foreach (array_keys($answer) as $statement_field)
                 {
-                    array_push($fields, $field);
+                    array_push($statement_fields, $statement_field);
                 }
 
-                $statement = $connect->statement($output_handle, $fields);
+                $statement = $connect->statement($output_handle, $statement_fields);
             }
 
             $connect->executeStatement($statement, $answer);
@@ -180,10 +191,10 @@ class AllCommand extends Command
     /**
      * Make all command output array for given fields
      *
-     * @param Symfony\Component\Console\Output\OutputInterface $output, string $word, array $exploded_line, array $method_names, string $symbol
+     * @param Symfony\Component\Console\Output\OutputInterface $output, string $word, array $exploded_line
      * @return array
     */
-    protected function makeAllOutputArray(OutputInterface $output, $word, array $exploded_line, array $method_names, $symbol)
+    protected function makeAllOutputArray(OutputInterface $output, $word, array $exploded_line)
     {
         $answer = [];
 
@@ -193,7 +204,7 @@ class AllCommand extends Command
 
         $arpabet_array = array_filter($exploded_line);
 
-        foreach ($method_names as $field => $method)
+        foreach ($this->options['method_names'] as $answer_field => $method)
         {
             if (!method_exists($this, $method))
             {
@@ -204,9 +215,9 @@ class AllCommand extends Command
 
                 exit();
             }
-            $field = camelCaseToUnderscore($field);
+            $answer_field = camelCaseToUnderscore($answer_field);
 
-            $answer[$field] = $this->$method($word, $exploded_line, $arpabet_array, $symbol);
+            $answer[$answer_field] = $this->$method($word, $exploded_line, $arpabet_array);
         }
 
         return $answer;

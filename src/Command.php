@@ -15,6 +15,34 @@ use PronouncePHP\Config\Config;
 class Command extends SymfonyCommand
 {
     /**
+     * Make default options array
+     *
+     * @return void
+    */
+    protected function makeOptions()
+    {
+        $this->options = [
+            'destination' => '',
+            'fields' => '',
+            'file_name' => '',
+            'hyphenate' => '',
+            'multiple' => '',
+            'symbol' => ''
+        ];
+    }
+
+    /**
+     * Set options field
+     *
+     * @param string $options_field, string $value
+     * @return string
+    */
+    protected function setOptionsField($options_field, $value)
+    {
+        $this->options[$options_field] = $value;
+    }
+
+    /**
      * Build word string
      *
      * @param string $word, array $exploded_line, array $arpabet_array
@@ -61,16 +89,16 @@ class Command extends SymfonyCommand
     /**
      * Build hyphenated word string
      *
-     * @param string $word, array $exploded_line, array $arpabet_array, string $symbol
+     * @param string $word, array $exploded_line, array $arpabet_array
      * @return string
     */
-    protected function makeHyphenatedWordString($word, array $exploded_line, array $arpabet_array, $symbol)
+    protected function makeHyphenatedWordString($word, array $exploded_line, array $arpabet_array)
     {
         if (ctype_alpha($word))
         {
             $hyphenated_word = $this->hyphenateOutputWord($this->hyphenator, $word, true);
 
-            $hyphenated_word = $this->setHyphenationSymbol($hyphenated_word, $symbol);
+            $hyphenated_word = $this->setHyphenationSymbol($hyphenated_word);
 
             return $hyphenated_word;
         }
@@ -128,11 +156,11 @@ class Command extends SymfonyCommand
      * @param Symfony\Component\Console\Output\OutputInterface $output, array $answers, string $file_name
      * @return void
     */
-    protected function outputToFile($output, array $answers, $file_name)
+    protected function outputToFile($output, array $answers)
     {
-        $file_name = $this->makeFileName($file_name);
+        $this->setOptionsField('file_name', $this->makeFileName($this->options['file_name']));
 
-        $handle = $this->getFileHandle($output, $file_name);
+        $handle = $this->getFileHandle($output);
 
         $file = $this->openFile($output, $handle);
 
@@ -156,31 +184,42 @@ class Command extends SymfonyCommand
     {
         $filesystem = new Filesystem();
 
-        $count = '';
+        $new_file_name = $file_name;
 
-        while ($filesystem->exists($file_name))
+        $count = 1;
+
+        while ($filesystem->exists($new_file_name))
         {
-            $count += 1;
+            if (strpos($file_name, '.') !== false)
+            {
+                $index = strpos($file_name, '.');
 
-            $file_name = 'output' . $count . '.txt';
+                $new_file_name = substr($file_name, 0, $index) . $count . substr($file_name, $index);
+            }
+            else 
+            {
+                $new_file_name = $file_name . $count;
+            }
+
+            $count += 1;
         }
 
-        return $file_name;
+        return $new_file_name;
     }
 
     /**
      * Get file handle
      *
-     * @param Symfony\Component\Console\Output\OutputInterface $output, Symfony\Component\Filesystem\Filesystem $filesystem, string $file_name
+     * @param Symfony\Component\Console\Output\OutputInterface $output, Symfony\Component\Filesystem\Filesystem $filesystem
      * @return resource
     */
-    protected function getFileHandle(OutputInterface $output, $file_name)
+    protected function getFileHandle(OutputInterface $output)
     {
         $filesystem = new Filesystem();
 
-        $filesystem->touch($file_name);
+        $filesystem->touch($this->options['file_name']);
 
-        $handle = fopen($file_name, 'w') or die('<error>Failed to open destination file</error>');
+        $handle = fopen($this->options['file_name'], 'w') or die('<error>Failed to open destination file</error>');
 
         return $handle;
     }
@@ -212,7 +251,7 @@ class Command extends SymfonyCommand
     /**
      * Write line to file
      *
-     * @param ymfony\Component\Console\Output\StreamOutput $file, array $answer
+     * @param Symfony\Component\Console\Output\StreamOutput $file, array $answer
      * @return void
     */
     protected function writeFileLine($file, array $answer)
@@ -270,12 +309,12 @@ class Command extends SymfonyCommand
     /**
      * Hyphenate word for output
      *
-     * @param PronouncePHP\Hyphenate\Hyphenator $hyphenator, string $word, bool $hyphenation
+     * @param PronouncePHP\Hyphenate\Hyphenator $hyphenator, string $word
      * @return string
     */
-    protected function hyphenateOutputWord(Hyphenator $hyphenator, $word, $hyphenation)
+    protected function hyphenateOutputWord(Hyphenator $hyphenator, $word)
     {
-        if ($hyphenation === false)
+        if ($this->options['hyphenate'] === false)
         {
             return $word;
         }
@@ -286,11 +325,53 @@ class Command extends SymfonyCommand
     /**
      * Set hyphenation symbol
      *
-     * @param string $word, string $symbol
+     * @param string $word
      * @return string
     */
-    protected function setHyphenationSymbol($word, $symbol)
+    protected function setHyphenationSymbol($word)
     {
-        return str_replace(' ', $symbol, $word);
+        return str_replace(' ', $this->options['symbol'], $word);
+    }
+
+    /**
+     * Deal with multiple entries in CMUdict file
+     *
+     * @param string $word
+     * @return string
+    */
+    protected function parseDuplicateEntries($word)
+    {
+        if ($this->options['multiple'] === 'none')
+        {
+            return $word;
+        }
+        elseif ($this->options['multiple'] === 'repeat')
+        {
+            return preg_replace("/\([^)]+\)/", '', $word);
+        }
+
+        return $word;
+    }
+
+    /**
+     * Make unique key for answers array
+     *
+     * @param string $word, array $answers
+     * @return string
+    */
+    protected function makeAnswersKey($word, array $answers)
+    {
+        $key = $word;
+
+        $count = 1;
+
+        while (array_key_exists($key, $answers))
+        {
+            $key = $key . $count;
+
+            $count += 1;
+        }
+
+        return $key;
     }
 }

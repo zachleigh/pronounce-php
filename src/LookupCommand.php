@@ -19,6 +19,8 @@ class LookupCommand extends Command
 
     protected $builder;
 
+    protected $options;
+
     /**
      * Construct
      *
@@ -44,10 +46,11 @@ class LookupCommand extends Command
         $this->setName('lookup')
              ->setDescription('Convert a word or comma seperated list of words to different pronounciation strings')
              ->addArgument('word', InputArgument::REQUIRED, 'The word or words to convert')
-             ->addOption('fields', 'f', InputOption::VALUE_REQUIRED, 'Select the output fields you wish to display', 'word,arpabet,ipa,spelling')
              ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'Select the destination for output', 'table')
+             ->addOption('fields', 'f', InputOption::VALUE_REQUIRED, 'Select the output fields you wish to display', 'word,arpabet,ipa,spelling')
              ->addOption('file', 'o', InputOption::VALUE_REQUIRED, 'Set file path for output', 'output.txt')
              ->addOption('hyphenate', 'y', InputOption::VALUE_NONE, 'Hyphenate word in output')
+             ->addOption('multiple', 'm', InputOption::VALUE_REQUIRED, 'Set behavior for duplicate entries in CMUdict file', 'none')
              ->addOption('symbol', 's', InputOption::VALUE_REQUIRED, 'Set the symbol used to divide words', '-');
     }
 
@@ -65,17 +68,21 @@ class LookupCommand extends Command
 
         $strings = explodeByComma($input->getArgument('word'));
 
-        $fields = explodeByComma($input->getOption('fields'));
+        $this->makeOptions();
 
-        $destination = $input->getOption('destination');
+        $this->setOptionsField('destination', $input->getOption('destination'));
 
-        $file_name = $input->getOption('file');
+        $this->setOptionsField('fields', explodeByComma($input->getOption('fields')));
 
-        $hyphenation = $input->getOption('hyphenate');
+        $this->setOptionsField('file_name', $input->getOption('file'));
 
-        $symbol = $input->getOption('symbol');
+        $this->setOptionsField('hyphenate', $input->getOption('hyphenate'));
 
-        $method_names = $this->builder->buildFieldMethods($fields);
+        $this->setOptionsField('multiple', $input->getOption('multiple'));
+
+        $this->setOptionsField('symbol', $input->getOption('symbol'));
+
+        $this->setOptionsField('method_names', $this->builder->buildFieldMethods($this->options['fields']));
 
         if (!$handle) 
         {
@@ -99,13 +106,17 @@ class LookupCommand extends Command
 
             $word = trim($exploded_line[0]);
 
+            $word = $this->parseDuplicateEntries($word);
+
             if (in_array($word, $strings))
             {
-                $output_word = $this->hyphenateOutputWord($this->hyphenator, $word, $hyphenation);
+                $output_word = $this->hyphenateOutputWord($this->hyphenator, $word);
 
-                $output_word = $this->setHyphenationSymbol($output_word, $symbol);
+                $output_word = $this->setHyphenationSymbol($output_word);
 
-                $answers[$word] = $this->makeLookupOutputArray($output, $output_word, $exploded_line, $method_names);
+                $key = $this->makeAnswersKey($word, $answers);
+
+                $answers[$key] = $this->makeLookupOutputArray($output, $output_word, $exploded_line);
 
                 array_push($answered, $word);
             }
@@ -117,7 +128,7 @@ class LookupCommand extends Command
 
         $unanswered = array_diff($strings, $answered);
 
-        $destination_method = $this->builder->buildDestinationMethod($destination);
+        $destination_method = $this->builder->buildDestinationMethod($this->options['destination']);
 
         if (!method_exists($this, $destination_method))
         {
@@ -129,7 +140,7 @@ class LookupCommand extends Command
             return null;
         }
 
-        $this->$destination_method($output, $answers, $file_name);
+        $this->$destination_method($output, $answers);
 
         $this->displayErrorForUnanswered($output, $unanswered);
 
@@ -139,10 +150,10 @@ class LookupCommand extends Command
     /**
      * Make lookup output array for given fields
      *
-     * @param Symfony\Component\Console\Output\OutputInterface $output, string $word, array $exploded_line, array $method_names
+     * @param Symfony\Component\Console\Output\OutputInterface $output, string $word, array $exploded_line
      * @return array
     */
-    protected function makeLookupOutputArray(OutputInterface $output, $word, array $exploded_line, array $method_names)
+    protected function makeLookupOutputArray(OutputInterface $output, $word, array $exploded_line)
     {
         $answer = [];
 
@@ -150,7 +161,7 @@ class LookupCommand extends Command
 
         $arpabet_array = array_filter($exploded_line);
 
-        foreach ($method_names as $field => $method)
+        foreach ($this->options['method_names'] as $answer_field => $method)
         {
             if (!method_exists($this, $method))
             {
@@ -162,7 +173,7 @@ class LookupCommand extends Command
                 break;
             }
 
-            $answer[$field] = $this->$method($word, $exploded_line, $arpabet_array);
+            $answer[$answer_field] = $this->$method($word, $exploded_line, $arpabet_array);
         }
 
         return $answer;
