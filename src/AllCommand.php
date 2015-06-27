@@ -140,7 +140,7 @@ class AllCommand extends Command
     {
         $connect = $this->getDatabaseConnection($output);
 
-        $output_handle = $connect->database->getHandle($output);
+        $output_handle = $connect->handle();
 
         $statement = null;
 
@@ -166,10 +166,10 @@ class AllCommand extends Command
                     array_push($fields, $field);
                 }
 
-                $statement = $connect->database->getStatement($output_handle, $fields, $output);
+                $statement = $connect->statement($output_handle, $fields);
             }
 
-            $connect->database->executeStatement($statement, $answer, $output);
+            $connect->executeStatement($statement, $answer);
         }
 
         $output->writeln("<info>Successfully wrote to database</info>");

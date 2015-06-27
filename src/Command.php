@@ -243,9 +243,9 @@ class Command extends SymfonyCommand
     {
         $connect = $this->getDatabaseConnection($output);
 
-        $handle = $connect->database->getHandle($output);
+        $handle = $connect->handle();
 
-        $connect->database->insertDataArray($handle, $answers, $output);
+        $connect->insertDataArray($handle, $answers);
 
         $output->writeln("<info>Successfully wrote to database</info>");
 

@@ -15,7 +15,7 @@ require 'vendor/autoload.php';
 
 $GLOBALS['status'] = 0;
 
-$app = new Application('Pronounce-PHP', '0.7');
+$app = new Application('Pronounce-PHP', '0.8');
 
 $startup = new Startup();
 $startup->configure();

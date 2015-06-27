@@ -31,10 +31,10 @@ interface DatabaseInterface
     /**
      * Get database prepared statement
      *
-     * @param PDO handle $handle, array $answers, Symfony\Component\Console\Output\OutputInterface $output
+     * @param PDO handle $handle, array $fields, Symfony\Component\Console\Output\OutputInterface $output
      * @return PDOStatement
     */
-    public function getStatement($handle, $answers, OutputInterface $output);
+    public function getStatement($handle, $fields, OutputInterface $output);
 
     /**
      * Execute prepared statement

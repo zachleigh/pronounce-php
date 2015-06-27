@@ -60,7 +60,7 @@ class MysqlDatabase implements DatabaseInterface
     }
 
     /**
-     * Insert data into mysql database
+     * Insert data array into mysql database
      *
      * @param PDO handle $handle, array $answers, Symfony\Component\Console\Output\OutputInterface $output
      * @return null
@@ -80,7 +80,7 @@ class MysqlDatabase implements DatabaseInterface
     /**
      * Get mysql prepared statement
      *
-     * @param PDO handle $handle, array $answers, Symfony\Component\Console\Output\OutputInterface $output
+     * @param PDO handle $handle, array $fields, Symfony\Component\Console\Output\OutputInterface $output
      * @return PDOStatement
     */
     public function getStatement($handle, $fields, OutputInterface $output)
