@@ -61,7 +61,7 @@ class Transcriber
             $string .= $character;
         }
 
-        return $string;
+        return trim($string);
     }
 
     /**

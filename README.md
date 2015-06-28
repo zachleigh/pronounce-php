@@ -84,6 +84,18 @@ If 'file' is selected for the output destination, the 'file' option can be used 
 pronounce-php all --destination=file --file=my_file.txt
 ```
 
+###### --multiple [-m]    
+For some words in the CMUdict file, there are multiple pronunciation entries.  The file deals with these by appending a number in parentheses to each additional entry.    
+```
+ACERO  AH0 S EH1 R OW0
+ACERO(1)  AH0 S Y EH1 R OW0
+ACERO(2)  AH0 TH EH1 R OW0
+```
+The 'multiple' command sets the behavior to deal with thses multiple entries for the output.  By default, 'multiple' is set to 'none', which outputs entries exactly as they appear in the CMUdict file.  'repeat' outputs entries without the parentheses or numbers.  
+```
+pronounce-php lookup words_to_lookup --multiple=repeat
+``` 
+
 ###### --symbol [-s]   
 Set the character to be used for hyphenation.  The default value is a hyphen (-).  Note: if writing to a file, keep in mind that items in the file will be divided by forward slashes(/) so setting the hyphenation symbol to forward slash will complicate reading of the file.
 ```
@@ -288,6 +300,18 @@ pronounce-php lookup words_to_lookup --destination=file --file=my_file.txt
 If the 'hyphenate' flag is given, applicable fields will be hyphenated.  Currently, only the 'word' field may be hyphenated.
 ```
 pronounce-php lookup words_to_lookup --hyphenate
+```
+
+###### --multiple [-m]    
+For some words in the CMUdict file, there are multiple pronunciation entries.  The file deals with these by appending a number in parentheses to each additional entry.    
+```
+ACERO  AH0 S EH1 R OW0
+ACERO(1)  AH0 S Y EH1 R OW0
+ACERO(2)  AH0 TH EH1 R OW0
+```
+The 'multiple' command sets the behavior to deal with thses multiple entries for the output.  By default, 'multiple' is set to 'none', which outputs entries exactly as they appear in the CMUdict file.  'repeat' outputs entries without the parentheses or numbers.
+```
+pronounce-php lookup words_to_lookup --multiple=repeat
 ```
 
 ###### --symbol [-s]   
