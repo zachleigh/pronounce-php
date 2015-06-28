@@ -4,7 +4,7 @@
     "description": "Create English pronunciation strings for over 130,000 words.  Hyphenate English words.",
     "keywords": ["cmudict","pronounce","pronunciation","hyphenate","hyphenation","arpabet","ipa","spelling","English","dictionary"],
     "homepage": "https://github.com/zachleigh/pronounce-php",
-    "license": "GPL-2.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Zach Leigh",
