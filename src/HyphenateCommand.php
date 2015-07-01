@@ -2,7 +2,6 @@
 
 namespace PronouncePHP;
 
-use PronouncePHP\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,11 +18,10 @@ class HyphenateCommand extends Command
     protected $options;
 
     /**
-     * Construct
+     * Construct.
      *
      * @param PronouncePHP\Hyphenate\Hyphenator $hyphenator, PronouncePHP\Build\Builder $builder
-     * @return void
-    */
+     */
     public function __construct(Hyphenator $hyphenator, Builder $builder)
     {
         $this->hyphenator = $hyphenator;
@@ -33,10 +31,8 @@ class HyphenateCommand extends Command
     }
 
     /**
-     * Configure command
-     *
-     * @return void
-    */
+     * Configure command.
+     */
     public function configure()
     {
         $this->setName('hyphenate')
@@ -48,11 +44,10 @@ class HyphenateCommand extends Command
     }
 
     /**
-     * Execute the command
+     * Execute the command.
      *
      * @param Symfony\Component\Console\Input\InputInterface $input, Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
-    */
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Hyphenating...</info>');
@@ -69,8 +64,7 @@ class HyphenateCommand extends Command
 
         $answers = [];
 
-        foreach ($words as $word)
-        {
+        foreach ($words as $word) {
             $hyphenated_word = $this->hyphenator->hyphenateWord($word);
 
             $hyphenated_word = $this->setHyphenationSymbol($hyphenated_word);
@@ -80,25 +74,25 @@ class HyphenateCommand extends Command
 
         $destination_method = $this->builder->buildDestinationMethod($this->options['destination']);
 
-        if (!method_exists($this, $destination_method))
-        {
-            $output->writeln("<error>Incorret destination input</error>");
-            $output->writeln("<info>Destination options: </info><comment>table,string,file,database</comment>");
+        if (!method_exists($this, $destination_method)) {
+            $output->writeln('<error>Incorret destination input</error>');
+            $output->writeln('<info>Destination options: </info><comment>table,string,file,database</comment>');
 
             $GLOBALS['status'] = 1;
 
-            return null;
+            return;
         }
 
         $this->$destination_method($output, $answers);
     }
 
     /**
-     * Make hyphenate output array for given fields
+     * Make hyphenate output array for given fields.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, string $word, string $hyphenated_word
+     *
      * @return array
-    */
+     */
     protected function makeHyphenateOutputArray($word, $hyphenated_word)
     {
         $answer = [];

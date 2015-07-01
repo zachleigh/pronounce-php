@@ -11,13 +11,11 @@ class Hyphenator
     private $tree;
 
     /**
-     * Construct
+     * Construct.
      *
      * This class is an adaptation of Ned Batchelder's python interpretation of Frank Liang's hyphenation algorithm
      * http://nedbatchelder.com/code/modules/hyphenate.py
-     *
-     * @return void
-    */
+     */
     public function __construct()
     {
         $this->patterns = $this->loadPatterns();
@@ -30,10 +28,10 @@ class Hyphenator
     }
 
     /**
-     * Load patterns from patterns.php
+     * Load patterns from patterns.php.
      *
      * @return array
-    */
+     */
     private function loadPatterns()
     {
         $liang_patterns = getLiangPatterns();
@@ -44,36 +42,31 @@ class Hyphenator
     }
 
     /**
-     * Load exceptions from patterns.php
-     *
-     * @return void
-    */
+     * Load exceptions from patterns.php.
+     */
     private function loadExceptions()
     {
         $exceptions = getExceptions();
 
-        foreach ($exceptions as $exception)
-        {
+        foreach ($exceptions as $exception) {
             $points = $this->getExceptionPoints($exception);
 
             $exception = str_replace('-', '', $exception);
 
             $this->exceptions[$exception] = $points;
-
         }
     }
 
     /**
-     * Build tree from patterns
+     * Build tree from patterns.
      *
      * @return array
-    */
+     */
     private function buildTree()
     {
         $tree = array();
 
-        foreach($this->patterns as $pattern) 
-        {
+        foreach ($this->patterns as $pattern) {
             $characters = preg_replace('/[0-9]+/', '', $pattern);
 
             $characters = array_reverse(str_split($characters));
@@ -82,15 +75,13 @@ class Hyphenator
 
             $temp = array();
 
-            foreach($characters as $index => $character) 
-            {
-                if($index == 0) 
-                {
+            foreach ($characters as $index => $character) {
+                if ($index == 0) {
                     $temp[] = $points;
                 }
 
                 $temp = array(
-                    $character => $temp
+                    $character => $temp,
                 );
             }
 
@@ -101,19 +92,18 @@ class Hyphenator
     }
 
     /**
-     * Get points array for string
+     * Get points array for string.
      *
      * @param string $pattern
+     *
      * @return array
-    */
+     */
     private function getPoints($pattern)
     {
         $points = [];
 
-        foreach (preg_split("/[.a-z]/", $pattern) as $i)
-        {
-            if (empty($i))
-            {
+        foreach (preg_split('/[.a-z]/', $pattern) as $i) {
+            if (empty($i)) {
                 array_push($points, 0);
 
                 continue;
@@ -126,19 +116,18 @@ class Hyphenator
     }
 
     /**
-     * Get points array for exceptions
+     * Get points array for exceptions.
      *
      * @param string $exception
+     *
      * @return array
-    */
+     */
     private function getExceptionPoints($exception)
     {
         $points = [0];
 
-        foreach (preg_split("/[.a-z]/", $exception) as $i)
-        {
-            if (empty($i))
-            {
+        foreach (preg_split('/[.a-z]/', $exception) as $i) {
+            if (empty($i)) {
                 array_push($points, 0);
 
                 continue;
@@ -151,54 +140,44 @@ class Hyphenator
     }
 
     /**
-     * Break words into pieces, broken at hyphenation points
+     * Break words into pieces, broken at hyphenation points.
      *
      * @param string $word
+     *
      * @return string
-    */
+     */
     public function hyphenateWord($word)
     {
-        if (strlen($word) <= 4)
-        {
+        if (strlen($word) <= 4) {
             return strtolower($word);
         }
 
-        if (array_key_exists(strtolower($word), $this->exceptions))
-        {
+        if (array_key_exists(strtolower($word), $this->exceptions)) {
             $points = $this->exceptions[strtolower($word)];
-        }
-        else
-        {
-            $string = '.' . strtolower($word) . '.';
+        } else {
+            $string = '.'.strtolower($word).'.';
 
             $points = $this->getPoints($string);
 
-            for ($word_index = 0; $word_index < strlen($string); $word_index++)
-            {
+            for ($word_index = 0; $word_index < strlen($string); ++$word_index) {
                 $tree = $this->tree;
 
                 $substring = substr($string, $word_index);
 
-                for ($substring_index = 0; $substring_index < strlen($substring); $substring_index++)
-                {
+                for ($substring_index = 0; $substring_index < strlen($substring); ++$substring_index) {
                     $character = $substring[$substring_index];
 
-                    if (array_key_exists($character, $tree))
-                    {
+                    if (array_key_exists($character, $tree)) {
                         $tree = $tree[$character];
 
-                        if (array_key_exists(0, $tree))
-                        {
+                        if (array_key_exists(0, $tree)) {
                             $point_array = $tree[0];
 
-                            for ($point_index = 0; $point_index < count($point_array); $point_index++)
-                            {
+                            for ($point_index = 0; $point_index < count($point_array); ++$point_index) {
                                 $points[$word_index + $point_index] = max($points[$word_index + $point_index], $point_array[$point_index]);
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
                 }
@@ -219,15 +198,13 @@ class Hyphenator
 
         $zipped = $this->zip(strtolower($word), array_slice($points, 2));
 
-        foreach ($zipped as $tuple)
-        {
+        foreach ($zipped as $tuple) {
             $letter = $tuple[0];
             $points = $tuple[1];
 
             $pieces .= $letter;
 
-            if ($points % 2)
-            {
+            if ($points % 2) {
                 $pieces .= ' ';
             }
         }
@@ -236,15 +213,15 @@ class Hyphenator
     }
 
     /**
-     * Approximation of python zip function
+     * Approximation of python zip function.
      *
      * @param string/array $one, array $two
+     *
      * @return array
-    */
+     */
     private function zip($one, array $two)
     {
-        if (!is_array($one))
-        {
+        if (!is_array($one)) {
             $one = str_split($one);
         }
 
@@ -252,8 +229,7 @@ class Hyphenator
 
         $zipped = [];
 
-        for ($i = 0; $i < $index; $i++)
-        {
+        for ($i = 0; $i < $index; ++$i) {
             $tuple = [$one[$i], $two[$i]];
 
             array_push($zipped, $tuple);

@@ -9,34 +9,27 @@ class Startup
     private $filesystem;
 
     /**
-     * Construct
-     *
-     * @return void
-    */
+     * Construct.
+     */
     public function __construct()
     {
         $this->filesystem = new Filesystem();
     }
 
     /**
-     * Configure app on startup
-     *
-     * @return void
-    */
-    public function configure() 
+     * Configure app on startup.
+     */
+    public function configure()
     {
         $this->makeDotenvFile();
     }
 
     /**
-     * Check for .env and make if not found
-     *
-     * @return void
-    */
-    private function makeDotenvFile() 
+     * Check for .env and make if not found.
+     */
+    private function makeDotenvFile()
     {
-        if (!$this->filesystem->exists('.env'))
-        {
+        if (!$this->filesystem->exists('.env')) {
             $this->filesystem->copy('.env.example', '.env');
         }
     }

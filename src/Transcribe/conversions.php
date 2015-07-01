@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Get arpabet to spelling conversion array
+ * Get arpabet to spelling conversion array.
  *
  * @return array
-*/
-function getArpabetToSpelling() 
+ */
+function getArpabetToSpelling()
 {
     return [
         'AA' => 'o',
@@ -46,16 +46,16 @@ function getArpabetToSpelling()
         'W' => 'w',
         'Y' => 'y',
         'Z' => 'z',
-        'ZH' => 'zh'
+        'ZH' => 'zh',
     ];
 }
 
 /**
- * Get arpabet to IPA conversion array
+ * Get arpabet to IPA conversion array.
  *
  * @return array
-*/
-function getArpabetToIpa() 
+ */
+function getArpabetToIpa()
 {
     return [
         'AA' => 'ɑ',
@@ -96,6 +96,6 @@ function getArpabetToIpa()
         'W' => 'w',
         'Y' => 'j',
         'Z' => 'z',
-        'ZH' => 'ʒ'
+        'ZH' => 'ʒ',
     ];
 }

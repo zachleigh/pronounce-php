@@ -5,10 +5,10 @@ namespace PronouncePHP\Transcribe;
 class Transcriber
 {
     /**
-     * Load CMU file
+     * Load CMU file.
      *
      * @return resource
-    */
+     */
     public function loadCmuFile()
     {
         $file = 'src/Transcribe/cmudict';
@@ -19,12 +19,13 @@ class Transcriber
     }
 
     /**
-     * Build word IPA pronunciation string
+     * Build word IPA pronunciation string.
      *
      * @param array $arpabet_array
+     *
      * @return string
      */
-    public function buildIpaString(array $arpabet_array) 
+    public function buildIpaString(array $arpabet_array)
     {
         $library = getArpabetToIpa();
 
@@ -32,12 +33,13 @@ class Transcriber
     }
 
     /**
-     * Build word spelling pronunciation string
+     * Build word spelling pronunciation string.
      *
      * @param array $arpabet_array
+     *
      * @return string
      */
-    public function buildSpellingString(array $arpabet_array) 
+    public function buildSpellingString(array $arpabet_array)
     {
         $library = getArpabetToSpelling();
 
@@ -45,17 +47,17 @@ class Transcriber
     }
 
     /**
-     * Build word pronunciation string
+     * Build word pronunciation string.
      *
      * @param array $arpabet_array, array $library
+     *
      * @return string
      */
     public function buildPronunciationString(array $arpabet_array, array $library)
     {
         $string = '';
 
-        foreach ($arpabet_array as $arpabet_character)
-        {
+        foreach ($arpabet_array as $arpabet_character) {
             $character = $this->getCharacter($arpabet_character, $library);
 
             $string .= $character;
@@ -65,9 +67,10 @@ class Transcriber
     }
 
     /**
-     * Get character from given library
+     * Get character from given library.
      *
      * @param string $arpabet_character, array $library
+     *
      * @return string
      */
     protected function getCharacter($arpabet_character, array $library)
@@ -78,15 +81,16 @@ class Transcriber
 
         $arpabet_character = trim($arpabet_character);
 
-        $new_character = $library[$arpabet_character] . $stress;
+        $new_character = $library[$arpabet_character].$stress;
 
         return $new_character;
     }
 
     /**
-     * Check for and get stress on the character
+     * Check for and get stress on the character.
      *
      * @param string $character
+     *
      * @return string
      */
     protected function getStress($character)
@@ -95,8 +99,7 @@ class Transcriber
 
         $is_vowel = preg_match('/[0-9]/', $character, $number);
 
-        if ($is_vowel === 1) 
-        {
+        if ($is_vowel === 1) {
             if ($number[0] == 1) {
                 $stress = '\'';
             }

@@ -12,11 +12,10 @@ class Connect
     private $output;
 
     /**
-     * Construct
+     * Construct.
      *
      * @param PronouncePHP\Database\Databases\DatabaseInterface $database, Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
-    */
+     */
     public function __construct(DatabaseInterface $database, OutputInterface $output)
     {
         $this->database = $database;
@@ -25,53 +24,52 @@ class Connect
     }
 
     /**
-     * Get database information array
+     * Get database information array.
      *
      * @return array
-    */
+     */
     public function connectionInformationArray()
     {
         return $this->database->getInformationArray();
     }
 
     /**
-     * Get database handle
+     * Get database handle.
      *
      * @return PDO handle
-    */
+     */
     public function handle()
     {
         return $this->database->getHandle($this->output);
     }
 
     /**
-     * Insert data into database
+     * Insert data into database.
      *
      * @param PDO handle $handle, array $answers
-     * @return null
-    */
+     */
     public function insertDataArray($handle, $answers)
     {
         $this->database->insertDataArray($handle, $answers, $this->output);
     }
 
     /**
-     * Get database prepared statement
+     * Get database prepared statement.
      *
      * @param PDO handle $handle, array $fields
+     *
      * @return PDOStatement
-    */
+     */
     public function statement($handle, $fields)
     {
         return $this->database->getStatement($handle, $fields, $this->output);
     }
 
     /**
-     * Execute prepared statement
+     * Execute prepared statement.
      *
      * @param PDOStatement $statement, array $answer
-     * @return null
-    */
+     */
     public function executeStatement($statement, $answer)
     {
         $this->database->executeStatement($statement, $answer, $this->output);

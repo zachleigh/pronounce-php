@@ -2,10 +2,8 @@
 
 namespace PronouncePHP;
 
-use PronouncePHP\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use PronouncePHP\Transcribe\Transcriber;
 use PronouncePHP\Hyphenate\Hyphenator;
@@ -22,11 +20,10 @@ class AllCommand extends Command
     protected $options;
 
     /**
-     * Construct
+     * Construct.
      *
      * @param PronouncePHP\Transcribe\Transcriber $transcribe, PronouncePHP\Hyphenate\Hyphenator $hyphenator, PronouncePHP\Build\Builder $builder
-     * @return void
-    */
+     */
     public function __construct(Transcriber $transcriber, Hyphenator $hyphenator, Builder $builder)
     {
         $this->transcriber = $transcriber;
@@ -37,10 +34,8 @@ class AllCommand extends Command
     }
 
     /**
-     * Configure command
-     *
-     * @return void
-    */
+     * Configure command.
+     */
     public function configure()
     {
         $this->setName('all')
@@ -53,11 +48,10 @@ class AllCommand extends Command
     }
 
     /**
-     * Execute the command
+     * Execute the command.
      *
      * @param Symfony\Component\Console\Input\InputInterface $input, Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
-    */
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Working...</info>');
@@ -79,34 +73,31 @@ class AllCommand extends Command
 
         $this->setOptionsField('method_names', $this->builder->buildFieldMethods($this->options['fields']));
 
-        if (!$handle) 
-        {
+        if (!$handle) {
             $GLOBALS['status'] = 1;
-            
+
             die('<error>File did not open properly</error>');
         }
 
         $destination_method = $this->builder->buildAllDestinationMethod($this->options['destination']);
 
-        if (!method_exists($this, $destination_method))
-        {
-            $output->writeln("<error>Incorret destination input</error>");
-            $output->writeln("<info>Destination options: </info><comment>file,database</comment>");
+        if (!method_exists($this, $destination_method)) {
+            $output->writeln('<error>Incorret destination input</error>');
+            $output->writeln('<info>Destination options: </info><comment>file,database</comment>');
 
             $GLOBALS['status'] = 1;
 
-            return null;
+            return;
         }
 
         $this->$destination_method($output, $handle);
     }
 
     /**
-     * Write all to file
+     * Write all to file.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, resource $handle
-     * @return void
-    */
+     */
     protected function writeToFile(OutputInterface $output, $handle)
     {
         $this->setOptionsField('file_name', $this->makeFileName($this->options['file_name']));
@@ -115,10 +106,8 @@ class AllCommand extends Command
 
         $file = $this->openFile($output, $output_handle);
 
-        while (($line = fgets($handle)) !== false) 
-        {
-            if (isComment($line)) 
-            {
+        while (($line = fgets($handle)) !== false) {
+            if (isComment($line)) {
                 continue;
             }
 
@@ -138,13 +127,11 @@ class AllCommand extends Command
         $this->closeFile($handle);
     }
 
-
     /**
-     * Write all to database
+     * Write all to database.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, resource $handle
-     * @return void
-    */
+     */
     protected function writeToDatabase(OutputInterface $output, $handle)
     {
         $connect = $this->getDatabaseConnection($output);
@@ -153,10 +140,8 @@ class AllCommand extends Command
 
         $statement = null;
 
-        while (($line = fgets($handle)) !== false) 
-        {
-            if (isComment($line)) 
-            {
+        while (($line = fgets($handle)) !== false) {
+            if (isComment($line)) {
                 continue;
             }
 
@@ -168,12 +153,10 @@ class AllCommand extends Command
 
             $answer = $this->makeAllOutputArray($output, $word, $exploded_line);
 
-            if (is_null($statement))
-            {
+            if (is_null($statement)) {
                 $statement_fields = [];
 
-                foreach (array_keys($answer) as $statement_field)
-                {
+                foreach (array_keys($answer) as $statement_field) {
                     array_push($statement_fields, $statement_field);
                 }
 
@@ -183,17 +166,18 @@ class AllCommand extends Command
             $connect->executeStatement($statement, $answer);
         }
 
-        $output->writeln("<info>Successfully wrote to database</info>");
+        $output->writeln('<info>Successfully wrote to database</info>');
 
         $handle = null;
     }
 
     /**
-     * Make all command output array for given fields
+     * Make all command output array for given fields.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, string $word, array $exploded_line
+     *
      * @return array
-    */
+     */
     protected function makeAllOutputArray(OutputInterface $output, $word, array $exploded_line)
     {
         $answer = [];
@@ -204,12 +188,10 @@ class AllCommand extends Command
 
         $arpabet_array = array_filter($exploded_line);
 
-        foreach ($this->options['method_names'] as $answer_field => $method)
-        {
-            if (!method_exists($this, $method))
-            {
-                $output->writeln("<error>Incorret field input</error>");
-                $output->writeln("<info>Field options: </info><comment>word,arpabet,ipa,spelling</comment>");
+        foreach ($this->options['method_names'] as $answer_field => $method) {
+            if (!method_exists($this, $method)) {
+                $output->writeln('<error>Incorret field input</error>');
+                $output->writeln('<info>Field options: </info><comment>word,arpabet,ipa,spelling</comment>');
 
                 $GLOBALS['status'] = 1;
 

@@ -2,7 +2,6 @@
 
 namespace PronouncePHP;
 
-use PronouncePHP\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,11 +21,10 @@ class LookupCommand extends Command
     protected $options;
 
     /**
-     * Construct
+     * Construct.
      *
      * @param PronouncePHP\Transcribe\Transcriber $transcribe, PronouncePHP\Hyphenate\Hyphenator $hyphenator, PronouncePHP\Build\Builder $builder
-     * @return void
-    */
+     */
     public function __construct(Transcriber $transcriber, Hyphenator $hyphenator, Builder $builder)
     {
         $this->transcriber = $transcriber;
@@ -37,10 +35,8 @@ class LookupCommand extends Command
     }
 
     /**
-     * Configure command
-     *
-     * @return void
-    */
+     * Configure command.
+     */
     public function configure()
     {
         $this->setName('lookup')
@@ -55,11 +51,10 @@ class LookupCommand extends Command
     }
 
     /**
-     * Execute the command
+     * Execute the command.
      *
      * @param Symfony\Component\Console\Input\InputInterface $input, Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
-    */
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Searching...</info>');
@@ -84,10 +79,9 @@ class LookupCommand extends Command
 
         $this->setOptionsField('method_names', $this->builder->buildFieldMethods($this->options['fields']));
 
-        if (!$handle) 
-        {
+        if (!$handle) {
             $GLOBALS['status'] = 1;
-            
+
             die('<error>File did not open properly</error>');
         }
 
@@ -95,10 +89,8 @@ class LookupCommand extends Command
 
         $answered = [];
 
-        while (($line = fgets($handle)) !== false) 
-        {
-            if (isComment($line)) 
-            {
+        while (($line = fgets($handle)) !== false) {
+            if (isComment($line)) {
                 continue;
             }
 
@@ -108,8 +100,7 @@ class LookupCommand extends Command
 
             $word = $this->parseDuplicateEntries($word);
 
-            if (in_array($word, $strings))
-            {
+            if (in_array($word, $strings)) {
                 $output_word = $this->hyphenateOutputWord($this->hyphenator, $word);
 
                 $output_word = $this->setHyphenationSymbol($output_word);
@@ -123,21 +114,20 @@ class LookupCommand extends Command
         }
 
         if ($GLOBALS['status'] !== 0) {
-            return null;
+            return;
         }
 
         $unanswered = array_diff($strings, $answered);
 
         $destination_method = $this->builder->buildDestinationMethod($this->options['destination']);
 
-        if (!method_exists($this, $destination_method))
-        {
-            $output->writeln("<error>Incorret destination input</error>");
-            $output->writeln("<info>Destination options: </info><comment>table,string,file,database</comment>");
+        if (!method_exists($this, $destination_method)) {
+            $output->writeln('<error>Incorret destination input</error>');
+            $output->writeln('<info>Destination options: </info><comment>table,string,file,database</comment>');
 
             $GLOBALS['status'] = 1;
 
-            return null;
+            return;
         }
 
         $this->$destination_method($output, $answers);
@@ -148,11 +138,12 @@ class LookupCommand extends Command
     }
 
     /**
-     * Make lookup output array for given fields
+     * Make lookup output array for given fields.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, string $word, array $exploded_line
+     *
      * @return array
-    */
+     */
     protected function makeLookupOutputArray(OutputInterface $output, $word, array $exploded_line)
     {
         $answer = [];
@@ -161,12 +152,10 @@ class LookupCommand extends Command
 
         $arpabet_array = array_filter($exploded_line);
 
-        foreach ($this->options['method_names'] as $answer_field => $method)
-        {
-            if (!method_exists($this, $method))
-            {
-                $output->writeln("<error>Incorret field input</error>");
-                $output->writeln("<info>Field options: </info><comment>word,arpabet,ipa,spelling</comment>");
+        foreach ($this->options['method_names'] as $answer_field => $method) {
+            if (!method_exists($this, $method)) {
+                $output->writeln('<error>Incorret field input</error>');
+                $output->writeln('<info>Field options: </info><comment>word,arpabet,ipa,spelling</comment>');
 
                 $GLOBALS['status'] = 1;
 

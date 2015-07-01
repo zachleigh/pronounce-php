@@ -10,15 +10,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use PronouncePHP\Hyphenate\Hyphenator;
 use PronouncePHP\Build\Builder;
 use PronouncePHP\Database\Connect;
-use PronouncePHP\Config\Config;
 
 class Command extends SymfonyCommand
 {
     /**
-     * Make default options array
-     *
-     * @return void
-    */
+     * Make default options array.
+     */
     protected function makeOptions()
     {
         $this->options = [
@@ -27,75 +24,80 @@ class Command extends SymfonyCommand
             'file_name' => '',
             'hyphenate' => '',
             'multiple' => '',
-            'symbol' => ''
+            'symbol' => '',
         ];
     }
 
     /**
-     * Set options field
+     * Set options field.
      *
      * @param string $options_field, string $value
+     *
      * @return string
-    */
+     */
     protected function setOptionsField($options_field, $value)
     {
         $this->options[$options_field] = $value;
     }
 
     /**
-     * Build word string
+     * Build word string.
      *
      * @param string $word, array $exploded_line, array $arpabet_array
+     *
      * @return string
-    */
+     */
     protected function makeWordString($word, array $exploded_line, array $arpabet_array)
     {
         return strtolower($word);
     }
 
     /**
-     * Build arpabet string
+     * Build arpabet string.
      *
      * @param string $word, array $exploded_line, array $arpabet_array
+     *
      * @return string
-    */
+     */
     protected function makeArpabetString($word, array $exploded_line, array $arpabet_array)
     {
         return trim(implode(' ', $exploded_line));
     }
 
     /**
-     * Build ipa string
+     * Build ipa string.
      *
      * @param string $word, array $exploded_line, array $arpabet_array
+     *
      * @return string
-    */
+     */
     protected function makeIpaString($word, array $exploded_line, array $arpabet_array)
     {
         return $this->transcriber->buildIpaString($arpabet_array);
     }
 
     /**
-     * Build spelling string
+     * Build spelling string.
      *
      * @param string $word, array $exploded_line, array $arpabet_array
+     *
      * @return string
-    */
+     */
     protected function makeSpellingString($word, array $exploded_line, array $arpabet_array)
     {
         return $this->transcriber->buildSpellingString($arpabet_array);
     }
 
     /**
-     * Build hyphenated word string
+     * Build hyphenated word string.
      *
      * @param string $word, array $exploded_line, array $arpabet_array
+     *
      * @return string
-    */
+     */
     protected function makeHyphenatedWordString($word, array $exploded_line, array $arpabet_array)
     {
-        if (ctype_alpha($word))
-        {
+        if (ctype_alpha($word)) {
             $hyphenated_word = $this->hyphenateOutputWord($this->hyphenator, $word, true);
 
             $hyphenated_word = $this->setHyphenationSymbol($hyphenated_word);
@@ -107,27 +109,24 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Display error message for unanswered words
+     * Display error message for unanswered words.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, array $unanswered
-     * @return void
-    */
+     */
     protected function displayErrorForUnanswered($output, array $unanswered)
     {
-        foreach ($unanswered as $word)
-        {
+        foreach ($unanswered as $word) {
             $word = strtolower($word);
-            
+
             $output->writeln("<error>Word $word could not be found</error>");
         }
     }
 
     /**
-     * Output data to table
+     * Output data to table.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, array $answers
-     * @return void
-    */
+     */
     protected function outputToTable($output, array $answers)
     {
         $table = new Table($output);
@@ -138,11 +137,10 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Output data to string
+     * Output data to string.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, array $answers
-     * @return void
-    */
+     */
     protected function outputToString($output, array $answers)
     {
         $string = $this->builder->buildString($answers);
@@ -151,11 +149,10 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Output data to file
+     * Output data to file.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, array $answers, string $file_name
-     * @return void
-    */
+     */
     protected function outputToFile($output, array $answers)
     {
         $this->setOptionsField('file_name', $this->makeFileName($this->options['file_name']));
@@ -164,8 +161,7 @@ class Command extends SymfonyCommand
 
         $file = $this->openFile($output, $handle);
 
-        foreach ($answers as $answer)
-        {
+        foreach ($answers as $answer) {
             $this->writeFileLine($file, $answer);
         }
 
@@ -175,11 +171,12 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Make unique filename
+     * Make unique filename.
      *
      * @param string $file_name
+     *
      * @return string
-    */
+     */
     protected function makeFileName($file_name)
     {
         $filesystem = new Filesystem();
@@ -188,17 +185,13 @@ class Command extends SymfonyCommand
 
         $count = 1;
 
-        while ($filesystem->exists($new_file_name))
-        {
-            if (strpos($file_name, '.') !== false)
-            {
+        while ($filesystem->exists($new_file_name)) {
+            if (strpos($file_name, '.') !== false) {
                 $index = strpos($file_name, '.');
 
-                $new_file_name = substr($file_name, 0, $index) . $count . substr($file_name, $index);
-            }
-            else 
-            {
-                $new_file_name = $file_name . $count;
+                $new_file_name = substr($file_name, 0, $index).$count.substr($file_name, $index);
+            } else {
+                $new_file_name = $file_name.$count;
             }
 
             $count += 1;
@@ -208,11 +201,12 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Get file handle
+     * Get file handle.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, Symfony\Component\Filesystem\Filesystem $filesystem
+     *
      * @return resource
-    */
+     */
     protected function getFileHandle(OutputInterface $output)
     {
         $filesystem = new Filesystem();
@@ -225,35 +219,34 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Open file for output
+     * Open file for output.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, resource $handle
+     *
      * @return ymfony\Component\Console\Output\StreamOutput
-    */
+     */
     protected function openFile(OutputInterface $output, $handle)
     {
         $file = new StreamOutput($handle);
 
-        if (!$file)
-        {
+        if (!$file) {
             $output->writeln('<error>Error with destination file</error>');
 
             $GLOBALS['status'] = 1;
 
             fclose($handle);
 
-            return null;
+            return;
         }
 
         return $file;
     }
 
     /**
-     * Write line to file
+     * Write line to file.
      *
      * @param Symfony\Component\Console\Output\StreamOutput $file, array $answer
-     * @return void
-    */
+     */
     protected function writeFileLine($file, array $answer)
     {
         $line = $this->builder->buildFileLine($answer);
@@ -262,22 +255,20 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Close file for output
+     * Close file for output.
      *
      * @param resource $handle
-     * @return void
-    */
+     */
     protected function closeFile($handle)
     {
         fclose($handle);
     }
 
     /**
-     * Output data to database
+     * Output data to database.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output, array $answers
-     * @return void
-    */
+     */
     protected function outputToDatabase($output, array $answers)
     {
         $connect = $this->getDatabaseConnection($output);
@@ -286,17 +277,18 @@ class Command extends SymfonyCommand
 
         $connect->insertDataArray($handle, $answers);
 
-        $output->writeln("<info>Successfully wrote to database</info>");
+        $output->writeln('<info>Successfully wrote to database</info>');
 
         $handle = null;
     }
 
     /**
-     * Get database connection
+     * Get database connection.
      *
      * @param Symfony\Component\Console\Output\OutputInterface $output
+     *
      * @return PronouncePHP\Database\Connect $connect
-    */
+     */
     protected function getDatabaseConnection(OutputInterface $output)
     {
         $database_class = $this->builder->buildDatabaseClass($output);
@@ -307,15 +299,15 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Hyphenate word for output
+     * Hyphenate word for output.
      *
      * @param PronouncePHP\Hyphenate\Hyphenator $hyphenator, string $word
+     *
      * @return string
-    */
+     */
     protected function hyphenateOutputWord(Hyphenator $hyphenator, $word)
     {
-        if ($this->options['hyphenate'] === false)
-        {
+        if ($this->options['hyphenate'] === false) {
             return $word;
         }
 
@@ -323,30 +315,29 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Set hyphenation symbol
+     * Set hyphenation symbol.
      *
      * @param string $word
+     *
      * @return string
-    */
+     */
     protected function setHyphenationSymbol($word)
     {
         return str_replace(' ', $this->options['symbol'], $word);
     }
 
     /**
-     * Deal with multiple entries in CMUdict file
+     * Deal with multiple entries in CMUdict file.
      *
      * @param string $word
+     *
      * @return string
-    */
+     */
     protected function parseDuplicateEntries($word)
     {
-        if ($this->options['multiple'] === 'none')
-        {
+        if ($this->options['multiple'] === 'none') {
             return $word;
-        }
-        elseif ($this->options['multiple'] === 'repeat')
-        {
+        } elseif ($this->options['multiple'] === 'repeat') {
             return preg_replace("/\([^)]+\)/", '', $word);
         }
 
@@ -354,20 +345,20 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Make unique key for answers array
+     * Make unique key for answers array.
      *
      * @param string $word, array $answers
+     *
      * @return string
-    */
+     */
     protected function makeAnswersKey($word, array $answers)
     {
         $key = $word;
 
         $count = 1;
 
-        while (array_key_exists($key, $answers))
-        {
-            $key = $key . $count;
+        while (array_key_exists($key, $answers)) {
+            $key = $key.$count;
 
             $count += 1;
         }

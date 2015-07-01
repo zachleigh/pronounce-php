@@ -38,7 +38,7 @@ class HyphenateCommandTest extends TestCase
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
-            'word' => 'hotel'
+            'word' => 'hotel',
         ));
 
         $result = $this->expected->results_single_word_hyphenate_returns_table();
@@ -52,7 +52,7 @@ class HyphenateCommandTest extends TestCase
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
-            'word' => 'monkey,serious,bookshelf'
+            'word' => 'monkey,serious,bookshelf',
         ));
 
         $result = $this->expected->results_multiple_word_hyphenate_returns_table();
@@ -68,7 +68,7 @@ class HyphenateCommandTest extends TestCase
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'bookshelf',
-            '--destination' => 'string'
+            '--destination' => 'string',
         ));
 
         $result = $this->expected->results_single_word_hyphenate_with_destination_string_returns_string();
@@ -83,7 +83,7 @@ class HyphenateCommandTest extends TestCase
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'monkey,serious,bookshelf',
-            '--destination' => 'string'
+            '--destination' => 'string',
         ));
 
         $result = $this->expected->results_multiple_word_hyphenate_with_destination_string_returns_string();
@@ -99,7 +99,7 @@ class HyphenateCommandTest extends TestCase
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'hotel',
-            '--symbol' => '_'
+            '--symbol' => '_',
         ));
 
         $result = $this->expected->results_symbol_option_returns_table();

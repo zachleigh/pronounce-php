@@ -36,13 +36,13 @@ class LookupCommandTest extends TestCase
     }
 
     // No options
-    public function test_single_word_lookup_returns_table() 
+    public function test_single_word_lookup_returns_table()
     {
         $GLOBALS['status'] = 0;
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
-            'word' => 'word'
+            'word' => 'word',
         ));
 
         $result = $this->expected->results_single_word_lookup_returns_table();
@@ -50,13 +50,13 @@ class LookupCommandTest extends TestCase
         $this->assertEquals($result, $this->command_tester->getDisplay());
     }
 
-    public function test_double_word_lookup_returns_table() 
+    public function test_double_word_lookup_returns_table()
     {
         $GLOBALS['status'] = 0;
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
-            'word' => 'hello,bye'
+            'word' => 'hello,bye',
         ));
 
         $result = $this->expected->results_double_word_lookup_returns_table();
@@ -64,13 +64,13 @@ class LookupCommandTest extends TestCase
         $this->assertEquals($result, $this->command_tester->getDisplay());
     }
 
-    public function test_multiple_word_lookup_returns_table() 
+    public function test_multiple_word_lookup_returns_table()
     {
         $GLOBALS['status'] = 0;
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
-            'word' => 'orange,red,grey,blue,pink,purple'
+            'word' => 'orange,red,grey,blue,pink,purple',
         ));
 
         $result = $this->expected->results_multiple_word_lookup_returns_table();
@@ -78,13 +78,13 @@ class LookupCommandTest extends TestCase
         $this->assertEquals($result, $this->command_tester->getDisplay());
     }
 
-    public function test_misspelled_word_lookup_returns_error() 
+    public function test_misspelled_word_lookup_returns_error()
     {
         $GLOBALS['status'] = 0;
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
-            'word' => 'lskdfh'
+            'word' => 'lskdfh',
         ));
 
         $result = $this->expected->results_misspelled_word_lookup_returns_error();
@@ -93,14 +93,14 @@ class LookupCommandTest extends TestCase
     }
 
     // Fields Option
-    public function test_single_word_lookup_with_fields_option_returns_table() 
+    public function test_single_word_lookup_with_fields_option_returns_table()
     {
         $GLOBALS['status'] = 0;
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'radio',
-            '--fields' => 'word,ipa'
+            '--fields' => 'word,ipa',
         ));
 
         $result = $this->expected->results_single_word_lookup_with_fields_option_returns_table();
@@ -108,14 +108,14 @@ class LookupCommandTest extends TestCase
         $this->assertEquals($result, $this->command_tester->getDisplay());
     }
 
-    public function test_multiple_word_lookup_with_fields_option_returns_table() 
+    public function test_multiple_word_lookup_with_fields_option_returns_table()
     {
         $GLOBALS['status'] = 0;
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'radio,headphones',
-            '--fields' => 'word,ipa,spelling'
+            '--fields' => 'word,ipa,spelling',
         ));
 
         $result = $this->expected->results_multiple_word_lookup_with_fields_option_returns_table();
@@ -123,14 +123,14 @@ class LookupCommandTest extends TestCase
         $this->assertEquals($result, $this->command_tester->getDisplay());
     }
 
-    public function test_incorrect_fields_option_returns_error() 
+    public function test_incorrect_fields_option_returns_error()
     {
         $GLOBALS['status'] = 0;
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'insect',
-            '--fields' => 'word,ipa,jibberish'
+            '--fields' => 'word,ipa,jibberish',
         ));
 
         $result = $this->expected->results_incorrect_fields_option_returns_error();
@@ -139,14 +139,14 @@ class LookupCommandTest extends TestCase
     }
 
     // Destination option
-    public function test_single_word_lookup_with_destination_string_returns_string() 
+    public function test_single_word_lookup_with_destination_string_returns_string()
     {
         $GLOBALS['status'] = 0;
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'insect',
-            '--destination' => 'string'
+            '--destination' => 'string',
         ));
 
         $result = $this->expected->results_single_word_lookup_with_destination_string_returns_string();
@@ -154,14 +154,14 @@ class LookupCommandTest extends TestCase
         $this->assertEquals($result, $this->command_tester->getDisplay());
     }
 
-    public function test_multiple_word_lookup_with_destination_string_returns_string() 
+    public function test_multiple_word_lookup_with_destination_string_returns_string()
     {
         $GLOBALS['status'] = 0;
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'insect,television',
-            '--destination' => 'string'
+            '--destination' => 'string',
         ));
 
         $result = $this->expected->results_multiple_word_lookup_with_destination_string_returns_string();
@@ -169,14 +169,14 @@ class LookupCommandTest extends TestCase
         $this->assertEquals($result, $this->command_tester->getDisplay());
     }
 
-    public function test_incorrect_destination_option_returns_error() 
+    public function test_incorrect_destination_option_returns_error()
     {
         $GLOBALS['status'] = 0;
 
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'insect',
-            '--destination' => 'pocket'
+            '--destination' => 'pocket',
         ));
 
         $result = $this->expected->results_incorrect_destination_option_returns_error();
@@ -192,7 +192,7 @@ class LookupCommandTest extends TestCase
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'money',
-            '--hyphenate' => null
+            '--hyphenate' => null,
         ));
 
         $result = $this->expected->results_word_hyphenation_returns_table();
@@ -208,7 +208,7 @@ class LookupCommandTest extends TestCase
             'command' => $this->command->getName(),
             'word' => 'computer',
             '--hyphenate' => null,
-            '--symbol' => '.'
+            '--symbol' => '.',
         ));
 
         $result = $this->expected->results_word_hyphenation_with_symbol_returns_table();
@@ -224,7 +224,7 @@ class LookupCommandTest extends TestCase
         $this->command_tester->execute(array(
             'command' => $this->command->getName(),
             'word' => 'abkhazian',
-            '--multiple' => 'repeat'
+            '--multiple' => 'repeat',
         ));
 
         $result = $this->expected->results_multiple_repeat_returns_table();

@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Explode by comma
+ * Explode by comma.
  *
  * @param string $string
+ *
  * @return array
-*/
+ */
 function explodeByComma($string)
 {
     $string = strtoupper($string);
@@ -14,15 +15,15 @@ function explodeByComma($string)
 }
 
 /**
- * Find comments in CMU file
+ * Find comments in CMU file.
  *
  * @param string $line
+ *
  * @return bool
-*/
+ */
 function isComment($line)
 {
-    if (substr($line, 0, 3) === ';;;')
-    {
+    if (substr($line, 0, 3) === ';;;') {
         return true;
     }
 
@@ -30,17 +31,17 @@ function isComment($line)
 }
 
 /**
- * Replace spaces in array strings with underscores
+ * Replace spaces in array strings with underscores.
  *
  * @param array $strings
+ *
  * @return array
-*/
+ */
 function spacesToUnderscores($strings)
 {
     $array = [];
 
-    foreach ($strings as $string)
-    {
+    foreach ($strings as $string) {
         array_push($array, str_replace(' ', '_', $string));
     }
 
@@ -48,11 +49,12 @@ function spacesToUnderscores($strings)
 }
 
 /**
- * Make an underscored word camel-case
+ * Make an underscored word camel-case.
  *
  * @param string $string
+ *
  * @return string
-*/
+ */
 function underscoreToCamelCase($string)
 {
     $string = strtolower($string);
@@ -69,39 +71,39 @@ function underscoreToCamelCase($string)
 }
 
 /**
- * Make a camel-cased word underscored
+ * Make a camel-cased word underscored.
  *
  * @param string $string
+ *
  * @return string
-*/
+ */
 function camelCaseToUnderscore($string)
 {
     preg_match_all('/[A-Z]/', $string, $matches, PREG_OFFSET_CAPTURE);
 
-    if (empty($matches[0]))
-    {
+    if (empty($matches[0])) {
         return $string;
     }
 
-    foreach ($matches[0] as $match) 
-    {
+    foreach ($matches[0] as $match) {
         $letter = $match[0];
         $index = $match[1];
 
         $string[$index] = strtolower($letter);
 
-        $string = substr($string, 0, $index) . '_' . substr($string, $index);
+        $string = substr($string, 0, $index).'_'.substr($string, $index);
     }
 
     return $string;
 }
 
 /**
- * Get array keys and turn them into array of vaules
+ * Get array keys and turn them into array of vaules.
  *
  * @param array $array
+ *
  * @return array
-*/
+ */
 function getKeys($array)
 {
     $first_item_key = array_keys($array)[0];
